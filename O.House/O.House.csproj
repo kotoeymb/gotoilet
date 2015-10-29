@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{3C0E3C51-B584-45E5-B459-E613677691AE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>O.House</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>O.House</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>i386</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchArch>i386</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchProfiling>true</MtouchProfiling>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="Facebook">
+      <HintPath>..\..\..\..\Downloads\facebookios-4.5.1\lib\ios-unified\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <InterfaceDefinition Include="Views\MapViewController.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="Base\ToiletsBase.cs" />
+    <Compile Include="Delegates\AppDelegate.cs" />
+    <Compile Include="Delegates\MapDelegate.cs" />
+    <Compile Include="Utilities\LocationUtil.cs" />
+    <Compile Include="Utilities\MapUtil.cs" />
+    <Compile Include="Utilities\Util.cs" />
+    <Compile Include="Views\FBContainerView.cs" />
+    <Compile Include="Views\MapViewController.cs" />
+    <Compile Include="Views\MapViewController.designer.cs" />
+    <Compile Include="Views\MenuDialogViewController.cs" />
+    <Compile Include="Views\infoDialogViewController.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Library\MonoTouch.SlideoutNavigation\MonoTouch.SlideoutNavigation.csproj">
+      <Project>{6D7B9B53-CFEF-46BE-A608-14A4A1381CF6}</Project>
+      <Name>MonoTouch.SlideoutNavigation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
+    <Folder Include="Delegates\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Views\" />
+    <Folder Include="Resources\images\" />
+    <Folder Include="Resources\database\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\images\background\10x10.png" />
+    <BundleResource Include="Resources\images\background\28x34beehive.png" />
+    <BundleResource Include="Resources\images\background\bg-1.png" />
+    <BundleResource Include="Resources\images\background\galaxy.png" />
+    <BundleResource Include="Resources\images\button\icon-profile.png" />
+    <BundleResource Include="Resources\images\button\menu_button_pink.png" />
+    <BundleResource Include="Resources\images\button\three_lines.png" />
+    <BundleResource Include="Resources\images\button\three_lines%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-about.png" />
+    <BundleResource Include="Resources\images\icons\icon-credit.png" />
+    <BundleResource Include="Resources\images\icons\icon-find.png" />
+    <BundleResource Include="Resources\images\icons\icon-mylocation.png" />
+    <BundleResource Include="Resources\images\icons\icon-toilet.png" />
+    <BundleResource Include="Resources\database\Toilets.plist" />
+  </ItemGroup>
+</Project>
