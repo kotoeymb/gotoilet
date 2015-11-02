@@ -5,6 +5,7 @@ using UIKit;
 using CoreLocation;
 using MapKit;
 using Utils;
+using MapUtils;
 
 namespace OHouse
 {
@@ -23,12 +24,14 @@ namespace OHouse
 		public static double lonMeter = 1000;
 
 		// *** modifying
-		MKPointAnnotation[] pins;
+		// MKPointAnnotation[] pins;
 		static MKCircle circleOverlay;
-		static double maxDistance = 500;
+		public static double maxDistance = 500;
 		// *** modifying
 
 		List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
+		//List<ToiletsBase> nearToiletList = new List<ToiletsBase> ();
+		public static List<ToiletsBase> nearToiletList = new List<ToiletsBase>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MapUtils.MapDelegate"/> class.
@@ -38,18 +41,8 @@ namespace OHouse
 		{
 			this.parent = parent;
 
-			var path = NSBundle.MainBundle.PathForResource ("database/Toilets", "plist");
-			var toilets = NSDictionary.FromFile (path);
-
-			foreach (var toilet in toilets) {
-				var obj = toilet.Value;
-				var nameKey = obj.ValueForKey ((NSString)"nameKey").ToString ();
-				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
-				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
-				toiletsList.Add (
-					new ToiletsBase (nameKey, double.Parse (latitudeKey), double.Parse (longitudeKey))	
-				);
-			}
+			//toiletsList = MapUtil.
+			toiletsList = MapUtil.GetToiletList ("database/Toilets");
 		}
 
 		/// <summary>
@@ -64,30 +57,10 @@ namespace OHouse
 
 			if (mapView.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapView.UserLocation.Coordinate;
-
-//				pins = new MKPointAnnotation[] {
-//					new MKPointAnnotation () { Title = "Near 01", Coordinate = new CLLocationCoordinate2D (16.777024, 96.164964) },
-//					new MKPointAnnotation () { Title = "Near 02", Coordinate = new CLLocationCoordinate2D (16.776768, 96.162622) },
-//					new MKPointAnnotation () { Title = "Near 03", Coordinate = new CLLocationCoordinate2D (16.777364, 96.160315) },
-//					new MKPointAnnotation () { Title = "Near 04", Coordinate = new CLLocationCoordinate2D (16.777114, 96.162486) },
-//					new MKPointAnnotation () { Title = "Near 05", Coordinate = new CLLocationCoordinate2D (16.777024, 96.164964) },
-//					new MKPointAnnotation () { Title = "Near 06", Coordinate = new CLLocationCoordinate2D (16.782406, 96.178641) },
-//					new MKPointAnnotation () { Title = "Near 07", Coordinate = new CLLocationCoordinate2D (16.774438, 96.158796) },
-//					new MKPointAnnotation () { Title = "Near 08", Coordinate = new CLLocationCoordinate2D (16.788157, 96.075439) },
-//					new MKPointAnnotation () { Title = "Near 09", Coordinate = new CLLocationCoordinate2D (16.902507, 96.054153) },
-//					new MKPointAnnotation () { Title = "Near 10", Coordinate = new CLLocationCoordinate2D (16.845341, 96.414642) },
-//					new MKPointAnnotation () { Title = "Near 11", Coordinate = new CLLocationCoordinate2D (16.779903, 96.160169) },
-//					new MKPointAnnotation () { Title = "Near 12", Coordinate = new CLLocationCoordinate2D (16.776863, 96.160040) },
-//					new MKPointAnnotation () { Title = "Near 13", Coordinate = new CLLocationCoordinate2D (16.780458, 96.152852) },
-//					new MKPointAnnotation () { Title = "Near 14", Coordinate = new CLLocationCoordinate2D (16.779472, 96.153217) },
-//					new MKPointAnnotation () { Title = "Near 15", Coordinate = new CLLocationCoordinate2D (16.776801, 96.161736) },
-//					new MKPointAnnotation () { Title = "Near 16", Coordinate = new CLLocationCoordinate2D (16.782533, 96.185918) }
-//				};
-
-				circleOverlay = MKCircle.Circle (new CLLocationCoordinate2D (coords.Latitude, coords.Longitude), maxDistance);
-
 				CLLocation userLC = new CLLocation (coords.Latitude, coords.Longitude);
 
+				circleOverlay = MKCircle.Circle (new CLLocationCoordinate2D (coords.Latitude, coords.Longitude), maxDistance);
+				int count = 0;
 				foreach (var a in toiletsList) {
 					//foreach (MKPointAnnotation a in pins) {
 					//CLLocation loc = new CLLocation (a.Coordinate.Latitude, a.Coordinate.Longitude);
@@ -96,7 +69,11 @@ namespace OHouse
 					if (dist > maxDistance) {
 						continue;
 					}
-						
+					Console.WriteLine (count);
+
+					//Console.WriteLine (dist);
+					nearToiletList.Add (new ToiletsBase (a.Name, a.Latitude, a.Longitude, dist));
+
 					MKPointAnnotation point = new MKPointAnnotation () {
 						//Title = a.GetTitle (),
 						//Coordinate = new CLLocationCoordinate2D (a.Coordinate.Latitude, a.Coordinate.Longitude)
@@ -145,6 +122,9 @@ namespace OHouse
 			if (mapView.Overlays != null) {
 				mapView.RemoveOverlays (mapView.Overlays);
 			}
+
+			// Clear temp list
+			nearToiletList.Clear();
 		}
 
 		/// <summary>
@@ -184,7 +164,7 @@ namespace OHouse
 
 				string[] datas = { annotation.GetTitle (), lat.ToString (), lon.ToString () };
 
-				infoDialogViewController infoView = new infoDialogViewController (datas);
+				InfoDialogViewController infoView = new InfoDialogViewController (datas);
 				parent.NavigationController.PushViewController (infoView, true);
 			};
 
@@ -193,7 +173,6 @@ namespace OHouse
 
 			return annotationView;
 		}
-
 
 		/// <summary>
 		/// Overlaies the renderer.

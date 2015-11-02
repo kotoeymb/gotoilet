@@ -52,7 +52,21 @@ namespace OHouse
 			mapV.ShowsUserLocation = true;
 			mapV.ZoomEnabled = true;
 			mapV.ScrollEnabled = true;
-				
+
+			if (mapV.UserLocation != null) {
+				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
+
+				// Console.WriteLine (coords.Latitude);
+
+				// Get nearest location button
+				this.NavigationItem.SetRightBarButtonItem (
+					new UIBarButtonItem("Nearest", UIBarButtonItemStyle.Plain, (s, e) => {
+						NavigationController.PushViewController(new NearestDialogViewController(), true);
+					}),
+					true
+				);
+			}
+
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-mylocation"), w, h);
 			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)View.Frame.Width - w - 10f, (float)View.Frame.Height - h - 10f, w, h), false);
@@ -64,7 +78,7 @@ namespace OHouse
 					mapV.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
 				}
 			};
-				
+
 			View.AddSubview (mapV);
 			View.AddSubview (myLocationButton);
 

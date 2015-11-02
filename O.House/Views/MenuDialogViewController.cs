@@ -29,24 +29,24 @@ namespace OHouse
 			View.BackgroundColor = UIColor.Clear;
 			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 100));
 
-			UIImage iconFind = UtilImage.ResizeImageKeepAspect(UIImage.FromBundle ("images/icons/icon-find"), 16, 16);
-			UIImage iconAbt = UtilImage.ResizeImageKeepAspect(UIImage.FromBundle ("images/icons/icon-about"), 16, 16);
-			UIImage iconCdt = UtilImage.ResizeImageKeepAspect(UIImage.FromBundle ("images/icons/icon-credit"), 16, 16);
+			UIImage iconFind = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-find"), 16, 16);
+			UIImage iconCdt = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-credit"), 16, 16);
+			UIImage iconMan = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-manual"), 16, 16);
 
 			Root = new RootElement ("Menu") {
 				new Section () {
-					new UIViewElement("", fbContainer, true),
-					new StyledStringElement("Find", () => NavigationController.PushViewController (new MapViewController (), true)) {
+					new UIViewElement ("", fbContainer, true),
+					new StyledStringElement ("Find", () => NavigationController.PushViewController (new MapViewController (), true)) {
 						Image = iconFind,
 						BackgroundColor = UIColor.Clear,
 						TextColor = UIColor.White,
 					},
-					new StyledStringElement("About") {
-						Image = iconAbt,
+					new StyledStringElement ("Guide") {
+						Image = iconMan,
 						BackgroundColor = UIColor.Clear,
 						TextColor = UIColor.White
 					},
-					new StyledStringElement("Credit") {
+					new StyledStringElement ("Credit") {
 						Image = iconCdt,
 						BackgroundColor = UIColor.Clear,
 						TextColor = UIColor.White
@@ -54,7 +54,7 @@ namespace OHouse
 				}
 			};
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			TableView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/28x34beehive"));
+			TableView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-2"));
 		}
 	}
 }
