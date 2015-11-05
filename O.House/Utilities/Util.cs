@@ -33,22 +33,47 @@ namespace Utils
 
 			double maxResizeFactor = Math.Max (maxWidth / sourceSize.Width, maxHeight / sourceSize.Height);
 
-			System.Console.WriteLine ("maxResizeFactor:" + maxResizeFactor);
-
-
+			//System.Console.WriteLine ("maxResizeFactor:" + maxResizeFactor);
 			// 最大サイズ(変更したいサイズがソースのサイズのまま)であれば、ソース画像を返却
 			if (maxResizeFactor == 1) {
 				resultImage = srcImage;
 			} else {
 				// 変更後の画像サイズを設定
 				float width = (float)(maxResizeFactor * sourceSize.Width);
-				float height	= (float)(maxResizeFactor * sourceSize.Height);
+				float height = (float)(maxResizeFactor * sourceSize.Height);
 
 				//画像をリサイズ 
 				resultImage = _resizeImage (srcImage, width, height);
 			}
 
 			return resultImage;
+		}
+
+		public static UIImageView ResizeImageViewKeepAspect(UIImage srcImage, float maxWidth, float maxHeight)
+		{
+			// 返却画像
+			UIImage resultImage;
+			UIImageView resultImageView = new UIImageView ();
+			// ソースとなる画像のサイズ
+			CGSize sourceSize = srcImage.Size;
+
+			double maxResizeFactor = Math.Max (maxWidth / sourceSize.Width, maxHeight / sourceSize.Height);
+
+			//System.Console.WriteLine ("maxResizeFactor:" + maxResizeFactor);
+			// 最大サイズ(変更したいサイズがソースのサイズのまま)であれば、ソース画像を返却
+			if (maxResizeFactor == 1) {
+				resultImage = srcImage;
+				resultImageView.Image = resultImage;
+			} else {
+				// 変更後の画像サイズを設定
+				float width = (float)(maxResizeFactor * sourceSize.Width);
+				float height = (float)(maxResizeFactor * sourceSize.Height);
+
+				//画像をリサイズ 
+				resultImageView = _resizeImageView (srcImage, width, height);
+			}
+
+			return resultImageView;
 		}
 
 		/// <summary>
@@ -81,6 +106,33 @@ namespace Utils
 
 			return resultImage;
 
+		}
+
+		private static UIImageView _resizeImageView (UIImage srcImage, float width, float height)
+		{
+			//返却画像
+			UIImage resultImage;
+			UIImageView resultImageView = new UIImageView ();
+
+			// 指定サイズから、SizeF構造体のインスタンスを作成
+			SizeF newSize = new SizeF (width, height);
+			// 新しい画像のコンテキストを開始
+			// UIGraphics.BeginImageContext (newSize);
+			UIGraphics.BeginImageContextWithOptions (newSize, false, 2.0f);
+
+			// 新しい矩形のインスタンスを作成
+			RectangleF newRect = new RectangleF (0, 0, width, height);
+			CGRect newCGRect = new CGRect (0, 0, width, height);
+			// 作成したコンテキストにレンダリング
+			srcImage.Draw (newRect);
+			//コンテキストにレンダリングした画像を取得する
+			resultImage = UIGraphics.GetImageFromCurrentImageContext ();
+			resultImageView.Image = resultImage;
+			resultImageView.Frame = newCGRect;
+			// コンテキストを閉じる
+			UIGraphics.EndImageContext ();
+
+			return resultImageView;
 		}
 
 		/// <summary>
@@ -130,14 +182,14 @@ namespace Utils
 
 			container.Frame = customSize;
 			container.Layer.CornerRadius = container.Frame.Size.Width / 2;
-			container.Layer.BorderWidth = 1f;
+			container.Layer.BorderWidth = 3f;
 			container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
 			container.ClipsToBounds = true;
 
 			return container;
 		}
 
-		public static UIButton RoundButton (UIImage srcImage, RectangleF rect, Boolean shadow)
+		public static UIButton RoundButton (UIImage srcImage, RectangleF rect)
 		{
 			if (srcImage == null) {
 				throw new System.ArgumentException ("srcImage", "null");

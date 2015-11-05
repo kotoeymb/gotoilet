@@ -150,7 +150,6 @@ namespace OHouse
 			}
 
 			// configure our annotation view properties
-			annotationView.Image = UIImage.FromFile ("images/icons/icon-toilet.png");
 			annotationView.CanShowCallout = true;
 			(annotationView as MKPinAnnotationView).AnimatesDrop = false;
 			annotationView.Selected = true;

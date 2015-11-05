@@ -5,6 +5,7 @@ using MonoTouch.Dialog;
 using OHouse;
 using Facebook;
 using Facebook.CoreKit;
+using System;
 using System.Diagnostics;
 using CoreLocation;
 
@@ -26,9 +27,19 @@ namespace OHouse
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
+			UIFont.FromName ("Helvetica-Light", 16);
+
 			Profile.EnableUpdatesOnAccessTokenChange(true);
 			Settings.AppID = appId;
 			Settings.DisplayName = appName;
+
+			// Setting up navigation
+			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(8, 140, 255, 1);
+			UINavigationBar.Appearance.TintColor = UIColor.White;
+			//UINavigationBar.Appearance.SetBackgroundImage(UIImage.FromBundle("images/background/bg-3"), UIBarMetrics.Default);
+			UINavigationBar.Appearance.SetTitleTextAttributes(
+				new UITextAttributes { TextColor = UIColor.White }
+			);
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);

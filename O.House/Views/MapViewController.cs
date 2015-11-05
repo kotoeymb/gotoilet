@@ -42,6 +42,8 @@ namespace OHouse
 		/// </summary>
 		public override void ViewDidLoad ()
 		{
+			base.ViewDidLoad ();
+
 			float w = 50;
 			float h = 50;
 
@@ -56,20 +58,24 @@ namespace OHouse
 			if (mapV.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
 
-				// Console.WriteLine (coords.Latitude);
-
 				// Get nearest location button
 				this.NavigationItem.SetRightBarButtonItem (
-					new UIBarButtonItem("Nearest", UIBarButtonItemStyle.Plain, (s, e) => {
-						NavigationController.PushViewController(new NearestDialogViewController(), true);
-					}),
+					new UIBarButtonItem(
+						UIImage.FromBundle("images/icons/icon-near"), UIBarButtonItemStyle.Plain, (s, e) => 
+						{
+							NavigationController.PushViewController(new NearestDialogViewController(), true);	
+						}
+					),
 					true
 				);
 			}
 
+			Console.WriteLine (View.Frame.Height);
+
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-mylocation"), w, h);
-			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)View.Frame.Width - w - 10f, (float)View.Frame.Height - h - 10f, w, h), false);
+			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)View.Frame.Width - w - 10, (float)View.Frame.Height - h - 10, w, h));
+			//UIButton myLocationButton = UtilImage.RoundButton(myLocation, new RectangleF(w, h, w, h));
 
 			// Action for MyLocation button
 			myLocationButton.TouchUpInside += (sender, e) => {
@@ -79,10 +85,9 @@ namespace OHouse
 				}
 			};
 
+			mapV.AddSubview (myLocationButton);
 			View.AddSubview (mapV);
-			View.AddSubview (myLocationButton);
-
-			base.ViewDidLoad ();
+			//View.AddSubview (myLocationButton);
 		}
 
 		public override void ViewWillAppear (bool animated)

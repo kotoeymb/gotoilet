@@ -41,22 +41,13 @@
 	<key>Toilet 05</key>
 	<dict>
 		<key>nameKey</key>
-		<string>Toilet 05</string>
-		<key>latitudeKey</key>
-		<string>16.777024</string>
-		<key>longitudeKey</key>
-		<string>96.164964</string>
-	</dict>
-	<key>Toilet 06</key>
-	<dict>
-		<key>nameKey</key>
 		<string>Toilet 06</string>
 		<key>latitudeKey</key>
 		<string>16.782406</string>
 		<key>longitudeKey</key>
 		<string>96.178641</string>
 	</dict>
-	<key>Toilet 07</key>
+	<key>Toilet 06</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 07</string>
@@ -65,7 +56,7 @@
 		<key>longitudeKey</key>
 		<string>96.158796</string>
 	</dict>
-	<key>Toilet 08</key>
+	<key>Toilet 07</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 08</string>
@@ -74,7 +65,7 @@
 		<key>longitudeKey</key>
 		<string>96.075439</string>
 	</dict>
-	<key>Toilet 09</key>
+	<key>Toilet 08</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 09</string>
@@ -83,7 +74,7 @@
 		<key>longitudeKey</key>
 		<string>96.054153</string>
 	</dict>
-	<key>Toilet 10</key>
+	<key>Toilet 09</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 10</string>
@@ -92,7 +83,7 @@
 		<key>longitudeKey</key>
 		<string>96.414642</string>
 	</dict>
-	<key>Toilet 11</key>
+	<key>Toilet 10</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 11</string>
@@ -101,7 +92,7 @@
 		<key>longitudeKey</key>
 		<string>96.160169</string>
 	</dict>
-	<key>Toilet 12</key>
+	<key>Toilet 11</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 12</string>
@@ -110,7 +101,7 @@
 		<key>longitudeKey</key>
 		<string>96.160040</string>
 	</dict>
-	<key>Toilet 14</key>
+	<key>Toilet 12</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 14</string>
@@ -128,7 +119,7 @@
 		<key>longitudeKey</key>
 		<string>96.152852</string>
 	</dict>
-	<key>Toilet 16</key>
+	<key>Toilet 14</key>
 	<dict>
 		<key>nameKey</key>
 		<string>Toilet 16</string>

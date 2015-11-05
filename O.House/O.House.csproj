@@ -95,6 +95,8 @@
     <Compile Include="Views\MenuDialogViewController.cs" />
     <Compile Include="Views\InfoDialogViewController.cs" />
     <Compile Include="Views\NearestDialogViewController.cs" />
+    <Compile Include="CustomElements.cs" />
+    <Compile Include="Base\FontBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -113,8 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\images\background\10x10.png" />
-    <BundleResource Include="Resources\images\background\28x34beehive.png" />
-    <BundleResource Include="Resources\images\background\bg-1.png" />
     <BundleResource Include="Resources\images\background\galaxy.png" />
     <BundleResource Include="Resources\images\button\icon-profile.png" />
     <BundleResource Include="Resources\images\button\menu_button_pink.png" />
@@ -128,5 +128,12 @@
     <BundleResource Include="Resources\database\Toilets.plist" />
     <BundleResource Include="Resources\images\icons\icon-manual.png" />
     <BundleResource Include="Resources\images\background\bg-2.png" />
+    <BundleResource Include="Resources\images\background\bg-3.png" />
+    <BundleResource Include="Resources\images\icons\icon-near.png" />
+    <BundleResource Include="Resources\images\icons\icon-near%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-direction.png" />
+    <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
+    <BundleResource Include="Resources\images\background\bg-4.png" />
+    <BundleResource Include="Resources\images\background\bg-5.png" />
   </ItemGroup>
 </Project>
