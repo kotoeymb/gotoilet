@@ -75,11 +75,17 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <InterfaceDefinition Include="Views\MapViewController.xib" />
+    <InterfaceDefinition Include="Views\MapViewController.xib">
+      <DependentUpon>MapViewController.cs</DependentUpon>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\MenuViewController.xib">
+      <DependentUpon>MenuViewController.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="Views.exclude\MenuDialogViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -91,12 +97,21 @@
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Views\FBContainerView.cs" />
     <Compile Include="Views\MapViewController.cs" />
-    <Compile Include="Views\MapViewController.designer.cs" />
-    <Compile Include="Views\MenuDialogViewController.cs" />
+    <Compile Include="Views\MapViewController.designer.cs">
+      <DependentUpon>MapViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\InfoDialogViewController.cs" />
     <Compile Include="Views\NearestDialogViewController.cs" />
-    <Compile Include="CustomElements.cs" />
-    <Compile Include="Base\FontBase.cs" />
+    <Compile Include="Utilities\Common.cs" />
+    <Compile Include="Views\MenuViewController.cs" />
+    <Compile Include="Views\MenuViewController.designer.cs">
+      <DependentUpon>MenuViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\CustomElements.cs" />
+    <Compile Include="Views.exclude\TestUIVC.cs" />
+    <Compile Include="Views.exclude\TestUIVC.designer.cs">
+      <DependentUpon>TestUIVC.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -112,6 +127,7 @@
     <Folder Include="Views\" />
     <Folder Include="Resources\images\" />
     <Folder Include="Resources\database\" />
+    <Folder Include="Views.exclude\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\images\background\10x10.png" />
@@ -123,8 +139,6 @@
     <BundleResource Include="Resources\images\icons\icon-about.png" />
     <BundleResource Include="Resources\images\icons\icon-credit.png" />
     <BundleResource Include="Resources\images\icons\icon-find.png" />
-    <BundleResource Include="Resources\images\icons\icon-mylocation.png" />
-    <BundleResource Include="Resources\images\icons\icon-toilet.png" />
     <BundleResource Include="Resources\database\Toilets.plist" />
     <BundleResource Include="Resources\images\icons\icon-manual.png" />
     <BundleResource Include="Resources\images\background\bg-2.png" />
@@ -135,5 +149,10 @@
     <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\background\bg-4.png" />
     <BundleResource Include="Resources\images\background\bg-5.png" />
+    <BundleResource Include="Resources\images\icons\icon-add.png" />
+    <BundleResource Include="Resources\images\icons\icon-add%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-mylocation.png" />
+    <BundleResource Include="Resources\images\icons\icon-mylocation%402x.png" />
+    <BundleResource Include="Resources\images\background\bg-6.png" />
   </ItemGroup>
 </Project>

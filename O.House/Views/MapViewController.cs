@@ -24,6 +24,7 @@ namespace OHouse
 		public MapViewController () : base ("MapViewController", null)
 		{
 			Title = "Map";
+			EdgesForExtendedLayout = UIRectEdge.All;
 			Manager = new LocationUtil ();
 		}
 
@@ -60,22 +61,22 @@ namespace OHouse
 
 				// Get nearest location button
 				this.NavigationItem.SetRightBarButtonItem (
-					new UIBarButtonItem(
-						UIImage.FromBundle("images/icons/icon-near"), UIBarButtonItemStyle.Plain, (s, e) => 
-						{
-							NavigationController.PushViewController(new NearestDialogViewController(), true);	
-						}
+					new UIBarButtonItem (
+						UIImage.FromBundle ("images/icons/icon-near"), UIBarButtonItemStyle.Plain, (s, e) => {
+						NavigationController.PushViewController (new NearestDialogViewController (), true);	
+					}
 					),
 					true
 				);
 			}
 
-			Console.WriteLine (View.Frame.Height);
-
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-mylocation"), w, h);
 			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)View.Frame.Width - w - 10, (float)View.Frame.Height - h - 10, w, h));
-			//UIButton myLocationButton = UtilImage.RoundButton(myLocation, new RectangleF(w, h, w, h));
+
+			// Create button for Add location
+			var addLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-add"), w, h);
+			UIButton addLocationButton = UtilImage.RoundButton (addLocation, new RectangleF (0 + 10, (float)View.Frame.Height - h - 10, w, h));
 
 			// Action for MyLocation button
 			myLocationButton.TouchUpInside += (sender, e) => {
@@ -86,8 +87,8 @@ namespace OHouse
 			};
 
 			mapV.AddSubview (myLocationButton);
+			mapV.AddSubview (addLocationButton);
 			View.AddSubview (mapV);
-			//View.AddSubview (myLocationButton);
 		}
 
 		public override void ViewWillAppear (bool animated)

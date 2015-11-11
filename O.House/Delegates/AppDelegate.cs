@@ -8,6 +8,8 @@ using Facebook.CoreKit;
 using System;
 using System.Diagnostics;
 using CoreLocation;
+using Utils;
+using Common;
 
 namespace OHouse
 {
@@ -22,6 +24,7 @@ namespace OHouse
 
 		UIWindow window;
 		UIBarButtonItem menuButton;
+		Font font = new Font();
 
 		public SlideoutNavigationController Menu { get; private set; }
 
@@ -36,9 +39,10 @@ namespace OHouse
 			// Setting up navigation
 			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(8, 140, 255, 1);
 			UINavigationBar.Appearance.TintColor = UIColor.White;
-			//UINavigationBar.Appearance.SetBackgroundImage(UIImage.FromBundle("images/background/bg-3"), UIBarMetrics.Default);
+			//UINavigationBar.Appearance.SetBackgroundImage(UIImage.FromBundle("images/background/bg-6"), UIBarMetrics.Default);
+			//UINavigationBar.Appearance.SetBackgroundImage(UtilImage.ResizeImageKeepAspect(UIImage.FromBundle("images/background/bg-6"), (float)UIScreen.MainScreen.Bounds.Width, 0), UIBarMetrics.Default);
 			UINavigationBar.Appearance.SetTitleTextAttributes(
-				new UITextAttributes { TextColor = UIColor.White }
+				new UITextAttributes { TextColor = UIColor.White, Font = font.Font16F }
 			);
 
 			// create a new window instance based on the screen size
@@ -49,7 +53,9 @@ namespace OHouse
 
 			//Menu.MainViewController = new MainNavigationController (new ScrollViewController (), Menu, menuButton);
 			Menu.MainViewController = new MainNavigationController (new MapViewController (), Menu, menuButton);
-			Menu.MenuViewController = new MenuNavigationController (new MenuDialogViewController (), Menu) { NavigationBarHidden = true };
+			//Menu.MenuViewController = new MenuNavigationController (new MenuDialogViewController (), Menu) { NavigationBarHidden = true };
+			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
+
 			// If you have defined a root view controller, set it here:
 			// Window.RootViewController = myViewController;
 			window.RootViewController = Menu;

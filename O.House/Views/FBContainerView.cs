@@ -8,6 +8,7 @@ using Facebook.LoginKit;
 using Facebook.CoreKit;
 using System.Collections.Generic;
 using MonoTouch.Dialog.Utilities;
+using Common;
 
 namespace OHouse
 {
@@ -20,6 +21,7 @@ namespace OHouse
 		LoginButton loginButton;
 		ProfilePictureView profileView;
 		UILabel nameLabel;
+		Font common = new Font ();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.FBContainerView"/> class.
@@ -27,7 +29,7 @@ namespace OHouse
 		/// <param name="frame">Frame.</param>
 		public FBContainerView (RectangleF frame) : base (frame)
 		{
-			BackgroundColor = UIColor.Clear;
+			BackgroundColor = common.White;
 
 			Profile.Notifications.ObserveDidChange ((sender, e) => {
 				if (e.NewProfile == null) {
@@ -40,7 +42,9 @@ namespace OHouse
 			// Set the Read and Publish permissions you want to get
 			loginButton = new LoginButton (new CGRect (110, 60, 100, 30)) {
 				LoginBehavior = LoginBehavior.Native,
-				ReadPermissions = readPermissions.ToArray ()
+				ReadPermissions = readPermissions.ToArray (),
+				BackgroundColor = common.Clear
+
 			};
 
 			// Handle actions once the user is logged in
@@ -66,19 +70,20 @@ namespace OHouse
 			};
 
 			// The user image profile is set automatically once is logged in
-			profileView = new ProfilePictureView (new CGRect (10, 10, 80, 80)) {
-				BackgroundColor = UIColor.Clear
+			profileView = new ProfilePictureView (new CGRect (15, ((float)this.Frame.Height / 2) - 40, 80, 80)) {
+				BackgroundColor = common.Clear
 			};
 
 			profileView.Layer.CornerRadius = profileView.Frame.Size.Width / 2;
 			profileView.Layer.BorderWidth = 1f;
-			profileView.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+			profileView.Layer.BorderColor = new CGColor (52, 52, 52);
 			profileView.ClipsToBounds = true;
 
 			nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
 				TextAlignment = UITextAlignment.Left,
-				TextColor = UIColor.White,
-				BackgroundColor = UIColor.Clear
+				TextColor = common.Blackish,
+				BackgroundColor = common.Clear,
+				Font = common.Font16F
 			};
 			nameLabel.Text = "Welcome!";
 

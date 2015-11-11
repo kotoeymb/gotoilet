@@ -12,6 +12,7 @@ using Utils;
 using CoreGraphics;
 
 using CustomElements;
+using Common;
 
 /// <summary>
 /// Menu dialog view controller.
@@ -23,9 +24,9 @@ namespace OHouse
 	/// </summary>
 	public partial class MenuDialogViewController : DialogViewController
 	{
-		
+		Font font = new Font();
 		/// <summary>
-		/// Initializes a new instance of the <see cref="GoToilet.MenuDialogViewController"/> class.
+		/// Initializes a new instance of the <see cref="OHouse.MenuDialogViewController"/> class.
 		/// </summary>
 		public MenuDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
 		{
@@ -39,15 +40,18 @@ namespace OHouse
 				new Section(fbContainer) {
 					new CustomElement("Find", () => NavigationController.PushViewController(new MapViewController(), true)) {
 						Image = iconFind,
-						TextColor = UIColor.White
+						TextColor = font.White,
+						SubTitle = "Find nearest toilets within 500 m from your location!"
 					},
 					new CustomElement("Guide", () => NavigationController.PushViewController(new NearestDialogViewController(), true)) {
 						Image = iconMan,
-						TextColor = UIColor.White
+						TextColor = font.White,
+						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
 					},
 					new CustomElement("Credit", () => NavigationController.PushViewController(new NearestDialogViewController(), true)) {
 						Image = iconCdt,
-						TextColor = UIColor.White
+						TextColor = font.White,
+						SubTitle = "Development teams and their members. Thank you!"
 					}
 				}
 			};
@@ -56,9 +60,11 @@ namespace OHouse
 		public override void LoadView ()
 		{
 			base.LoadView ();
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
+			//View.AddSubview(fixedBackground);
+			//View.BackgroundColor = font.Clear;
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			//TableView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
+			TableView.BackgroundColor = UIColor.Clear;
+			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
 		}
 	}
 }

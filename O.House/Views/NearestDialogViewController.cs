@@ -12,7 +12,7 @@ using Utils;
 using MapUtils;
 using LocationUtils;
 
-using FontBase;
+using Common;
 
 using CoreLocation;
 using CoreGraphics;
@@ -23,17 +23,23 @@ namespace OHouse
 	{
 		List<ToiletsBase> tBaseList = new List<ToiletsBase> ();
 		List<ToiletsBase> tBaseListOrdered = new List<ToiletsBase> ();
-		Section section = new Section ("Within 500 m", "Locations are listed from the nearest to the furthest within 500 m.");
+		Section section = new Section ();
 		Font font = new Font ();
+		CustomHdrFtr customhf = new CustomHdrFtr();
 
 		public NearestDialogViewController () : base (UITableViewStyle.Grouped, null, true)
 		{
+			var frameW = View.Frame.Width;
+			var frameH = View.Frame.Height;
+
+			UIView headerView = customhf.CreateHdrFtr ("NOTICE", (float)frameW, 30);
+			UIView footerView = customhf.CreateHdrFtr ("Please refer to GoogleMap for more accurate travel time and distance information.", (float)frameW, 40);
+
+			UIView headerViewWithin = customhf.CreateHdrFtr ("WINTHIN 500 m", (float)frameW, 30);
+
 			tBaseList = MapDelegate.nearToiletList;
 			tBaseListOrdered = tBaseList.OrderBy (o => o.Distance).ToList ();
-
-//			Section section = new Section ("Within 500 m", "Locations are listed from the nearest to the furthest within 500 m.") {
-//				HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0),
-//			};
+			section.HeaderView = headerViewWithin;
 
 			/// Add elements to section
 			foreach (var v in tBaseListOrdered) {
@@ -45,17 +51,18 @@ namespace OHouse
 							UIApplication.SharedApplication.OpenUrl (url);
 						}
 					) {
-						Font = Font.Font16F,
-						TextColor = Font.White
+						Font = font.Font16F,
+						TextColor = font.White
 					}
 				);
 			}
 
+
 			Root = new RootElement ("Nearest") {
 				section,
 				new Section (
-					"Notice", 
-					"Please refer to GoogleMap for more accurate travel time and distance information."
+					headerView,
+					footerView
 				)
 			};
 		}
@@ -66,6 +73,11 @@ namespace OHouse
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+
+//			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
+//			TableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 100);
+//			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+//			TableView.Frame = new CGRect (10, 10, (float)View.Frame.Width - 20, (float)View.Frame.Height - 20);
 		}
 	}
 }
