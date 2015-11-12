@@ -16,7 +16,7 @@ namespace Commons
 		}
 
 		public float PopUpDistance {
-			get { return 100f; }
+			get { return 200f; }
 			set { ; }
 		}
 
