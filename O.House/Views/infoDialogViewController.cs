@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using MonoTouch.Dialog;
-using Common;
+using Commons;
 using CoreGraphics;
 
 using Foundation;
@@ -16,7 +16,7 @@ namespace OHouse
 	public partial class InfoDialogViewController : DialogViewController
 	{
 		private string[] _datas;
-		Font font = new Font ();
+		Common common = new Common ();
 
 		public string[] Datas {
 			get {
@@ -28,7 +28,7 @@ namespace OHouse
 		public InfoDialogViewController (string[] datas) : base (UITableViewStyle.Grouped, null, true)
 		{
 			Section section = new Section () {
-				HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0),
+				HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0)
 			};
 
 			Datas = datas;
@@ -46,14 +46,14 @@ namespace OHouse
 				section,
 				new Section ("Name") {
 					new StyledStringElement (datas [0]) {
-						Font = font.Font16F,
-						TextColor = font.White
+						Font = common.Font16F,
+						TextColor = common.White
 					}
 				},
 				new Section ("Lat & Lon") {
 					new StyledStringElement (datas [1] + ", " + datas [2]) {
-						Font = font.Font16F,
-						TextColor = font.White
+						Font = common.Font16F,
+						TextColor = common.White
 					}
 				},
 			};
@@ -64,9 +64,7 @@ namespace OHouse
 			base.LoadView ();
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
-			TableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 100);
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			TableView.Frame = new CGRect (10, 10, (float)View.Frame.Width - 20, (float)View.Frame.Height - 20);
 		}
 	}
 }

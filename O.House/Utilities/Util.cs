@@ -49,7 +49,7 @@ namespace Utils
 			return resultImage;
 		}
 
-		public static UIImageView ResizeImageViewKeepAspect(UIImage srcImage, float maxWidth, float maxHeight)
+		public static UIImageView ResizeImageViewKeepAspect (UIImage srcImage, float maxWidth, float maxHeight)
 		{
 			// 返却画像
 			UIImage resultImage;
@@ -172,7 +172,14 @@ namespace Utils
 			}
 		}
 
-		public static UIImageView RoundImage (UIImage srcImage, RectangleF rect)
+		/// <summary>
+		/// Rounds the image.
+		/// </summary>
+		/// <returns>The image.</returns>
+		/// <param name="srcImage">Source image.</param>
+		/// <param name="rect">Rect.</param>
+		/// <param name="border">If set to <c>true</c> border.</param>
+		public static UIImageView RoundImage (UIImage srcImage, RectangleF rect, bool border)
 		{
 			if (srcImage == null) {
 				throw new System.ArgumentException ("srcImage", "null");
@@ -182,14 +189,25 @@ namespace Utils
 
 			container.Frame = customSize;
 			container.Layer.CornerRadius = container.Frame.Size.Width / 2;
-			container.Layer.BorderWidth = 3f;
-			container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+
+			if (border) {
+				container.Layer.BorderWidth = 3f;
+				container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+			}
+
 			container.ClipsToBounds = true;
 
 			return container;
 		}
 
-		public static UIButton RoundButton (UIImage srcImage, RectangleF rect)
+		/// <summary>
+		/// Rounds the button.
+		/// </summary>
+		/// <returns>The button.</returns>
+		/// <param name="srcImage">Source image.</param>
+		/// <param name="rect">Rect.</param>
+		/// <param name="border">If set to <c>true</c> border.</param>
+		public static UIButton RoundButton (UIImage srcImage, RectangleF rect, bool border)
 		{
 			if (srcImage == null) {
 				throw new System.ArgumentException ("srcImage", "null");
@@ -200,12 +218,61 @@ namespace Utils
 			container.SetImage (srcImage, UIControlState.Normal);
 			container.Frame = customSize;
 			container.Layer.CornerRadius = container.Frame.Size.Width / 2;
-			container.Layer.BorderWidth = 1f;
-			container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+			if (border) {
+				container.Layer.BorderWidth = 1f;
+				container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+			}
 			container.ClipsToBounds = true;
 
 			return container;
-		
+		}
+
+		/// <summary>
+		/// Images the button.
+		/// </summary>
+		/// <returns>The button.</returns>
+		/// <param name="srcImage">Source image.</param>
+		/// <param name="rect">Rect.</param>
+		/// <param name="border">If set to <c>true</c> border.</param>
+		/// <param name="alignment">Alignment.</param>
+		public static UIButton ImageButton (UIImage srcImage, CGRect rect, bool border, UITextAlignment alignment)
+		{
+			if (srcImage == null) {
+				throw new System.ArgumentException ("srcImage", "null");
+			}
+
+			CGRect customSize = rect;
+			var container = new UIButton ();
+
+			UIImage src = srcImage;
+			src.Scale (new CGSize (customSize.Height, customSize.Height));
+
+			UIImageView icon = new UIImageView ();
+
+			if (customSize.Width <= customSize.Height) {
+				icon.Frame = new CGRect (0, 0, customSize.Height, customSize.Height);
+			} else {
+				if (alignment == UITextAlignment.Left) {
+					icon.Frame = new CGRect (0, 0, customSize.Height, customSize.Height);
+				} else if (alignment == UITextAlignment.Right) {
+					icon.Frame = new CGRect (customSize.Width - customSize.Height, 0, customSize.Height, customSize.Height);
+				} else if (alignment == UITextAlignment.Center) {
+					icon.Frame = new CGRect (customSize.Width / 2 - customSize.Height / 2, 0, customSize.Height, customSize.Height);
+				} else {
+					icon.Frame = new CGRect (0, 0, customSize.Height, customSize.Height);
+				}
+			}
+				
+			icon.Image = src;
+			container.Frame = customSize;
+			container.AddSubview (icon);
+			//srcImage.Scale(new CGRect (15, 15, customSize.Height, customSize.Height - 30);
+			if (border) {
+				container.Layer.BorderWidth = 1f;
+				container.Layer.BorderColor = new CGColor (255f, 255f, 255f);
+			}
+
+			return container;
 		}
 
 		/// <summary>

@@ -12,7 +12,7 @@ using Utils;
 using CoreGraphics;
 
 using CustomElements;
-using Common;
+using Commons;
 
 namespace OHouse
 {
@@ -37,7 +37,7 @@ namespace OHouse
 			MenuDialogViewController menu = new MenuDialogViewController ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-5"));
+			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
 
 			this.AddChildViewController (menu);
 			this.View.AddSubview (menu.View);
@@ -49,8 +49,7 @@ namespace OHouse
 	/// </summary>
 	public partial class MenuDialogViewController : DialogViewController
 	{
-		Font font = new Font ();
-
+		Common common = new Common ();
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OHouse.MenuDialogViewController"/> class.
 		/// </summary>
@@ -65,17 +64,17 @@ namespace OHouse
 				new Section (fbContainer) {
 					new CustomElement ("Find", () => NavigationController.PushViewController (new MapViewController (), true)) {
 						Image = iconFind,
-						TextColor = font.White,
+						TextColor = common.White,
 						SubTitle = "Find nearest toilets within 500 m from your location!"
 					},
 					new CustomElement ("Guide", () => NavigationController.PushViewController (new NearestDialogViewController (), true)) {
 						Image = iconMan,
-						TextColor = font.White,
+						TextColor = common.White,
 						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
 					},
 					new CustomElement ("Credit", () => NavigationController.PushViewController (new NearestDialogViewController (), true)) {
 						Image = iconCdt,
-						TextColor = font.White,
+						TextColor = common.White,
 						SubTitle = "Development teams and their members. Thank you!"
 					}
 				}
@@ -86,7 +85,7 @@ namespace OHouse
 		{
 			base.LoadView ();
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			TableView.BackgroundColor = UIColor.Clear;
+			TableView.BackgroundColor = UIColor.FromRGBA(13,13,13, 200);
 		}
 	}
 }

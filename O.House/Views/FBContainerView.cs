@@ -8,7 +8,7 @@ using Facebook.LoginKit;
 using Facebook.CoreKit;
 using System.Collections.Generic;
 using MonoTouch.Dialog.Utilities;
-using Common;
+using Commons;
 
 namespace OHouse
 {
@@ -21,7 +21,7 @@ namespace OHouse
 		LoginButton loginButton;
 		ProfilePictureView profileView;
 		UILabel nameLabel;
-		Font common = new Font ();
+		Common common = new Common ();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.FBContainerView"/> class.
@@ -29,7 +29,7 @@ namespace OHouse
 		/// <param name="frame">Frame.</param>
 		public FBContainerView (RectangleF frame) : base (frame)
 		{
-			BackgroundColor = common.White;
+			BackgroundColor = UIColor.FromRGBA (0, 0, 0, 200);
 
 			Profile.Notifications.ObserveDidChange ((sender, e) => {
 				if (e.NewProfile == null) {
@@ -81,10 +81,11 @@ namespace OHouse
 
 			nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
 				TextAlignment = UITextAlignment.Left,
-				TextColor = common.Blackish,
+				TextColor = common.White,
 				BackgroundColor = common.Clear,
 				Font = common.Font16F
 			};
+
 			nameLabel.Text = "Welcome!";
 
 			// If you have been logged into the app before, ask for the your profile name
@@ -103,6 +104,7 @@ namespace OHouse
 				});
 			}
 		
+//			AddSubview (blurView);
 			AddSubview (loginButton);
 			AddSubview (nameLabel);
 			AddSubview (profileView);

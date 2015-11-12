@@ -9,7 +9,7 @@ using System;
 using System.Diagnostics;
 using CoreLocation;
 using Utils;
-using Common;
+using Commons;
 
 namespace OHouse
 {
@@ -24,7 +24,7 @@ namespace OHouse
 
 		UIWindow window;
 		UIBarButtonItem menuButton;
-		Font font = new Font();
+		Common common = new Common();
 
 		public SlideoutNavigationController Menu { get; private set; }
 
@@ -37,12 +37,16 @@ namespace OHouse
 			Settings.DisplayName = appName;
 
 			// Setting up navigation
-			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(8, 140, 255, 1);
+			//UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(8, 140, 255, 1);
+			//UINavigationBar.Appearance.BarTintColor = font.Blackish;
+			//UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(13, 13, 13, 1);
+			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(255, 162, 69);
+
 			UINavigationBar.Appearance.TintColor = UIColor.White;
 			//UINavigationBar.Appearance.SetBackgroundImage(UIImage.FromBundle("images/background/bg-6"), UIBarMetrics.Default);
 			//UINavigationBar.Appearance.SetBackgroundImage(UtilImage.ResizeImageKeepAspect(UIImage.FromBundle("images/background/bg-6"), (float)UIScreen.MainScreen.Bounds.Width, 0), UIBarMetrics.Default);
 			UINavigationBar.Appearance.SetTitleTextAttributes(
-				new UITextAttributes { TextColor = UIColor.White, Font = font.Font16F }
+				new UITextAttributes { TextColor = UIColor.White, Font = common.Font16F }
 			);
 
 			// create a new window instance based on the screen size
@@ -54,6 +58,7 @@ namespace OHouse
 			//Menu.MainViewController = new MainNavigationController (new ScrollViewController (), Menu, menuButton);
 			Menu.MainViewController = new MainNavigationController (new MapViewController (), Menu, menuButton);
 			//Menu.MenuViewController = new MenuNavigationController (new MenuDialogViewController (), Menu) { NavigationBarHidden = true };
+//			Menu.MainViewController = new MainNavigationController (new SwipeTestVC (), Menu, menuButton);
 			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
 
 			// If you have defined a root view controller, set it here:

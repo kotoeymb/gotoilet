@@ -3,7 +3,7 @@ using UIKit;
 using MonoTouch.Dialog;
 using Foundation;
 using CoreGraphics;
-using Common;
+using Commons;
 
 namespace CustomElements
 {
@@ -13,7 +13,7 @@ namespace CustomElements
 		UILabel sublabel;
 		UIImageView imageView;
 		UIView customColorView = new UIView ();
-		Font font = new Font ();
+		Common common= new Common ();
 
 		public CustomCell (UITableViewCellStyle style, NSString id, string caption, string subtitle, UIImage img, UIColor textcolor) : base (style, id)
 		{
@@ -26,17 +26,17 @@ namespace CustomElements
 
 			label = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = font.Clear,
+				BackgroundColor = common.Clear,
 				TextColor = textcolor,
-				Font = font.Font16F,
+				Font = common.Font16F,
 				Lines = 0
 			};
 
 			sublabel = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = font.Clear,
+				BackgroundColor = common.Clear,
 				TextColor = textcolor,
-				Font = font.Font13F,
+				Font = common.Font13F,
 				AdjustsFontSizeToFitWidth = false,
 				Lines = 2,
 			};
@@ -65,8 +65,8 @@ namespace CustomElements
 			base.LayoutSubviews ();
 			var full = ContentView.Bounds;
 
-			CGSize size = UIStringDrawing.StringSize (label.Text, font.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
-			CGSize size0 = UIStringDrawing.StringSize (sublabel.Text, font.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
+			CGSize size = UIStringDrawing.StringSize (label.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
+			CGSize size0 = UIStringDrawing.StringSize (sublabel.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
 
 			var captionFrame = full;
 			var subFrame = full;
@@ -78,7 +78,6 @@ namespace CustomElements
 			captionFrame.Height = size.Height;
 			captionFrame.Width = full.Width - (x + 15);
 
-			if(sublabel.Text != "")
 			subFrame.X = x;
 			subFrame.Y = centerY + (size0.Height/2);
 			subFrame.Height = size0.Height;

@@ -81,6 +81,12 @@
     <InterfaceDefinition Include="Views\MenuViewController.xib">
       <DependentUpon>MenuViewController.cs</DependentUpon>
     </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\FormViewController.xib">
+      <DependentUpon>FormViewController.cs</DependentUpon>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\SubmitViewController.xib">
+      <DependentUpon>SubmitViewController.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -108,9 +114,13 @@
       <DependentUpon>MenuViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\CustomElements.cs" />
-    <Compile Include="Views.exclude\TestUIVC.cs" />
-    <Compile Include="Views.exclude\TestUIVC.designer.cs">
-      <DependentUpon>TestUIVC.cs</DependentUpon>
+    <Compile Include="Views\FormViewController.cs" />
+    <Compile Include="Views\FormViewController.designer.cs">
+      <DependentUpon>FormViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubmitViewController.cs" />
+    <Compile Include="Views\SubmitViewController.designer.cs">
+      <DependentUpon>SubmitViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -154,5 +164,10 @@
     <BundleResource Include="Resources\images\icons\icon-mylocation.png" />
     <BundleResource Include="Resources\images\icons\icon-mylocation%402x.png" />
     <BundleResource Include="Resources\images\background\bg-6.png" />
+    <BundleResource Include="Resources\images\background\bg-7-nightlife.png" />
+    <BundleResource Include="Resources\images\icons\icon-cross.png" />
+    <BundleResource Include="Resources\images\icons\icon-cross%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-mark.png" />
+    <BundleResource Include="Resources\images\icons\icon-mark%402x.png" />
   </ItemGroup>
 </Project>

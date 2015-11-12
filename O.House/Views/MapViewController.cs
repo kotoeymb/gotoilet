@@ -11,13 +11,15 @@ using CoreGraphics;
 using Utils;
 using MapUtils;
 using LocationUtils;
+using Commons;
 
 namespace OHouse
 {
 	public partial class MapViewController : UIViewController
 	{
 		public static LocationUtil Manager { get; set; }
-
+		Common common = new Common();
+		FormViewController form = new FormViewController();
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
 		/// </summary>
@@ -48,6 +50,8 @@ namespace OHouse
 			float w = 50;
 			float h = 50;
 
+			CGRect screen = View.Bounds;
+
 			// Create MKMapView and set bounds to fit with the UIScreen
 			var mapV = new MKMapView (View.Bounds);
 			mapV.Delegate = new MapDelegate (this);
@@ -55,6 +59,7 @@ namespace OHouse
 			mapV.ShowsUserLocation = true;
 			mapV.ZoomEnabled = true;
 			mapV.ScrollEnabled = true;
+
 
 			if (mapV.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
@@ -72,11 +77,11 @@ namespace OHouse
 
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-mylocation"), w, h);
-			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)View.Frame.Width - w - 10, (float)View.Frame.Height - h - 10, w, h));
+			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h), false);
 
 			// Create button for Add location
 			var addLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-add"), w, h);
-			UIButton addLocationButton = UtilImage.RoundButton (addLocation, new RectangleF (0 + 10, (float)View.Frame.Height - h - 10, w, h));
+			UIButton addLocationButton = UtilImage.RoundButton (addLocation, new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h), false);
 
 			// Action for MyLocation button
 			myLocationButton.TouchUpInside += (sender, e) => {
@@ -84,6 +89,20 @@ namespace OHouse
 					CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
 					mapV.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
 				}
+			};
+
+			// Action for Create location button
+			addLocationButton.TouchUpInside += (sender, e) => {
+				this.AddChildViewController(form);
+				this.DidMoveToParentViewController(this);
+				this.View.AddSubview(form.View);
+
+				// Animate
+				UIView.Animate(0.2, 0.0, UIViewAnimationOptions.CurveEaseOut, () => {
+					form.View.Frame = new CGRect(new PointF(0, common.PopUpDistance), new CGSize((float)screen.Width, (float)screen.Height - common.PopUpDistance));
+				}, () => {
+					//
+				});
 			};
 
 			mapV.AddSubview (myLocationButton);

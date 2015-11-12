@@ -6,10 +6,10 @@
 //
 using Foundation;
 
-namespace O.House
+namespace OHouse
 {
-	[Register ("TestUIVC")]
-	partial class TestUIVC
+	[Register ("SubmitViewController")]
+	partial class SubmitViewController
 	{
 		void ReleaseDesignerOutlets ()
 		{
