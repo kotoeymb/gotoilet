@@ -134,7 +134,7 @@ namespace CustomElements
 
 		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
-			return 120f;
+			return 100f;
 		}
 	}
 }

@@ -8,6 +8,7 @@ using Facebook.LoginKit;
 using Facebook.CoreKit;
 using System.Collections.Generic;
 using MonoTouch.Dialog.Utilities;
+using MonoTouch.SlideoutNavigation;
 using Commons;
 
 namespace OHouse
@@ -22,14 +23,15 @@ namespace OHouse
 		ProfilePictureView profileView;
 		UILabel nameLabel;
 		Common common = new Common ();
-
+		float menuWidth = 290;
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.FBContainerView"/> class.
 		/// </summary>
 		/// <param name="frame">Frame.</param>
 		public FBContainerView (RectangleF frame) : base (frame)
 		{
-			BackgroundColor = UIColor.FromRGBA (0, 0, 0, 200);
+			//BackgroundColor = UIColor.FromRGBA (0, 0, 0, 200);
+			BackgroundColor = UIColor.Clear;
 
 			Profile.Notifications.ObserveDidChange ((sender, e) => {
 				if (e.NewProfile == null) {
@@ -39,13 +41,30 @@ namespace OHouse
 				}
 			});
 
+			// The user image profile is set automatically once is logged in
+			//profileView = new ProfilePictureView (new CGRect (15, ((float)this.Frame.Height / 2) - 40, 80, 80));
+			profileView = new ProfilePictureView (new CGRect (menuWidth/2  - 40, ((float)this.Frame.Height / 2 - 40) - 40, 80, 80));
+
 			// Set the Read and Publish permissions you want to get
-			loginButton = new LoginButton (new CGRect (110, 60, 100, 30)) {
-				LoginBehavior = LoginBehavior.Native,
+			//loginButton = new LoginButton (new CGRect (110, 60, 100, 30)) {
+			loginButton = new LoginButton (new CGRect (menuWidth/2 - 50, (float)this.Frame.Height/2 + 40, 100, 30)) {	
+				//LoginBehavior = LoginBehavior.Native,
+				LoginBehavior = LoginBehavior.SystemAccount,
 				ReadPermissions = readPermissions.ToArray (),
-				BackgroundColor = common.Clear
 
 			};
+
+			//nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
+			nameLabel = new UILabel (new RectangleF (menuWidth/2 - menuWidth/2, (float)this.Frame.Height/2 + 10, menuWidth, 30)) {
+				TextAlignment = UITextAlignment.Center,
+				TextColor = common.White,
+				BackgroundColor = common.Clear,
+				Font = common.Font16F
+			};
+
+			//loginButton.BackgroundColor = common.ColorStyle_1;
+			loginButton.SetBackgroundImage(UIImage.FromBundle("images/background/bg-0"), UIControlState.Normal);
+			loginButton.SetBackgroundImage(UIImage.FromBundle("images/background/bg-0"), UIControlState.Selected);
 
 			// Handle actions once the user is logged in
 			loginButton.Completed += (sender, e) => {
@@ -69,22 +88,10 @@ namespace OHouse
 				nameLabel.Text = "Welcome!";
 			};
 
-			// The user image profile is set automatically once is logged in
-			profileView = new ProfilePictureView (new CGRect (15, ((float)this.Frame.Height / 2) - 40, 80, 80)) {
-				BackgroundColor = common.Clear
-			};
-
 			profileView.Layer.CornerRadius = profileView.Frame.Size.Width / 2;
 			profileView.Layer.BorderWidth = 1f;
 			profileView.Layer.BorderColor = new CGColor (52, 52, 52);
 			profileView.ClipsToBounds = true;
-
-			nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
-				TextAlignment = UITextAlignment.Left,
-				TextColor = common.White,
-				BackgroundColor = common.Clear,
-				Font = common.Font16F
-			};
 
 			nameLabel.Text = "Welcome!";
 

@@ -176,5 +176,6 @@
     <BundleResource Include="Resources\images\icons\icon-add%402x.png" />
     <BundleResource Include="Resources\images\icons\icon-pin.png" />
     <BundleResource Include="Resources\images\icons\icon-pin%402x.png" />
+    <BundleResource Include="Resources\images\background\bg-0.png" />
   </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@ namespace OHouse
 		/// </summary>
 		public MenuDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
 		{
-			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 120));
+			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 180));
 			UIImage iconFind = UIImage.FromBundle ("images/icons/icon-find");
 			UIImage iconCdt = UIImage.FromBundle ("images/icons/icon-credit");
 			UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
