@@ -94,7 +94,8 @@ namespace OHouse
 				request.Start ((connection, result, error) => {
 					// Handle if something went wrong with the request
 					if (error != null) {
-						new UIAlertView ("Error...", error.Description, null, "Ok", null).Show ();
+						//new UIAlertView ("Error...", error.Description, null, "Ok", null).Show ();
+						new UIAlertView ("Need internet connection", "Please connect to internet so that you can use this app's full features.", null, "OK", null).Show();
 						return;
 					}
 

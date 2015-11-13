@@ -69,6 +69,11 @@ namespace Commons
 			get { return UIColor.Clear; }
 			set { ; }
 		}
+
+		public UIColor ColorStyle_1 {
+			get { return UIColor.FromRGB (255, 162, 69); }
+			set { ; }
+		}
 	}
 
 	public class CustomHdrFtr

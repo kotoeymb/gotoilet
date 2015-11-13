@@ -207,7 +207,7 @@ namespace Utils
 		/// <param name="srcImage">Source image.</param>
 		/// <param name="rect">Rect.</param>
 		/// <param name="border">If set to <c>true</c> border.</param>
-		public static UIButton RoundButton (UIImage srcImage, RectangleF rect, bool border)
+		public static UIButton RoundButton (UIImage srcImage, RectangleF rect, UIColor bgcolor, bool border)
 		{
 			if (srcImage == null) {
 				throw new System.ArgumentException ("srcImage", "null");
@@ -217,6 +217,7 @@ namespace Utils
 
 			container.SetImage (srcImage, UIControlState.Normal);
 			container.Frame = customSize;
+			container.BackgroundColor = bgcolor;
 			container.Layer.CornerRadius = container.Frame.Size.Width / 2;
 			if (border) {
 				container.Layer.BorderWidth = 1f;

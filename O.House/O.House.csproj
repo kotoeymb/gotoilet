@@ -159,15 +159,15 @@
     <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\background\bg-4.png" />
     <BundleResource Include="Resources\images\background\bg-5.png" />
-    <BundleResource Include="Resources\images\icons\icon-add.png" />
-    <BundleResource Include="Resources\images\icons\icon-add%402x.png" />
-    <BundleResource Include="Resources\images\icons\icon-mylocation.png" />
-    <BundleResource Include="Resources\images\icons\icon-mylocation%402x.png" />
     <BundleResource Include="Resources\images\background\bg-6.png" />
     <BundleResource Include="Resources\images\background\bg-7-nightlife.png" />
     <BundleResource Include="Resources\images\icons\icon-cross.png" />
     <BundleResource Include="Resources\images\icons\icon-cross%402x.png" />
     <BundleResource Include="Resources\images\icons\icon-mark.png" />
     <BundleResource Include="Resources\images\icons\icon-mark%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-add.png" />
+    <BundleResource Include="Resources\images\icons\icon-add%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-pin.png" />
+    <BundleResource Include="Resources\images\icons\icon-pin%402x.png" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ using UIKit;
 using MapKit;
 using CoreLocation;
 using CoreGraphics;
+using CoreAnimation;
 using Utils;
 using MapUtils;
 using LocationUtils;
@@ -18,8 +19,15 @@ namespace OHouse
 	public partial class MapViewController : UIViewController
 	{
 		public static LocationUtil Manager { get; set; }
-		Common common = new Common();
-		FormViewController form = new FormViewController();
+
+		UIButton addLocationButton;
+		UIButton myLocationButton;
+		float w = 50;
+		float h = 50;
+
+		Common common = new Common ();
+		FormViewController form = new FormViewController ();
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
 		/// </summary>
@@ -47,8 +55,8 @@ namespace OHouse
 		{
 			base.ViewDidLoad ();
 
-			float w = 50;
-			float h = 50;
+			this.NavigationController.NavigationBar.TintColor = UIColor.White;
+			this.NavigationController.NavigationBar.BarStyle = UIBarStyle.Black;
 
 			CGRect screen = View.Bounds;
 
@@ -59,7 +67,6 @@ namespace OHouse
 			mapV.ShowsUserLocation = true;
 			mapV.ZoomEnabled = true;
 			mapV.ScrollEnabled = true;
-
 
 			if (mapV.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
@@ -76,13 +83,25 @@ namespace OHouse
 			}
 
 			// Create button for MyLocation
-			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-mylocation"), w, h);
-			UIButton myLocationButton = UtilImage.RoundButton (myLocation, new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h), false);
+			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-pin"), w, h);
+			myLocationButton = UtilImage.RoundButton (
+				myLocation, 
+				new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h),
+				//new RectangleF ((float)screen.Width - w - 10, (float)screen.Height + 10, w, h),
+				common.ColorStyle_1,
+				false
+			);
 
 			// Create button for Add location
 			var addLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-add"), w, h);
-			UIButton addLocationButton = UtilImage.RoundButton (addLocation, new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h), false);
-
+			addLocationButton = UtilImage.RoundButton (
+				addLocation, 
+				new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h), 
+				//new RectangleF (0 + 10, (float)screen.Height + 10, w, h), 
+				common.ColorStyle_1,
+				false
+			);
+				
 			// Action for MyLocation button
 			myLocationButton.TouchUpInside += (sender, e) => {
 				if (mapV.UserLocation != null) {
@@ -106,8 +125,9 @@ namespace OHouse
 //				form.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
 //				NavigationController.PresentViewController(form, true, () => {});
 
-				UINavigationController nav = new UINavigationController(form);
-				this.PresentViewController(nav, true, () => {});
+				UINavigationController nav = new UINavigationController (form);
+				this.PresentViewController (nav, true, () => {
+				});
 			};
 
 			mapV.AddSubview (myLocationButton);

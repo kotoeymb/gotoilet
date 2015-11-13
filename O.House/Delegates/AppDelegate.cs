@@ -36,18 +36,15 @@ namespace OHouse
 			Settings.AppID = appId;
 			Settings.DisplayName = appName;
 
-			// Setting up navigation
-			//UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(8, 140, 255, 1);
-			//UINavigationBar.Appearance.BarTintColor = font.Blackish;
-			//UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(13, 13, 13, 1);
-			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(255, 162, 69);
+			UIApplication.SharedApplication.SetStatusBarStyle (UIStatusBarStyle.LightContent, false);
 
+			// Setting up navigation
+			UINavigationBar.Appearance.BarTintColor = common.ColorStyle_1;
 			UINavigationBar.Appearance.TintColor = UIColor.White;
-			//UINavigationBar.Appearance.SetBackgroundImage(UIImage.FromBundle("images/background/bg-6"), UIBarMetrics.Default);
-			//UINavigationBar.Appearance.SetBackgroundImage(UtilImage.ResizeImageKeepAspect(UIImage.FromBundle("images/background/bg-6"), (float)UIScreen.MainScreen.Bounds.Width, 0), UIBarMetrics.Default);
 			UINavigationBar.Appearance.SetTitleTextAttributes(
 				new UITextAttributes { TextColor = UIColor.White, Font = common.Font16F }
 			);
+
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);

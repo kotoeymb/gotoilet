@@ -13,12 +13,13 @@ namespace CustomElements
 		UILabel sublabel;
 		UIImageView imageView;
 		UIView customColorView = new UIView ();
-		Common common= new Common ();
+		Common common = new Common ();
 
 		public CustomCell (UITableViewCellStyle style, NSString id, string caption, string subtitle, UIImage img, UIColor textcolor) : base (style, id)
 		{
 			//SelectionStyle = UITableViewCellSelectionStyle.;
 			BackgroundColor = UIColor.Clear;
+			//BackgroundColor = UIColor.FromRGB (255, 56, 99);
 
 			// Setting custom cell select color
 			customColorView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 100);
@@ -71,22 +72,22 @@ namespace CustomElements
 			var captionFrame = full;
 			var subFrame = full;
 			nfloat x = 15 + 32 + 15;
-			nfloat centerY = full.Height/2 - size.Height/2;
+			nfloat centerY = full.Height / 2 - size.Height / 2;
 
 			captionFrame.X = x;
-			captionFrame.Y = centerY - (size.Height/2);
+			captionFrame.Y = centerY - (size.Height / 2);
 			captionFrame.Height = size.Height;
 			captionFrame.Width = full.Width - (x + 15);
 
 			subFrame.X = x;
-			subFrame.Y = centerY + (size0.Height/2);
+			subFrame.Y = centerY + (size0.Height / 2);
 			subFrame.Height = size0.Height;
 			subFrame.Width = full.Width - (x + 15);
 
 			label.Frame = captionFrame;
 			sublabel.Frame = subFrame;
 
-			imageView.Frame = new CGRect (15, full.Height/2 - (32/2), 32, 32);
+			imageView.Frame = new CGRect (15, full.Height / 2 - (32 / 2), 32, 32);
 		}
 	}
 
