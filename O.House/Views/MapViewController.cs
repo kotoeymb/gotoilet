@@ -55,9 +55,6 @@ namespace OHouse
 		{
 			base.ViewDidLoad ();
 
-			this.NavigationController.NavigationBar.TintColor = UIColor.White;
-			this.NavigationController.NavigationBar.BarStyle = UIBarStyle.Black;
-
 			CGRect screen = View.Bounds;
 
 			// Create MKMapView and set bounds to fit with the UIScreen
@@ -87,7 +84,6 @@ namespace OHouse
 			myLocationButton = UtilImage.RoundButton (
 				myLocation, 
 				new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h),
-				//new RectangleF ((float)screen.Width - w - 10, (float)screen.Height + 10, w, h),
 				common.ColorStyle_1,
 				false
 			);
@@ -97,7 +93,6 @@ namespace OHouse
 			addLocationButton = UtilImage.RoundButton (
 				addLocation, 
 				new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h), 
-				//new RectangleF (0 + 10, (float)screen.Height + 10, w, h), 
 				common.ColorStyle_1,
 				false
 			);

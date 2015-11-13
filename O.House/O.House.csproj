@@ -87,11 +87,15 @@
     <InterfaceDefinition Include="Views\SubmitViewController.xib">
       <DependentUpon>SubmitViewController.cs</DependentUpon>
     </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\DetailViewController.xib">
+      <DependentUpon>DetailViewController.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="Views.exclude\MenuDialogViewController.cs" />
+    <None Include="Views.exclude\InfoDialogViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -106,7 +110,6 @@
     <Compile Include="Views\MapViewController.designer.cs">
       <DependentUpon>MapViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\InfoDialogViewController.cs" />
     <Compile Include="Views\NearestDialogViewController.cs" />
     <Compile Include="Utilities\Common.cs" />
     <Compile Include="Views\MenuViewController.cs" />
@@ -121,6 +124,10 @@
     <Compile Include="Views\SubmitViewController.cs" />
     <Compile Include="Views\SubmitViewController.designer.cs">
       <DependentUpon>SubmitViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DetailViewController.cs" />
+    <Compile Include="Views\DetailViewController.designer.cs">
+      <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

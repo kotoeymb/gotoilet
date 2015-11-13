@@ -31,7 +31,7 @@ namespace OHouse
 
 		List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
 		//List<ToiletsBase> nearToiletList = new List<ToiletsBase> ();
-		public static List<ToiletsBase> nearToiletList = new List<ToiletsBase>();
+		public static List<ToiletsBase> nearToiletList = new List<ToiletsBase> ();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MapUtils.MapDelegate"/> class.
@@ -124,7 +124,7 @@ namespace OHouse
 			}
 
 			// Clear temp list
-			nearToiletList.Clear();
+			nearToiletList.Clear ();
 		}
 
 		/// <summary>
@@ -163,8 +163,12 @@ namespace OHouse
 
 				string[] datas = { annotation.GetTitle (), lat.ToString (), lon.ToString () };
 
-				InfoDialogViewController infoView = new InfoDialogViewController (datas);
-				parent.NavigationController.PushViewController (infoView, true);
+				//InfoDialogViewController infoView = new InfoDialogViewController (datas);
+				DetailViewController infoView = new DetailViewController (datas);
+				//parent.NavigationController.PushViewController (infoView, true);
+				UINavigationController nav = new UINavigationController (infoView);
+				parent.PresentViewController (nav, true, () => {
+				});
 			};
 
 			annotationView.RightCalloutAccessoryView = detailButton;
