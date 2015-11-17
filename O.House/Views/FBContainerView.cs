@@ -24,14 +24,14 @@ namespace OHouse
 		UILabel nameLabel;
 		Common common = new Common ();
 		float menuWidth = 290;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.FBContainerView"/> class.
 		/// </summary>
 		/// <param name="frame">Frame.</param>
 		public FBContainerView (RectangleF frame) : base (frame)
 		{
-			//BackgroundColor = UIColor.FromRGBA (0, 0, 0, 200);
-			BackgroundColor = UIColor.Clear;
+			BackgroundColor = UIColor.FromRGB (41, 41, 41);
 
 			Profile.Notifications.ObserveDidChange ((sender, e) => {
 				if (e.NewProfile == null) {
@@ -43,19 +43,19 @@ namespace OHouse
 
 			// The user image profile is set automatically once is logged in
 			//profileView = new ProfilePictureView (new CGRect (15, ((float)this.Frame.Height / 2) - 40, 80, 80));
-			profileView = new ProfilePictureView (new CGRect (menuWidth/2  - 40, ((float)this.Frame.Height / 2 - 40) - 40, 80, 80));
+			profileView = new ProfilePictureView (new CGRect (menuWidth / 2 - 40, ((float)this.Frame.Height / 2 - 40) - 20, 80, 80));
 
 			// Set the Read and Publish permissions you want to get
 			//loginButton = new LoginButton (new CGRect (110, 60, 100, 30)) {
-			loginButton = new LoginButton (new CGRect (menuWidth/2 - 50, (float)this.Frame.Height/2 + 40, 100, 30)) {	
-				//LoginBehavior = LoginBehavior.Native,
-				LoginBehavior = LoginBehavior.SystemAccount,
+			loginButton = new LoginButton (new CGRect (menuWidth / 2 - 50, (float)this.Frame.Height / 2 + 60, 100, 30)) {	
+				LoginBehavior = LoginBehavior.Native,
+				//LoginBehavior = LoginBehavior.SystemAccount,
 				ReadPermissions = readPermissions.ToArray (),
 
 			};
 
 			//nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
-			nameLabel = new UILabel (new RectangleF (menuWidth/2 - menuWidth/2, (float)this.Frame.Height/2 + 10, menuWidth, 30)) {
+			nameLabel = new UILabel (new RectangleF (menuWidth / 2 - menuWidth / 2, (float)this.Frame.Height / 2 + 30, menuWidth, 30)) {
 				TextAlignment = UITextAlignment.Center,
 				TextColor = common.White,
 				BackgroundColor = common.Clear,
@@ -63,8 +63,8 @@ namespace OHouse
 			};
 
 			//loginButton.BackgroundColor = common.ColorStyle_1;
-			loginButton.SetBackgroundImage(UIImage.FromBundle("images/background/bg-0"), UIControlState.Normal);
-			loginButton.SetBackgroundImage(UIImage.FromBundle("images/background/bg-0"), UIControlState.Selected);
+			loginButton.SetBackgroundImage (UIImage.FromBundle ("images/background/bg-0"), UIControlState.Normal);
+			loginButton.SetBackgroundImage (UIImage.FromBundle ("images/background/bg-0"), UIControlState.Selected);
 
 			// Handle actions once the user is logged in
 			loginButton.Completed += (sender, e) => {
@@ -102,7 +102,7 @@ namespace OHouse
 					// Handle if something went wrong with the request
 					if (error != null) {
 						//new UIAlertView ("Error...", error.Description, null, "Ok", null).Show ();
-						new UIAlertView ("Need internet connection", "Please connect to internet so that you can use this app's full features.", null, "OK", null).Show();
+						new UIAlertView ("Need internet connection", "Please connect to internet so that you can use this app's full features.", null, "OK", null).Show ();
 						return;
 					}
 

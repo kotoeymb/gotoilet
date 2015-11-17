@@ -68,13 +68,20 @@ namespace OHouse
 			if (mapV.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
 
+				UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
+					                                  "Near", 
+					                                  UIBarButtonItemStyle.Plain, 
+					                                  (s, e) => {
+						NavigationController.PushViewController (
+							new NearestDialogViewController (), 
+							true);
+					});
+
+				rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
+
 				// Get nearest location button
 				this.NavigationItem.SetRightBarButtonItem (
-					new UIBarButtonItem (
-						UIImage.FromBundle ("images/icons/icon-near"), UIBarButtonItemStyle.Plain, (s, e) => {
-						NavigationController.PushViewController (new NearestDialogViewController (), true);	
-					}
-					),
+					rightBarBtnItem,
 					true
 				);
 			}

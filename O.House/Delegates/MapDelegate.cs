@@ -6,6 +6,7 @@ using CoreLocation;
 using MapKit;
 using Utils;
 using MapUtils;
+using OHouse.DRM;
 
 namespace OHouse
 {
@@ -42,7 +43,9 @@ namespace OHouse
 			this.parent = parent;
 
 			//toiletsList = MapUtil.
-			toiletsList = MapUtil.GetToiletList ("database/Toilets");
+			//toiletsList = MapUtil.GetToiletList ("database/Toilets");
+			DataRequestManager drm = new DataRequestManager();
+			toiletsList = drm.GetToiletList ("http://gstore.pcp.jp/api/get_spots.php");
 		}
 
 		/// <summary>
@@ -60,25 +63,25 @@ namespace OHouse
 				CLLocation userLC = new CLLocation (coords.Latitude, coords.Longitude);
 
 				circleOverlay = MKCircle.Circle (new CLLocationCoordinate2D (coords.Latitude, coords.Longitude), maxDistance);
-				int count = 0;
 				foreach (var a in toiletsList) {
 					//foreach (MKPointAnnotation a in pins) {
 					//CLLocation loc = new CLLocation (a.Coordinate.Latitude, a.Coordinate.Longitude);
-					CLLocation loc = new CLLocation (a.Latitude, a.Longitude);
+					//CLLocation loc = new CLLocation (a.Latitude, a.Longitude);
+					CLLocation loc = new CLLocation (a.latitude, a.longitude);
 					double dist = loc.DistanceFrom (userLC);
 					if (dist > maxDistance) {
 						continue;
 					}
-					Console.WriteLine (count);
-
-					//Console.WriteLine (dist);
-					nearToiletList.Add (new ToiletsBase (a.Name, a.Latitude, a.Longitude, dist));
+						
+					//nearToiletList.Add (new ToiletsBase (a.Name, a.Latitude, a.Longitude, dist));
+					//nearToiletList.Add (new ToiletsBase (a.title, a.latitude, a.longitude, dist));
+					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.latitude, a.longitude, a.distance));
 
 					MKPointAnnotation point = new MKPointAnnotation () {
-						//Title = a.GetTitle (),
-						//Coordinate = new CLLocationCoordinate2D (a.Coordinate.Latitude, a.Coordinate.Longitude)
-						Title = a.Name,
-						Coordinate = new CLLocationCoordinate2D (a.Latitude, a.Longitude)
+						//Title = a.Name,
+						//Coordinate = new CLLocationCoordinate2D (a.Latitude, a.Longitude)
+						Title = a.title,
+						Coordinate = new CLLocationCoordinate2D (a.latitude, a.longitude)
 					};
 
 					// Then add

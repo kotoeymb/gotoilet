@@ -74,6 +74,19 @@ namespace Commons
 			get { return UIColor.FromRGB (255, 162, 69); }
 			set { ; }
 		}
+
+		public UITextAttributes commonStyle {
+			get {
+				UITextAttributes attri = new UITextAttributes () {
+					Font = this.Font16F,
+					TextColor = this.White
+				};
+
+				return attri;
+				
+			}
+			set { ; }
+		}
 	}
 
 	public class CustomHdrFtr

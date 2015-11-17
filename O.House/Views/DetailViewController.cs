@@ -16,6 +16,8 @@ namespace OHouse
 	{
 		public string[] Datas { get; set; }
 
+		Common common = new Common ();
+
 		public DetailViewController (string[] datas) : base ("DetailViewController", null)
 		{
 
@@ -23,19 +25,34 @@ namespace OHouse
 			Datas = datas;
 			Title = datas [0];
 
-			this.NavigationItem.SetRightBarButtonItem (
-				new UIBarButtonItem (UIImage.FromBundle ("images/icons/icon-direction"), UIBarButtonItemStyle.Plain, (s, e) => {
+			UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
+				                                  "Direction", 
+				                                  UIBarButtonItemStyle.Plain, 
+				                                  (s, e) => {
 					var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
 					UIApplication.SharedApplication.OpenUrl (url);
-				}),
+				});
+
+			rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
+
+//			this.NavigationItem.SetRightBarButtonItem (
+//				new UIBarButtonItem (UIImage.FromBundle ("images/icons/icon-direction"), UIBarButtonItemStyle.Plain, (s, e) => {
+//					var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
+//					UIApplication.SharedApplication.OpenUrl (url);
+//				}),
+//				true
+//			);
+
+			this.NavigationItem.SetRightBarButtonItem (
+				rightBarBtnItem,
 				true
 			);
 
 			this.NavigationItem.SetLeftBarButtonItem (
 				new UIBarButtonItem (
 					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-						this.DismissModalViewController(true);
-					}
+					this.DismissModalViewController (true);
+				}
 				),
 				true
 			);
@@ -79,15 +96,18 @@ namespace OHouse
 				new Section ("Name") {
 					new StyledStringElement (datas [0]) {
 						Font = common.Font16F,
-						TextColor = common.White
+						TextColor = common.Blackish
 					}
 				},
 				new Section ("Lat & Lon") {
 					new StyledStringElement (datas [1] + ", " + datas [2]) {
 						Font = common.Font16F,
-						TextColor = common.White
+						TextColor = common.Blackish
 					}
 				},
+				new Section("Rating") {
+					
+				}
 			};
 		}
 
@@ -95,7 +115,7 @@ namespace OHouse
 		{
 			base.LoadView ();
 
-			TableView.BackgroundColor = UIColor.FromRGBA(13,13,13, 200);
+			//TableView.BackgroundColor = UIColor.FromRGBA (13, 13, 13, 200);
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 		}
 	}

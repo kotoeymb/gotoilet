@@ -100,7 +100,9 @@ namespace MapUtils
 				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
 				double distance = 0.0;
 				toiletsList.Add (
-					new ToiletsBase (nameKey, double.Parse (latitudeKey), double.Parse (longitudeKey), distance)	
+					//new ToiletsBase (nameKey, double.Parse (latitudeKey), double.Parse (longitudeKey), distance)	
+					new ToiletsBase (1, 3,nameKey, "subtitle", "picture", double.Parse (latitudeKey), double.Parse (longitudeKey), distance)	
+
 				);
 			}
 			return toiletsList;

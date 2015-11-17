@@ -19,7 +19,6 @@ namespace CustomElements
 		{
 			//SelectionStyle = UITableViewCellSelectionStyle.;
 			BackgroundColor = UIColor.Clear;
-			//BackgroundColor = UIColor.FromRGB (255, 56, 99);
 
 			// Setting custom cell select color
 			customColorView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 100);

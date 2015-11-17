@@ -37,7 +37,8 @@ namespace OHouse
 			MenuDialogViewController menu = new MenuDialogViewController ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
+			//View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
+			View.BackgroundColor = UIColor.FromRGB (41, 41, 41);
 
 			this.AddChildViewController (menu);
 			this.View.AddSubview (menu.View);
@@ -50,12 +51,13 @@ namespace OHouse
 	public partial class MenuDialogViewController : DialogViewController
 	{
 		Common common = new Common ();
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OHouse.MenuDialogViewController"/> class.
 		/// </summary>
 		public MenuDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
 		{
-			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 180));
+			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 200));
 			UIImage iconFind = UIImage.FromBundle ("images/icons/icon-find");
 			UIImage iconCdt = UIImage.FromBundle ("images/icons/icon-credit");
 			UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
@@ -85,7 +87,8 @@ namespace OHouse
 		{
 			base.LoadView ();
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			TableView.BackgroundColor = UIColor.FromRGBA(13,13,13, 200);
+			//TableView.BackgroundColor = UIColor.FromRGBA(13,13,13, 200);
+			TableView.BackgroundColor = UIColor.Clear;
 		}
 	}
 }

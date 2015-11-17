@@ -38,16 +38,19 @@ namespace OHouse
 			UIView headerViewWithin = customhf.CreateHdrFtr ("WINTHIN 500 m", (float)frameW, 30, null);
 
 			tBaseList = MapDelegate.nearToiletList;
-			tBaseListOrdered = tBaseList.OrderBy (o => o.Distance).ToList ();
+			//tBaseListOrdered = tBaseList.OrderBy (o => o.Distance).ToList ();
+			tBaseListOrdered = tBaseList.OrderBy (o => o.distance).ToList ();
 			section.HeaderView = headerViewWithin;
 
 			/// Add elements to section
 			foreach (var v in tBaseListOrdered) {
 				section.Add (
 					new StyledStringElement (
-						v.Name.ToString () + ", " + Math.Ceiling (v.Distance).ToString () + " m",
+						//v.Name.ToString () + ", " + Math.Ceiling (v.Distance).ToString () + " m",
+						v.title.ToString () + ", " + Math.Ceiling (v.distance).ToString () + " m",
 						() => {
-							var url = new NSUrl ("comgooglemaps://?q=" + v.Latitude + "," + v.Longitude + "&zoom=14");
+							//var url = new NSUrl ("comgooglemaps://?q=" + v.Latitude + "," + v.Longitude + "&zoom=14");
+							var url = new NSUrl ("comgooglemaps://?q=" + v.latitude + "," + v.longitude + "&zoom=14");
 							UIApplication.SharedApplication.OpenUrl (url);
 						}
 					) {

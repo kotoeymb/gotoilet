@@ -52,10 +52,9 @@ namespace OHouse
 
 			Menu = new SlideoutNavigationController ();
 
-			//Menu.MainViewController = new MainNavigationController (new ScrollViewController (), Menu, menuButton);
+			//Menu.MainViewController = new MainNavigationController (new PinDataVC (), Menu, menuButton);
 			Menu.MainViewController = new MainNavigationController (new MapViewController (), Menu, menuButton);
-			//Menu.MenuViewController = new MenuNavigationController (new MenuDialogViewController (), Menu) { NavigationBarHidden = true };
-//			Menu.MainViewController = new MainNavigationController (new SwipeTestVC (), Menu, menuButton);
+//			Menu.MainViewController = new MainNavigationController (new DetailViewController (data), Menu, menuButton);
 			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
 
 			// If you have defined a root view controller, set it here:
