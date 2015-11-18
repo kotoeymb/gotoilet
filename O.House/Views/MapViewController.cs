@@ -73,7 +73,8 @@ namespace OHouse
 					                                  UIBarButtonItemStyle.Plain, 
 					                                  (s, e) => {
 						NavigationController.PushViewController (
-							new NearestDialogViewController (), 
+							//new NearestDialogViewController (), 
+							new TimelineViewController (),
 							true);
 					});
 
@@ -114,19 +115,6 @@ namespace OHouse
 
 			// Action for Create location button
 			addLocationButton.TouchUpInside += (sender, e) => {
-//				this.AddChildViewController(form);
-//				this.DidMoveToParentViewController(this);
-//				this.View.AddSubview(form.View);
-//
-//				// Animate
-//				UIView.Animate(0.2, 0.0, UIViewAnimationOptions.CurveEaseOut, () => {
-//					form.View.Frame = new CGRect(new PointF(0, common.PopUpDistance), new CGSize((float)screen.Width, (float)screen.Height - common.PopUpDistance));
-//				}, () => {
-//					//
-//				});
-//				form.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
-//				NavigationController.PresentViewController(form, true, () => {});
-
 				UINavigationController nav = new UINavigationController (form);
 				this.PresentViewController (nav, true, () => {
 				});

@@ -45,7 +45,7 @@ namespace OHouse
 			//toiletsList = MapUtil.
 			//toiletsList = MapUtil.GetToiletList ("database/Toilets");
 			DataRequestManager drm = new DataRequestManager();
-			toiletsList = drm.GetToiletList ("http://gstore.pcp.jp/api/get_spots.php");
+			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
 		}
 
 		/// <summary>
@@ -72,9 +72,7 @@ namespace OHouse
 					if (dist > maxDistance) {
 						continue;
 					}
-						
-					//nearToiletList.Add (new ToiletsBase (a.Name, a.Latitude, a.Longitude, dist));
-					//nearToiletList.Add (new ToiletsBase (a.title, a.latitude, a.longitude, dist));
+
 					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.latitude, a.longitude, a.distance));
 
 					MKPointAnnotation point = new MKPointAnnotation () {

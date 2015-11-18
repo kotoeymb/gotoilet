@@ -93,6 +93,9 @@
     <InterfaceDefinition Include="Views\DetailViewController.xib">
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\TimelineViewController.xib">
+      <DependentUpon>TimelineViewController.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -133,6 +136,10 @@
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DataRequestManager.cs" />
+    <Compile Include="Views\TimelineViewController.cs" />
+    <Compile Include="Views\TimelineViewController.designer.cs">
+      <DependentUpon>TimelineViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -181,5 +188,7 @@
     <BundleResource Include="Resources\images\icons\icon-pin.png" />
     <BundleResource Include="Resources\images\icons\icon-pin%402x.png" />
     <BundleResource Include="Resources\images\background\bg-0.png" />
+    <BundleResource Include="Resources\images\icons\icon-heart.png" />
+    <BundleResource Include="Resources\images\icons\icon-share.png" />
   </ItemGroup>
 </Project>

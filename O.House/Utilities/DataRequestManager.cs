@@ -51,18 +51,24 @@ namespace OHouse.DRM
 		}
 
 		/// <summary>
-		/// Gets the toilet list.
+		/// Gets the data list.
 		/// </summary>
-		/// <returns>The toilet list.</returns>
+		/// <returns>The data list.</returns>
 		/// <param name="link">Link.</param>
-		public List<ToiletsBase> GetToiletList(string link) {
+		public List<ToiletsBase> GetDataList(string link) {
 
 			List<ToiletsBase> t = new List<ToiletsBase>();
+			string json = link;
 
 			string jsonUn = GetJsonData (link);
-			string json = jsonUn.Remove(0, 1);
-			json = json.Remove(json.Length - 1);
-			json = json.Replace ("},{", "}{");
+
+			if (jsonUn.IndexOf ("[") == 0 && jsonUn.IndexOf("]") == jsonUn.Length - 1) {
+				json = jsonUn.Remove(0, 1);
+				json = json.Remove(json.Length - 1);
+				json = json.Replace ("},{", "}{");
+			}
+
+			Console.WriteLine (json);
 
 			JsonTextReader reader = new JsonTextReader (new StringReader (json));
 			reader.SupportMultipleContent = true;
