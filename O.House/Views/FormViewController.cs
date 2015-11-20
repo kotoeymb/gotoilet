@@ -11,6 +11,8 @@ using Utils;
 using Facebook.CoreKit;
 using Facebook.LoginKit;
 
+using MonoTouch.Dialog;
+
 namespace OHouse
 {
 	public partial class FormViewController : UIViewController

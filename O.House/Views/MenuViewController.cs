@@ -59,11 +59,17 @@ namespace OHouse
 		{
 			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 200));
 			UIImage iconFind = UIImage.FromBundle ("images/icons/icon-find");
+			UIImage iconTL = UIImage.FromBundle ("images/icons/icon-timeline");
 			UIImage iconCdt = UIImage.FromBundle ("images/icons/icon-credit");
 			UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
 
 			Root = new RootElement ("Menu") {
 				new Section (fbContainer) {
+					new CustomElement ("Timeline", () => NavigationController.PushViewController (new TimelineViewController (), true)) {
+						Image = iconTL,
+						TextColor = common.White,
+						SubTitle = "View timeline to check what's is up! Like to approve the location !"
+					},
 					new CustomElement ("Find", () => NavigationController.PushViewController (new MapViewController (), true)) {
 						Image = iconFind,
 						TextColor = common.White,

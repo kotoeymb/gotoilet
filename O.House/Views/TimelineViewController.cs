@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 using Foundation;
 using UIKit;
@@ -7,6 +8,7 @@ using MonoTouch.Dialog;
 using Commons;
 using CustomElements;
 using Utils;
+using OHouse.DRM;
 
 namespace OHouse
 {
@@ -14,6 +16,7 @@ namespace OHouse
 	{
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
+			Title = "Timeline";
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -30,6 +33,8 @@ namespace OHouse
 
 			TimelineDialogViewController tdvc = new TimelineDialogViewController ();
 
+			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
+
 			this.AddChildViewController (tdvc);
 			this.View.AddSubview (tdvc.View);
 			
@@ -42,51 +47,45 @@ namespace OHouse
 	/// </summary>
 	public partial class TimelineDialogViewController : DialogViewController
 	{
-		Common common = new Common ();
-
+		RootElement root;
+		DataRequestManager drm;
+		List<ToiletsBase> tb;
+		Section section;
 		/// <summary>
-		/// Initializes a new instance of the <see cref="OHouse.MenuDialogViewController"/> class.
+		/// Initializes a new instance of the <see cref="OHouse.TimelineDialogViewController"/> class.
 		/// </summary>
 		public TimelineDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
 		{
-			Root = new RootElement ("Timeline") {
-				new Section () {
-					new StyledStringElement ("Gabriel Westin") {
-						Image = UIImage.FromBundle ("images/icons/icon-share")
-					},
+			drm = new DataRequestManager();
+			tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+
+			section = new Section ("");
+			foreach (var d in tb) {
+				section.Add (
 					new TimelineElement (() => {
 						NavigationController.PushViewController (new SubmitViewController (), true);
-					}, () => {
-						NavigationController.PushViewController (new FormViewController (), true);
 					}) {
-						ProfileName = "Name",
-						ProfilePic = UIImage.FromBundle ("images/background/bg-3"),
-						LastPostTime = "13 mins",
-						Count = "16",
-						Header = "Ocean",
-						Map = UIImage.FromBundle ("images/background/bg-3"),
-						Description = "Photoshop online is an on-line version. It is very popular among many users as the editor of images."
-					},
-					new TimelineElement (() => {
-					}, () => {}) {
-						ProfileName = "Name",
-						ProfilePic = UIImage.FromBundle ("images/background/bg-3"),
-						LastPostTime = "13 mins",
-						Count = "16",
-						Header = "Ocean",
-						Map = UIImage.FromBundle ("images/background/bg-3"),
-						Description = "Photoshop online is an on-line version. It is very popular among many users as the editor of images."
+						Count = d.vote_cnt,
+						Header = d.title,
+						Map = UtilImage.FromURL(d.picture),
+						Description = d.sub_title
 					}
-				}
+				);
+			}
+
+			root = new RootElement ("Timeline") {
+				section
 			};
+
+			root.UnevenRows = true;
+			Root = root;
 		}
 
 		public override void LoadView ()
 		{
 			base.LoadView ();
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			//TableView.BackgroundColor = UIColor.Clear;
-			TableView.BackgroundColor = UIColor.FromRGB (235, 235, 235);
+			TableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 130);
 		}
 	}
 }

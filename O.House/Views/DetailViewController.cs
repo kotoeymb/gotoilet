@@ -1,11 +1,13 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 using Foundation;
 using UIKit;
 using Commons;
 using MonoTouch.Dialog;
 using Utils;
+using OHouse.DRM;
 
 namespace OHouse
 {
@@ -14,34 +16,31 @@ namespace OHouse
 	/// </summary>
 	public partial class DetailViewController : UIViewController
 	{
-		public string[] Datas { get; set; }
+		//public string[] Datas { get; set; }
+		DataRequestManager drm;
+		List<ToiletsBase> tb;
+		Common common;
 
-		Common common = new Common ();
-
-		public DetailViewController (string[] datas) : base ("DetailViewController", null)
+		public DetailViewController (uint datas) : base ("DetailViewController", null)
 		{
-
 			EdgesForExtendedLayout = UIRectEdge.None;
-			Datas = datas;
-			Title = datas [0];
+			//Datas = datas;
+			//Title = datas [0];
+			drm = new DataRequestManager ();
+			common = new Common ();
+
+			tb = drm.GetSpotInfo ((int)datas);
 
 			UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
 				                                  "Direction", 
 				                                  UIBarButtonItemStyle.Plain, 
 				                                  (s, e) => {
-					var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
+					//var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
+					var url = new NSUrl ("comgooglemaps://?q=" + tb [0].latitude + "," + tb [0].longitude + "&zoom=14");
 					UIApplication.SharedApplication.OpenUrl (url);
 				});
 
 			rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
-
-//			this.NavigationItem.SetRightBarButtonItem (
-//				new UIBarButtonItem (UIImage.FromBundle ("images/icons/icon-direction"), UIBarButtonItemStyle.Plain, (s, e) => {
-//					var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
-//					UIApplication.SharedApplication.OpenUrl (url);
-//				}),
-//				true
-//			);
 
 			this.NavigationItem.SetRightBarButtonItem (
 				rightBarBtnItem,
@@ -73,7 +72,7 @@ namespace OHouse
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			DialogView detail = new DialogView (Datas);
+			DialogView detail = new DialogView (tb);
 			View.AddSubview (detail.View);
 		}
 	}
@@ -83,30 +82,30 @@ namespace OHouse
 	/// </summary>
 	public partial class DialogView : DialogViewController
 	{
-		Common common = new Common ();
+		Common common;
 
-		public DialogView (string[] datas) : base (UITableViewStyle.Grouped, null, true)
+		public DialogView (List<ToiletsBase> datas) : base (UITableViewStyle.Grouped, null, true)
 		{
+			common = new Common ();
+
 			Section section = new Section () {
-				HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0)
+				//HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0)
+				HeaderView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (datas [0].picture), (float)View.Frame.Width, 0)
 			};
 
-			Root = new RootElement (datas [0]) {
+			Root = new RootElement (datas [0].title) {
 				section,
 				new Section ("Name") {
-					new StyledStringElement (datas [0]) {
+					new StyledStringElement (datas [0].title) {
 						Font = common.Font16F,
 						TextColor = common.Blackish
 					}
 				},
 				new Section ("Lat & Lon") {
-					new StyledStringElement (datas [1] + ", " + datas [2]) {
+					new StyledStringElement (datas [0].latitude + ", " + datas [0].longitude) {
 						Font = common.Font16F,
 						TextColor = common.Blackish
 					}
-				},
-				new Section("Rating") {
-					
 				}
 			};
 		}

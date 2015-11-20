@@ -52,13 +52,10 @@ namespace OHouse
 
 			Menu = new SlideoutNavigationController ();
 
-			//Menu.MainViewController = new MainNavigationController (new PinDataVC (), Menu, menuButton);
 			Menu.MainViewController = new MainNavigationController (new MapViewController (), Menu, menuButton);
-//			Menu.MainViewController = new MainNavigationController (new DetailViewController (data), Menu, menuButton);
 			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
 
 			// If you have defined a root view controller, set it here:
-			// Window.RootViewController = myViewController;
 			window.RootViewController = Menu;
 
 			// make the window visible

@@ -73,8 +73,7 @@ namespace OHouse
 					                                  UIBarButtonItemStyle.Plain, 
 					                                  (s, e) => {
 						NavigationController.PushViewController (
-							//new NearestDialogViewController (), 
-							new TimelineViewController (),
+							new NearestDialogViewController (), 
 							true);
 					});
 
@@ -151,4 +150,3 @@ namespace OHouse
 		}
 	}
 }
-

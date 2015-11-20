@@ -1,13 +1,19 @@
 ﻿
 using System;
+using System.Net;
+using System.Collections.Generic;
 
 using Foundation;
 using UIKit;
+
+using OHouse.DRM;
 
 namespace OHouse
 {
 	public partial class SubmitViewController : UIViewController
 	{
+		List<UserBase> userInfo = new List<UserBase>();
+
 		public SubmitViewController () : base ("SubmitViewController", null)
 		{
 			Title = "Submitted";
@@ -24,8 +30,11 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			
-			// Perform any additional setup after loading the view, typically from a nib.
+			DataRequestManager drm = new DataRequestManager();
+
+			string fbid = "sadsadee11666";
+
+			Console.WriteLine(drm.RegisterUser (fbid));
 		}
 	}
 }

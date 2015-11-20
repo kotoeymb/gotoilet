@@ -11,8 +11,6 @@ namespace CustomElements
 {
 	public class TimelineCell : UITableViewCell
 	{
-		private UILabel UserName;
-		private UILabel LastPostTime;
 		private UIButton ShareBtn;
 
 		private UILabel Title;
@@ -24,27 +22,17 @@ namespace CustomElements
 
 		private UIView Container;
 		private UIImageView MapViewView;
-		private UIImageView ProfilePicView;
+
+		private UIView customColorView = new UIView();
 
 		Common common = new Common ();
 
-		public TimelineCell (UITableViewCellStyle style, NSString id, string userName, string lastPostTime, UIImage profilePic, UIImage mapView, string title, string info, string count) : base (style, id)
+		public TimelineCell (UITableViewCellStyle style, NSString id, UIImage mapView, string title, string info, int count) : base (style, id)
 		{
 			BackgroundColor = UIColor.Clear;
 
-			UserName = new UILabel () {
-				Font = common.Font13F,
-				TextColor = common.Blackish,
-				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = UIColor.Clear
-			};
-
-			LastPostTime = new UILabel () {
-				Font = common.Font13F,
-				TextColor = common.Blackish,
-				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = UIColor.Clear
-			};
+			customColorView.BackgroundColor = UIColor.Clear;
+			SelectedBackgroundView = customColorView;
 
 			Title = new UILabel () {
 				Font = common.Font13F,
@@ -70,14 +58,15 @@ namespace CustomElements
 				BackgroundColor = UIColor.Clear
 			};
 
-			ProfilePicView = UtilImage.RoundImage (profilePic, new RectangleF (0, 0, 48, 48), false);
-			ProfilePicView.BackgroundColor = UIColor.Clear;
-
 			ShareBtn = new UIButton () {
 				BackgroundColor = UIColor.Clear
 			};
 
 			ShareBtn.SetImage(UtilImage.ResizeImageKeepAspect(UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
+			ShareBtn.TouchUpInside += (s, e) => {
+				UIAlertView alert = new UIAlertView("hi", count.ToString(), null, "ok");
+				alert.Show();
+			};
 					
 			LikeBtn = new UIButton () {
 				BackgroundColor = UIColor.Clear
@@ -90,24 +79,21 @@ namespace CustomElements
 				BackgroundColor = UIColor.FromRGB (25, 25, 25)
 			};
 
-			UpdateCell (userName, lastPostTime, profilePic, mapView, title, info, count);
+			UpdateCell (mapView, title, info, count);
 			Container = new UIView () {
 				BackgroundColor = UIColor.White
 			};
-			Container.AddSubviews (UserName, LastPostTime, ProfilePicView, MapViewView, Title, Info, Count, ShareBtn, LikeBtn);
+			Container.AddSubviews (MapViewView, Title, Info, Count, ShareBtn, LikeBtn);
 
 			ContentView.Add (Container);
 		}
 
-		public void UpdateCell (string username, string lastposttime, UIImage profilepic, UIImage mapview, string title, string info, string count)
+		public void UpdateCell (UIImage mapview, string title, string info, int count)
 		{
-			UserName.Text = username;
-			LastPostTime.Text = lastposttime;
-			ProfilePicView.Image = profilepic;
 			MapViewView.Image = mapview;
 			Title.Text = title;
 			Info.Text = info;
-			Count.Text = count;
+			Count.Text = count.ToString();
 		}
 
 		public override void LayoutSubviews ()
@@ -122,20 +108,8 @@ namespace CustomElements
 			Container.Frame = new CGRect (padding, padding, full.Width - (padding * 2), full.Height - padding);
 			CGRect CFull = Container.Frame;
 
-			// UIButton shareBtn
-			ShareBtn.Frame = new CGRect (CFull.Width - 10 - 16, 10, 16, 16);
-
-			// UIImage - profilePic
-			ProfilePicView.Frame = new CGRect (10, 10, 48, 48);
-
-			// UILabel - userName
-			UserName.Frame = new CGRect (ProfilePicView.Frame.X + ProfilePicView.Frame.Width + 10, ProfilePicView.Frame.Height - 24/2 - (10 + 12), CFull.Width - (ProfilePicView.Frame.Width + 25), 24);
-
-			// UILabel - lastPostTime
-			LastPostTime.Frame = new CGRect (ProfilePicView.Frame.X + ProfilePicView.Frame.Width + 10, ProfilePicView.Frame.Height - 24/2 - (5), CFull.Width - (ProfilePicView.Frame.Width + 25), 24);
-
 			// UIImageView mapView
-			MapViewView.Frame = new CGRect (10, 64 + 10, CFull.Width - 20, 128);
+			MapViewView.Frame = new CGRect (10, 10, CFull.Width - 20, 128);
 
 			// UILabel title
 			Title.Frame = new CGRect (10, MapViewView.Frame.Height + MapViewView.Frame.Y + 10, CFull.Width - 20, 24);
@@ -145,10 +119,15 @@ namespace CustomElements
 			Info.Frame = new CGRect (10, Title.Frame.Y + Title.Frame.Height, CFull.Width - 20, size.Height);
 
 			// UIImage likeBtn
-			LikeBtn.Frame = new CGRect (10, Info.Frame.Y + size.Height + 15, 16, 16);
+			//LikeBtn.Frame = new CGRect (10, Info.Frame.Y + size.Height + 15, 16, 16);
+			LikeBtn.Frame = new CGRect (10, full.Height - 16 - 30, 16, 16);
 
 			// UILabel count
+			//Count.Frame = new CGRect (10 + LikeBtn.Frame.Width + 5, LikeBtn.Frame.Y, 16, 16);
 			Count.Frame = new CGRect (10 + LikeBtn.Frame.Width + 5, LikeBtn.Frame.Y, 16, 16);
+
+			// UIButton shareBtn
+			ShareBtn.Frame = new CGRect (CFull.Width - 10 - 16, LikeBtn.Frame.Y, 16, 16);
 		}
 	}
 
@@ -158,11 +137,6 @@ namespace CustomElements
 	public class TimelineElement : Element, IElementSizing
 	{
 		private static NSString Key = new NSString ("TimelineElement");
-
-		public string ProfileName;
-		//userName
-		public UIImage ProfilePic;
-		//profilePic
 
 		public UIImage Map;
 		//mapView
@@ -175,15 +149,13 @@ namespace CustomElements
 		public string LastPostTime;
 		//lastposttime
 
-		public string Count;
+		public int Count;
 
 		private event Action Tapped = null;
-		private event Action ShareTapped = null;
 
-		public TimelineElement (Action tapped, Action sharetapped) : base (null)
+		public TimelineElement (Action tapped) : base (null)
 		{
 			Tapped += tapped;
-			ShareTapped += sharetapped;
 		}
 
 		public override UITableViewCell GetCell (UITableView tv)
@@ -191,9 +163,9 @@ namespace CustomElements
 			var cell = tv.DequeueReusableCell (Key);
 
 			if (cell == null) {
-				cell = new TimelineCell (UITableViewCellStyle.Default, Key, ProfileName, LastPostTime, ProfilePic, Map, Header, Description, Count);
+				cell = new TimelineCell (UITableViewCellStyle.Default, Key, Map, Header, Description, Count);
 			} else {
-				((TimelineCell)cell).UpdateCell (ProfileName, LastPostTime, ProfilePic, Map, Header, Description, Count);
+				((TimelineCell)cell).UpdateCell (Map, Header, Description, Count);
 			}
 
 			return cell;
@@ -209,7 +181,7 @@ namespace CustomElements
 
 		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
-			return 335f;
+			return 280f;
 		}
 	}
 
@@ -277,25 +249,11 @@ namespace CustomElements
 			CGSize size = UIStringDrawing.StringSize (label.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
 			CGSize size0 = UIStringDrawing.StringSize (sublabel.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
 
-			var captionFrame = full;
-			var subFrame = full;
 			nfloat x = 15 + 32 + 15;
-			nfloat centerY = full.Height / 2 - size.Height / 2;
+			imageView.Frame = new CGRect (15, 15, 32, 32);
 
-			captionFrame.X = x;
-			captionFrame.Y = centerY - (size.Height / 2);
-			captionFrame.Height = size.Height;
-			captionFrame.Width = full.Width - (x + 15);
-
-			subFrame.X = x;
-			subFrame.Y = centerY + (size0.Height / 2);
-			subFrame.Height = size0.Height;
-			subFrame.Width = full.Width - (x + 15);
-
-			label.Frame = captionFrame;
-			sublabel.Frame = subFrame;
-
-			imageView.Frame = new CGRect (15, full.Height / 2 - (32 / 2), 32, 32);
+			label.Frame = new CGRect (x, imageView.Frame.Y, full.Width - x - 15, size.Height);
+			sublabel.Frame = new CGRect (x, label.Frame.Y + label.Frame.Y, full.Width - x - 15, size0.Height);
 		}
 	}
 
@@ -345,7 +303,7 @@ namespace CustomElements
 
 		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
-			return 100f;
+			return 80f;
 		}
 	}
 }

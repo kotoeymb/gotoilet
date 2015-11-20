@@ -2,6 +2,7 @@
 using System.Drawing;
 using CoreGraphics;
 using UIKit;
+using Foundation;
 
 namespace Utils
 {
@@ -293,6 +294,18 @@ namespace Utils
 			}
 		}
 
-
+		/// <summary>
+		/// Froms the UR.
+		/// </summary>
+		/// <returns>The UR.</returns>
+		/// <param name="uri">URI.</param>
+		public static UIImage FromURL (string uri)
+		{
+			using (var url = new NSUrl (uri)) {
+				using (var data = NSData.FromUrl (url)) {
+					return UIImage.LoadFromData (data);
+				}	
+			}
+		}
 	}
 }

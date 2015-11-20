@@ -44,7 +44,7 @@ namespace OHouse
 
 			//toiletsList = MapUtil.
 			//toiletsList = MapUtil.GetToiletList ("database/Toilets");
-			DataRequestManager drm = new DataRequestManager();
+			DataRequestManager drm = new DataRequestManager ();
 			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
 		}
 
@@ -72,16 +72,15 @@ namespace OHouse
 					if (dist > maxDistance) {
 						continue;
 					}
-
 					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.latitude, a.longitude, a.distance));
 
 					MKPointAnnotation point = new MKPointAnnotation () {
 						//Title = a.Name,
 						//Coordinate = new CLLocationCoordinate2D (a.Latitude, a.Longitude)
 						Title = a.title,
-						Coordinate = new CLLocationCoordinate2D (a.latitude, a.longitude)
+						Subtitle = a.spot_id.ToString (),
+						Coordinate = new CLLocationCoordinate2D (a.latitude, a.longitude),
 					};
-
 					// Then add
 					mapView.AddOverlay (circleOverlay);
 					mapView.AddAnnotations (point);
@@ -159,14 +158,13 @@ namespace OHouse
 			// you can add an accessory view, in this case, we'll add a button on the right, and an image on the left
 			detailButton = UIButton.FromType (UIButtonType.DetailDisclosure);
 			detailButton.TouchUpInside += (s, e) => {
-				double lat = annotation.Coordinate.Latitude;
-				double lon = annotation.Coordinate.Longitude;
+				//double lat = annotation.Coordinate.Latitude;
+				//double lon = annotation.Coordinate.Longitude;
 
-				string[] datas = { annotation.GetTitle (), lat.ToString (), lon.ToString () };
-
-				//InfoDialogViewController infoView = new InfoDialogViewController (datas);
+				//string[] datas = { annotation.GetTitle (), lat.ToString (), lon.ToString (), annotation.GetSubtitle() };
+				uint datas = Convert.ToUInt32 (annotation.GetSubtitle ());
+				//DetailViewController infoView = new DetailViewController (datas);
 				DetailViewController infoView = new DetailViewController (datas);
-				//parent.NavigationController.PushViewController (infoView, true);
 				UINavigationController nav = new UINavigationController (infoView);
 				parent.PresentViewController (nav, true, () => {
 				});

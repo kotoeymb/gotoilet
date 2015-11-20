@@ -140,6 +140,7 @@
     <Compile Include="Views\TimelineViewController.designer.cs">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\UserBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -190,5 +191,6 @@
     <BundleResource Include="Resources\images\background\bg-0.png" />
     <BundleResource Include="Resources\images\icons\icon-heart.png" />
     <BundleResource Include="Resources\images\icons\icon-share.png" />
+    <BundleResource Include="Resources\images\icons\icon-timeline.png" />
   </ItemGroup>
 </Project>
