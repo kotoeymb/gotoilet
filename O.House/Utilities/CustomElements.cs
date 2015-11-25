@@ -4,11 +4,16 @@ using UIKit;
 using MonoTouch.Dialog;
 using Foundation;
 using CoreGraphics;
+using CoreAnimation;
 using Commons;
 using Utils;
 
 namespace CustomElements
 {
+	#region Timeline element
+	/// <summary>
+	/// Timeline cell.
+	/// </summary>
 	public class TimelineCell : UITableViewCell
 	{
 		private UIButton ShareBtn;
@@ -21,9 +26,9 @@ namespace CustomElements
 		private UIButton LikeBtn;
 
 		private UIView Container;
-		private UIImageView MapViewView;
+		//private UIImageView MapViewView;
 
-		private UIView customColorView = new UIView();
+		private UIView customColorView = new UIView ();
 
 		Common common = new Common ();
 
@@ -45,7 +50,7 @@ namespace CustomElements
 				Font = common.Font13F,
 				TextColor = common.Blackish,
 				TextAlignment = UITextAlignment.Left,
-				Lines = 3,
+				Lines = 0,
 				AdjustsFontSizeToFitWidth = false,
 				BackgroundColor = UIColor.Clear
 					
@@ -62,10 +67,10 @@ namespace CustomElements
 				BackgroundColor = UIColor.Clear
 			};
 
-			ShareBtn.SetImage(UtilImage.ResizeImageKeepAspect(UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
+			ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
 			ShareBtn.TouchUpInside += (s, e) => {
-				UIAlertView alert = new UIAlertView("hi", count.ToString(), null, "ok");
-				alert.Show();
+				UIAlertView alert = new UIAlertView ("hi", count.ToString (), null, "ok");
+				alert.Show ();
 			};
 					
 			LikeBtn = new UIButton () {
@@ -74,26 +79,27 @@ namespace CustomElements
 
 			LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 16, 16), UIControlState.Normal);
 
-			MapViewView = new UIImageView () { 
-				Image = mapView,
-				BackgroundColor = UIColor.FromRGB (25, 25, 25)
-			};
+//			MapViewView = new UIImageView () { 
+//				Image = mapView,
+//				BackgroundColor = UIColor.FromRGB (25, 25, 25)
+//			};
 
 			UpdateCell (mapView, title, info, count);
 			Container = new UIView () {
 				BackgroundColor = UIColor.White
 			};
-			Container.AddSubviews (MapViewView, Title, Info, Count, ShareBtn, LikeBtn);
+			//Container.AddSubviews (MapViewView, Title, Info, Count, ShareBtn, LikeBtn);
+			Container.AddSubviews (Title, Info, Count, ShareBtn, LikeBtn);
 
 			ContentView.Add (Container);
 		}
 
 		public void UpdateCell (UIImage mapview, string title, string info, int count)
 		{
-			MapViewView.Image = mapview;
+			//MapViewView.Image = mapview;
 			Title.Text = title;
 			Info.Text = info;
-			Count.Text = count.ToString();
+			Count.Text = count.ToString ();
 		}
 
 		public override void LayoutSubviews ()
@@ -109,10 +115,11 @@ namespace CustomElements
 			CGRect CFull = Container.Frame;
 
 			// UIImageView mapView
-			MapViewView.Frame = new CGRect (10, 10, CFull.Width - 20, 128);
+			//MapViewView.Frame = new CGRect (10, 10, CFull.Width - 20, 128);
 
 			// UILabel title
-			Title.Frame = new CGRect (10, MapViewView.Frame.Height + MapViewView.Frame.Y + 10, CFull.Width - 20, 24);
+			//Title.Frame = new CGRect (10, MapViewView.Frame.Height + MapViewView.Frame.Y + 10, CFull.Width - 20, 24);
+			Title.Frame = new CGRect (10, 10, CFull.Width - 20, 24);
 
 			// UILabe info
 			CGSize size = UIStringDrawing.StringSize (Info.Text, common.Font13F, new CGSize (CFull.Width, 60), UILineBreakMode.WordWrap);
@@ -181,10 +188,13 @@ namespace CustomElements
 
 		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
-			return 280f;
+			return 120f;
 		}
 	}
 
+	#endregion
+
+	#region Custom element
 	/// <summary>
 	/// Custom cell.
 	/// </summary>
@@ -196,7 +206,7 @@ namespace CustomElements
 		UIView customColorView = new UIView ();
 		Common common = new Common ();
 
-		public CustomCell (UITableViewCellStyle style, NSString id, string caption, string subtitle, UIImage img, UIColor textcolor) : base (style, id)
+		public CustomCell (UITableViewCellStyle style, NSString id, string caption, string subtitle, UIImage img) : base (style, id)
 		{
 			//SelectionStyle = UITableViewCellSelectionStyle.;
 			BackgroundColor = UIColor.Clear;
@@ -208,7 +218,7 @@ namespace CustomElements
 			label = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
 				BackgroundColor = common.Clear,
-				TextColor = textcolor,
+				TextColor = common.ColorStyle_1,
 				Font = common.Font16F,
 				Lines = 0
 			};
@@ -216,7 +226,7 @@ namespace CustomElements
 			sublabel = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
 				BackgroundColor = common.Clear,
-				TextColor = textcolor,
+				TextColor = common.White,
 				Font = common.Font13F,
 				AdjustsFontSizeToFitWidth = false,
 				Lines = 2,
@@ -224,20 +234,17 @@ namespace CustomElements
 
 			imageView = new UIImageView ();
 			imageView.Image = img;
-			UpdateCell (caption, subtitle, img, textcolor);
+			UpdateCell (caption, subtitle, img);
 
 			ContentView.Add (label);
 			ContentView.Add (sublabel);
 			ContentView.Add (imageView);
 		}
 
-		public void UpdateCell (string caption, string subtitle, UIImage img, UIColor textcolor)
+		public void UpdateCell (string caption, string subtitle, UIImage img)
 		{
 			label.Text = caption;
-			label.TextColor = textcolor;
 			sublabel.Text = subtitle;
-			sublabel.TextColor = textcolor;
-
 			imageView.Image = img;
 		}
 
@@ -268,8 +275,6 @@ namespace CustomElements
 
 		public UIImage Image { get; set; }
 
-		public UIColor TextColor { get; set; }
-
 		private event Action Tapped = null;
 
 		static NSString Key = new NSString ("CustomElement");
@@ -285,9 +290,9 @@ namespace CustomElements
 			var cell = tv.DequeueReusableCell (Key);
 
 			if (cell == null) {
-				cell = new CustomCell (UITableViewCellStyle.Default, Key, Text, SubTitle, Image, TextColor);
+				cell = new CustomCell (UITableViewCellStyle.Default, Key, Text, SubTitle, Image);
 			} else {
-				((CustomCell)cell).UpdateCell (Text, SubTitle, Image, TextColor);
+				((CustomCell)cell).UpdateCell (Text, SubTitle, Image);
 			}
 
 			return cell;
@@ -306,4 +311,120 @@ namespace CustomElements
 			return 80f;
 		}
 	}
+
+	#endregion
+
+
+	#region Custom TextField, TextView
+
+	/// <summary>
+	/// Text field.
+	/// </summary>
+	public class TextField : UIView
+	{
+		Common common = new Common ();
+		UITextField tf;
+		UILabel lbl;
+		float padding;
+		UIColor bgcolor;
+		UIView box;
+
+		public TextField (CGRect bounds, UIColor bordercolor, string caption, UIImage icon = null, bool transparent = true)
+		{
+			this.Frame = bounds;
+			BackgroundColor = common.Clear;
+
+			box = new UIView (bounds);
+
+			box.Layer.BorderWidth = 1f;
+			box.Layer.BorderColor = bordercolor.CGColor;
+			//box.Layer.CornerRadius = 3;
+
+			if (transparent)
+				bgcolor = UIColor.Clear;
+			else
+				bgcolor = UIColor.White;
+
+			box.BackgroundColor = bgcolor;
+
+			padding = 5;
+
+			// Label
+			lbl = new UILabel (new CGRect (0, 0, bounds.Width, 16)) {
+				Text = caption,
+				Font = common.Font16F,
+				TextColor = common.ColorStyle_1
+			};
+
+			box.Frame = new CGRect (0, lbl.Frame.Y + lbl.Frame.Height + 8, bounds.Width, bounds.Height);
+
+			// Textfield
+			tf = new UITextField (new CGRect (padding, padding, bounds.Width - padding * 2 - 16, bounds.Height - padding * 2));
+			tf.Font = common.Font13F;
+			tf.TextColor = bordercolor;
+			tf.Placeholder = caption;
+
+			// Icon
+			if (icon != null) {
+				UIImageView iv = UtilImage.RoundImage (icon, new RectangleF ((float)bounds.Width - 16 - 10, (float)bounds.Height / 2 - 8, 16, 16), false);
+				box.AddSubview (iv);
+			}
+
+			box.UserInteractionEnabled = true;
+			box.AddSubviews (tf);
+
+			this.Frame = new CGRect (bounds.X, bounds.Y, bounds.Width, lbl.Frame.Height + 8 + box.Frame.Height);
+
+			this.AddSubviews (box, lbl);
+		}
+	}
+
+	/// <summary>
+	/// Text field.
+	/// </summary>
+	//	public class TextField : UITextField
+	//	{
+	//		public UIEdgeInsets EdgeInsets { get; set; }
+	//
+	//		Common common = new Common();
+	//
+	//		public TextField (CGRect bounds, UIColor bordercolor, UIImage icon = null, bool transparent = true)
+	//		{
+	//			this.Frame = bounds;
+	//			UIColor bgcolor = null;
+	//
+	//			if (transparent == true)
+	//				bgcolor = UIColor.Clear;
+	//			else
+	//				bgcolor = UIColor.White;
+	//
+	//			BackgroundColor = bgcolor;
+	//			Font = common.Font13F;
+	//			TextColor = bordercolor;
+	//
+	//			//EdgeInsets = UIEdgeInsets.Zero;
+	//			Layer.BorderWidth = 1f;
+	//			Layer.BorderColor = bordercolor.CGColor;
+	//			Layer.CornerRadius = 3;
+	//			KeyboardType = UIKeyboardType.Default;
+	//			Layer.MasksToBounds = true;
+	//
+	//			if (icon != null) {
+	//				UIImageView iv = UtilImage.RoundImage (icon, new RectangleF ((float)bounds.Width - 16 - 10, (float)bounds.Height / 2 - 8, 16, 16), false);
+	//				AddSubview (iv);
+	//			}
+	//		}
+	//
+	//		public override CGRect TextRect (CGRect forBounds)
+	//		{
+	//			return CGRect.Inflate (forBounds, -20, 10);
+	//		}
+	//
+	//		public override CGRect EditingRect (CGRect forBounds)
+	//		{
+	//			return CGRect.Inflate (forBounds, -20, 10);
+	//		}
+	//	}
+
+	#endregion
 }

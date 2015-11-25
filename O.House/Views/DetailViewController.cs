@@ -16,7 +16,6 @@ namespace OHouse
 	/// </summary>
 	public partial class DetailViewController : UIViewController
 	{
-		//public string[] Datas { get; set; }
 		DataRequestManager drm;
 		List<ToiletsBase> tb;
 		Common common;
@@ -24,8 +23,6 @@ namespace OHouse
 		public DetailViewController (uint datas) : base ("DetailViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
-			//Datas = datas;
-			//Title = datas [0];
 			drm = new DataRequestManager ();
 			common = new Common ();
 
@@ -35,7 +32,6 @@ namespace OHouse
 				                                  "Direction", 
 				                                  UIBarButtonItemStyle.Plain, 
 				                                  (s, e) => {
-					//var url = new NSUrl ("comgooglemaps://?q=" + datas [1] + "," + datas [2] + "&zoom=14");
 					var url = new NSUrl ("comgooglemaps://?q=" + tb [0].latitude + "," + tb [0].longitude + "&zoom=14");
 					UIApplication.SharedApplication.OpenUrl (url);
 				});

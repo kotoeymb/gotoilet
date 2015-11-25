@@ -24,7 +24,7 @@ namespace OHouse
 
 		UIWindow window;
 		UIBarButtonItem menuButton;
-		Common common = new Common();
+		Common common = new Common ();
 
 		public SlideoutNavigationController Menu { get; private set; }
 
@@ -32,7 +32,7 @@ namespace OHouse
 		{
 			UIFont.FromName ("Helvetica-Light", 16);
 
-			Profile.EnableUpdatesOnAccessTokenChange(true);
+			Profile.EnableUpdatesOnAccessTokenChange (true);
 			Settings.AppID = appId;
 			Settings.DisplayName = appName;
 
@@ -41,14 +41,15 @@ namespace OHouse
 			// Setting up navigation
 			UINavigationBar.Appearance.BarTintColor = common.ColorStyle_1;
 			UINavigationBar.Appearance.TintColor = UIColor.White;
-			UINavigationBar.Appearance.SetTitleTextAttributes(
+			UINavigationBar.Appearance.SetTitleTextAttributes (
 				new UITextAttributes { TextColor = UIColor.White, Font = common.Font16F }
 			);
 
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
-			menuButton = new UIBarButtonItem (UIImage.FromBundle ("images/button/three_lines"), UIBarButtonItemStyle.Plain, (s, e) => {});
+			menuButton = new UIBarButtonItem (UIImage.FromBundle ("images/button/three_lines"), UIBarButtonItemStyle.Plain, (s, e) => {
+			});
 
 			Menu = new SlideoutNavigationController ();
 
@@ -61,7 +62,7 @@ namespace OHouse
 			// make the window visible
 			window.MakeKeyAndVisible ();
 
-			return ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
+			return ApplicationDelegate.SharedInstance.FinishedLaunching (application, launchOptions);
 			//return true;
 		}
 
@@ -96,11 +97,9 @@ namespace OHouse
 			// Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
 		}
 
-		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+		public override bool OpenUrl (UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
 		{
 			return ApplicationDelegate.SharedInstance.OpenUrl (application, url, sourceApplication, annotation);
 		}
 	}
 }
-
-

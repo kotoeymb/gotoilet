@@ -30,7 +30,6 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -55,7 +54,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchProfiling>true</MtouchProfiling>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
@@ -192,5 +190,8 @@
     <BundleResource Include="Resources\images\icons\icon-heart.png" />
     <BundleResource Include="Resources\images\icons\icon-share.png" />
     <BundleResource Include="Resources\images\icons\icon-timeline.png" />
+    <BundleResource Include="Resources\images\background\bg-map.png" />
+    <BundleResource Include="Resources\images\icons\icon-camera.png" />
+    <BundleResource Include="Resources\images\icons\icon-notes.png" />
   </ItemGroup>
 </Project>

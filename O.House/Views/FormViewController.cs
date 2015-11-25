@@ -12,16 +12,13 @@ using Facebook.CoreKit;
 using Facebook.LoginKit;
 
 using MonoTouch.Dialog;
+using CustomElements;
 
 namespace OHouse
 {
 	public partial class FormViewController : UIViewController
 	{
-//		UIButton cancelBtn;
-//		UIButton doneBtn;
-//		UILabel title;
-//		Common common = new Common ();
-//		UISwipeGestureRecognizer gesture;
+		Common common = new Common ();
 
 		public FormViewController () : base ("FormViewController", null)
 		{
@@ -31,8 +28,8 @@ namespace OHouse
 			this.NavigationItem.SetRightBarButtonItem (
 				new UIBarButtonItem (
 					UIImage.FromBundle ("images/icons/icon-mark"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-						NavigationController.PushViewController (new SubmitViewController (), true);	
-					}
+					NavigationController.PushViewController (new SubmitViewController (), true);	
+				}
 				),
 				true
 			);
@@ -40,8 +37,8 @@ namespace OHouse
 			this.NavigationItem.SetLeftBarButtonItem (
 				new UIBarButtonItem (
 					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-						this.DismissModalViewController(true);
-					}
+					this.DismissModalViewController (true);
+				}
 				),
 				true
 			);
@@ -59,102 +56,71 @@ namespace OHouse
 		{
 			base.ViewDidLoad ();
 
+			View.BackgroundColor = UIColor.FromPatternImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/background/bg-map"), (float)View.Frame.Width, 0));
+
 			SetupUI ();
 		}
 
+		/// <summary>
+		/// Setups the UI.
+		/// </summary>
 		void SetupUI ()
 		{
-
-			View.UserInteractionEnabled = true;
+			UIScrollView sv = new UIScrollView (View.Bounds);
 
 			CGRect screen = View.Bounds;
+			sv.BackgroundColor = UIColor.FromRGBA (255, 255, 255, 240);
 			float sw = (float)screen.Width;
 			float sh = (float)screen.Height;
+
 			CGRect ssize = new CGRect (0, sh, sw, sh - 100);
+			CGRect items = new CGRect (15, 15, sw - 30, 40);
 
-//			var blur = UIBlurEffect.FromStyle (UIBlurEffectStyle.Light);
-//			var blurView = new UIVisualEffectView (blur) {
-//				Frame = screen
-//			};
-
-//			View.BackgroundColor = UIColor.FromRGBA (18, 140, 255, 100);
-//			View.AddSubview (blurView);
-//			View.BackgroundColor = UIColor.FromRGB (18, 140, 255);
-			View.BackgroundColor = UIColor.White;
 			View.Frame = ssize;
+			View.UserInteractionEnabled = true;
 
-//			cancelBtn = new UIButton (new CGRect (0, 24, 40, 40));
-//			cancelBtn.SetImage (UIImage.FromBundle ("images/icons/icon-cross"), UIControlState.Normal);
-//			cancelBtn.Font = common.Font13F;
-//			//cancelBtn.BackgroundColor = common.BlackishWithAlpha;
-//			cancelBtn.BackgroundColor = UIColor.FromRGB(255, 162, 69);
-//			cancelBtn.SetTitleColor (common.White, UIControlState.Normal);
+			// Title
+			TextField tf = new TextField (new CGRect (items.X, items.Y, items.Width, items.Height), common.ColorStyle_1, "Title", UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1));
 
-			// For custom popup
-//			cancelBtn.TouchUpInside += (sender, e) => {
-//				UIView.Animate (0.2, 0.0, UIViewAnimationOptions.CurveEaseIn, () => {
-//					View.Frame = new CGRect (new PointF (0, sh), new CGSize (sw, sh - common.PopUpDistance));
-//				}, () => {
-//					this.WillMoveToParentViewController (null);
-//					this.View.RemoveFromSuperview ();
-//					this.RemoveFromParentViewController ();
-//				});
-//			};
+			// Subtitle
+			TextField stf = new TextField (new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height), common.ColorStyle_1, "Description", UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1));
 
-			// For present view controller
-//			cancelBtn.TouchUpInside += (sender, e) => {
-//				this.DismissModalViewController (true);
-//			};
-//
-//			doneBtn = new UIButton (new CGRect (sw - 40, 24, 40, 40));
-//			doneBtn.SetImage (UIImage.FromBundle ("images/icons/icon-mark"), UIControlState.Normal);
-//			doneBtn.Font = common.Font13F;
-//			//doneBtn.BackgroundColor = common.BlackishWithAlpha;
-//			doneBtn.BackgroundColor = UIColor.FromRGB(255, 162, 69);
-//
-//			doneBtn.TouchUpInside += (sender, e) => {
-//				// Do form submit stuffs
-//				NavigationController.PushViewController (new SubmitViewController (), true);
-//			};
-//
-//			title = new UILabel (new CGRect (0, 24, sw, 40));
-//			title.Text = "Add location";
-//			title.TextAlignment = UITextAlignment.Center;
-//			title.Font = common.Font16F;
-//			title.TextColor = common.White;
-//			title.BackgroundColor = UIColor.FromRGB(255, 162, 69);
-//
-//			UIView statusBar = new UIView (new CGRect (0, 0, (int)sw, 64));
-//			statusBar.BackgroundColor = UIColor.FromRGB (255, 162, 69);
+			// Camera upload
+			UIButton camera = new UIButton (new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40));
+			UIImageView cameraIcon = new UIImageView (new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16)) {
+				// Change image color overlay
+				Image = UtilImage.GetColoredImage ("images/icons/icon-camera", common.White)
+			};
 
-			// Also work from swipe down
-//			gesture = new UISwipeGestureRecognizer (() => {
-//				UIView.Animate (0.2, 0.0, UIViewAnimationOptions.CurveEaseIn, () => {
-//					View.Frame = new CGRect (new PointF (0, sh), new CGSize (sw, sh - common.PopUpDistance));
-//				}, () => {
-//					// On completion
-//					this.WillMoveToParentViewController (null);
-//					this.View.RemoveFromSuperview ();
-//					this.RemoveFromParentViewController ();
-//				});
-//			});
+			camera.SetTitle ("Upload photo", UIControlState.Normal);
+			camera.Font = common.Font16F;
+			camera.BackgroundColor = common.ColorStyle_1;
+			camera.AddSubview (cameraIcon);
 
-			//
-			//			// Check user logged in or not
-			//			if (AccessToken.CurrentAccessToken != null) {
-			//				// Show form
-			//			} else {
-			//				// Request to login
-			//			}
+			camera.TouchUpInside += (sender, e) => {
+				// Create a new Alert Controller
+				UIAlertController actionSheetAlert = UIAlertController.Create ("Upload photo", "Please choose methods from below", UIAlertControllerStyle.ActionSheet);
 
-//			gesture.Direction = UISwipeGestureRecognizerDirection.Down;
+				// Add Actions
+				actionSheetAlert.AddAction (UIAlertAction.Create ("Choose from gallery", UIAlertActionStyle.Default, (action) => Console.WriteLine ("Item One pressed.")));
+				actionSheetAlert.AddAction (UIAlertAction.Create ("Take photo", UIAlertActionStyle.Default, (action) => Console.WriteLine ("Item Two pressed.")));
+				actionSheetAlert.AddAction (UIAlertAction.Create ("Cancel", UIAlertActionStyle.Cancel, (action) => Console.WriteLine ("Cancel button pressed.")));
 
-			//View.AddGestureRecognizer (gesture);
-			//View.AddSubview (statusBar);
-			//View.AddSubview (title);
-			//View.AddSubview (cancelBtn);
-			//View.AddSubview (doneBtn);
+				// Required for iPad - You must specify a source for the Action Sheet since it is
+				// displayed as a popover
+				UIPopoverPresentationController presentationPopover = actionSheetAlert.PopoverPresentationController;
+				if (presentationPopover != null) {
+					presentationPopover.SourceView = this.View;
+					presentationPopover.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+				}
+
+				// Display the alert
+				this.PresentViewController (actionSheetAlert, true, null);
+			};
+
+			sv.AddSubviews (tf, stf, camera);
+
+			View.AddSubview (sv);
 		}
 	}
 }
-

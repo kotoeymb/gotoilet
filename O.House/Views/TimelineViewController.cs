@@ -61,13 +61,15 @@ namespace OHouse
 
 			section = new Section ("");
 			foreach (var d in tb) {
+				Console.WriteLine (d.picture.ToString ());
+
 				section.Add (
 					new TimelineElement (() => {
 						NavigationController.PushViewController (new SubmitViewController (), true);
 					}) {
 						Count = d.vote_cnt,
 						Header = d.title,
-						Map = UtilImage.FromURL(d.picture),
+						//Map = UtilImage.FromURL(d.picture),
 						Description = d.sub_title
 					}
 				);

@@ -65,6 +65,11 @@ namespace Commons
 			set { ; }
 		}
 
+		public UIColor WhitishWithAlpha {
+			get { return UIColor.FromRGBA (255, 255, 255, 230); }
+			set { ; }
+		}
+
 		public UIColor Clear {
 			get { return UIColor.Clear; }
 			set { ; }
@@ -73,6 +78,11 @@ namespace Commons
 		public UIColor ColorStyle_1 {
 			get { return UIColor.FromRGB (255, 162, 69); }
 			set { ; }
+		}
+
+		public UIColor Custom (byte R, byte G, byte B, byte A = 255)
+		{
+			return UIColor.FromRGBA (R, G, B, A);
 		}
 
 		public UITextAttributes commonStyle {

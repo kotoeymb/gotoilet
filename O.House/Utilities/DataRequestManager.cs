@@ -24,6 +24,7 @@ namespace OHouse.DRM
 		}
 
 		#region Getters
+
 		/// <summary>
 		/// Gets the json data.
 		/// </summary>
@@ -91,7 +92,8 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <returns>The user info.</returns>
 		/// <param name="link">Link.</param>
-		public List<UserBase> GetUserInfo(string facebook_id) {
+		public List<UserBase> GetUserInfo (string facebook_id)
+		{
 			List<UserBase> u = new List<UserBase> ();
 
 			string get = "http://gstore.pcp.jp/api/get_user.php?facebook_id=" + facebook_id;
@@ -118,12 +120,19 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <returns>The spot info.</returns>
 		/// <param name="spot_id">Spot identifier.</param>
-		public List<ToiletsBase> GetSpotInfo(int spot_id) {
+		public List<ToiletsBase> GetSpotInfo (int spot_id)
+		{
 			List<ToiletsBase> u = new List<ToiletsBase> ();
 
 			string get = "http://gstore.pcp.jp/api/get_spots_info.php?spot_id=" + spot_id;
 
 			string json = GetJsonData (get);
+
+			if (json.IndexOf ("[") == 0 && json.IndexOf ("]") == json.Length - 1) {
+				json = json.Remove (0, 1);
+				json = json.Remove (json.Length - 1);
+				json = json.Replace ("},{", "}{");
+			}
 
 			JsonTextReader reader = new JsonTextReader (new StringReader (json));
 			reader.SupportMultipleContent = true;
@@ -143,6 +152,7 @@ namespace OHouse.DRM
 		#endregion
 
 		#region Setters
+
 		/// <summary>
 		/// Registers the user.
 		/// If user exists or user successfully register, return true
@@ -150,7 +160,8 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <param name="link">Link. Notice, include starting from ? e.g, www.serverlink.com?id=</param>
 		/// <param name="facebook_id">Facebook identifier.</param>
-		public bool RegisterUser(string facebook_id) {
+		public bool RegisterUser (string facebook_id)
+		{
 			List<UserBase> u = new List<UserBase> ();
 
 			string set = "http://gstore.pcp.jp/api/reg_user.php?facebook_id=" + facebook_id;
@@ -164,7 +175,7 @@ namespace OHouse.DRM
 				/// if i.status is false, not exist, create user
 				if (!i.status) {
 					// register user
-					var request = HttpWebRequest.Create (string.Format(set, ""));
+					var request = HttpWebRequest.Create (string.Format (set, ""));
 					request.Method = "POST";
 					request.Headers.Add ("facebook_id", facebook_id);
 

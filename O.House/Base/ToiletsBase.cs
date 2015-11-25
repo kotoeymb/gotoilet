@@ -4,22 +4,6 @@ namespace OHouse
 {
 	public class ToiletsBase
 	{
-		//		public string Name { get; set; }
-		//
-		//		public double Latitude { get; set; }
-		//
-		//		public double Longitude { get; set; }
-		//
-		//		public double Distance { get; set; }
-		//
-		//		public ToiletsBase (string name, double latitude, double longitude, double distance)
-		//		{
-		//			this.Name = name;
-		//			this.Latitude = latitude;
-		//			this.Longitude = longitude;
-		//			this.Distance = distance;
-		//		}
-
 		public int spot_id { get; set; }
 
 		public int vote_cnt { get; set; }
@@ -36,7 +20,7 @@ namespace OHouse
 
 		public double distance { get; set; }
 
-		public ToiletsBase (int spot_id, int vote_cnt, string title, string sub_title, string picture, double latitude, double longitude, double distance)
+		public ToiletsBase (int spot_id, int vote_cnt, string title, string sub_title, string picture, double longitude, double latitude, double distance)
 		{
 			this.spot_id = spot_id;
 			this.vote_cnt = vote_cnt;

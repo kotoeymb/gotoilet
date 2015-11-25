@@ -72,7 +72,7 @@ namespace OHouse
 					if (dist > maxDistance) {
 						continue;
 					}
-					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.latitude, a.longitude, a.distance));
+					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, a.distance));
 
 					MKPointAnnotation point = new MKPointAnnotation () {
 						//Title = a.Name,
