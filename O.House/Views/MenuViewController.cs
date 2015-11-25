@@ -50,8 +50,6 @@ namespace OHouse
 	/// </summary>
 	public partial class MenuDialogViewController : DialogViewController
 	{
-		Common common = new Common ();
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OHouse.MenuDialogViewController"/> class.
 		/// </summary>

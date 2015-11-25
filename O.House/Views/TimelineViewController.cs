@@ -61,8 +61,6 @@ namespace OHouse
 
 			section = new Section ("");
 			foreach (var d in tb) {
-				Console.WriteLine (d.picture.ToString ());
-
 				section.Add (
 					new TimelineElement (() => {
 						NavigationController.PushViewController (new SubmitViewController (), true);

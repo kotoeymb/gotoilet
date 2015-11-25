@@ -30,7 +30,6 @@ namespace OHouse
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			UIFont.FromName ("Helvetica-Light", 16);
 
 			Profile.EnableUpdatesOnAccessTokenChange (true);
 			Settings.AppID = appId;

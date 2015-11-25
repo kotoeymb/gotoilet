@@ -12,8 +12,6 @@ namespace OHouse
 {
 	public partial class SubmitViewController : UIViewController
 	{
-		List<UserBase> userInfo = new List<UserBase>();
-
 		public SubmitViewController () : base ("SubmitViewController", null)
 		{
 			Title = "Submitted";

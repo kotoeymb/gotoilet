@@ -40,8 +40,8 @@ namespace CustomElements
 			SelectedBackgroundView = customColorView;
 
 			Title = new UILabel () {
-				Font = common.Font13F,
-				TextColor = common.Blue,
+				Font = common.Font16F,
+				TextColor = common.ColorStyle_1,
 				TextAlignment = UITextAlignment.Left,
 				BackgroundColor = UIColor.Clear
 			};

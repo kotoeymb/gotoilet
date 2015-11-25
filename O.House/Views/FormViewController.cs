@@ -80,14 +80,29 @@ namespace OHouse
 			View.UserInteractionEnabled = true;
 
 			// Title
-			TextField tf = new TextField (new CGRect (items.X, items.Y, items.Width, items.Height), common.ColorStyle_1, "Title", UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1));
+			TextField tf = new TextField (
+				new CGRect (items.X, items.Y, items.Width, items.Height), 
+				common.ColorStyle_1, 
+				"Title", 
+				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
+			);
 
 			// Subtitle
-			TextField stf = new TextField (new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height), common.ColorStyle_1, "Description", UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1));
+			TextField stf = new TextField (
+				new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height), 
+				common.ColorStyle_1, 
+				"Description", 
+				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
+			);
 
 			// Camera upload
-			UIButton camera = new UIButton (new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40));
-			UIImageView cameraIcon = new UIImageView (new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16)) {
+			UIButton camera = new UIButton (
+				new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40)
+			);
+
+			UIImageView cameraIcon = new UIImageView (
+				new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16)
+			) {
 				// Change image color overlay
 				Image = UtilImage.GetColoredImage ("images/icons/icon-camera", common.White)
 			};
@@ -97,6 +112,7 @@ namespace OHouse
 			camera.BackgroundColor = common.ColorStyle_1;
 			camera.AddSubview (cameraIcon);
 
+			// Action when pressed
 			camera.TouchUpInside += (sender, e) => {
 				// Create a new Alert Controller
 				UIAlertController actionSheetAlert = UIAlertController.Create ("Upload photo", "Please choose methods from below", UIAlertControllerStyle.ActionSheet);
