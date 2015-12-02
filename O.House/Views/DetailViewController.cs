@@ -8,6 +8,7 @@ using Commons;
 using MonoTouch.Dialog;
 using Utils;
 using OHouse.DRM;
+using OHouse.Connectivity;
 
 namespace OHouse
 {
@@ -19,14 +20,21 @@ namespace OHouse
 		DataRequestManager drm;
 		List<ToiletsBase> tb;
 		Common common;
+		ConnectionManager connMgr;
 
-		public DetailViewController (uint datas) : base ("DetailViewController", null)
+		public DetailViewController (int datas) : base ("DetailViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
 			drm = new DataRequestManager ();
 			common = new Common ();
+			connMgr = new ConnectionManager ();
+			connMgr.UpdateStatus ();
 
-			tb = drm.GetSpotInfo ((int)datas);
+			if (connMgr.internetStatus == NetworkStatus.NotReachable) {
+				tb = drm.GetSpotInfoFromLocal ("database/Toilets", datas);
+			} else {
+				tb = drm.GetSpotInfo (datas);
+			}
 
 			UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
 				                                  "Direction", 
@@ -79,14 +87,18 @@ namespace OHouse
 	public partial class DialogView : DialogViewController
 	{
 		Common common;
+		UIView pictureView;
 
 		public DialogView (List<ToiletsBase> datas) : base (UITableViewStyle.Grouped, null, true)
 		{
 			common = new Common ();
 
+			if (datas [0].picture != null && datas [0].picture != "") {
+				pictureView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (datas [0].picture), (float)View.Frame.Width, 0);
+			}
+
 			Section section = new Section () {
-				//HeaderView = UtilImage.ResizeImageViewKeepAspect (UIImage.FromBundle ("images/background/bg-3"), (float)View.Frame.Width, 0)
-				HeaderView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (datas [0].picture), (float)View.Frame.Width, 0)
+				HeaderView = pictureView
 			};
 
 			Root = new RootElement (datas [0].title) {

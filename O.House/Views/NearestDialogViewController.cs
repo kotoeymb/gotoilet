@@ -38,7 +38,6 @@ namespace OHouse
 			UIView headerViewWithin = customhf.CreateHdrFtr ("WINTHIN 500 m", (float)frameW, 30, null);
 
 			tBaseList = MapDelegate.nearToiletList;
-			//tBaseListOrdered = tBaseList.OrderBy (o => o.Distance).ToList ();
 			tBaseListOrdered = tBaseList.OrderBy (o => o.distance).ToList ();
 			section.HeaderView = headerViewWithin;
 

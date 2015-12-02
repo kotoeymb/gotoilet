@@ -13,12 +13,16 @@ using Utils;
 using MapUtils;
 using LocationUtils;
 using Commons;
+using OHouse.Connectivity;
 
 namespace OHouse
 {
 	public partial class MapViewController : UIViewController
 	{
 		public static LocationUtil Manager { get; set; }
+
+		NetworkStatus remoteHostStatus,internetStatus, localWifiStatus;
+		bool networkStatus;
 
 		UIButton addLocationButton;
 		UIButton myLocationButton;
@@ -65,26 +69,26 @@ namespace OHouse
 			mapV.ZoomEnabled = true;
 			mapV.ScrollEnabled = true;
 
-			if (mapV.UserLocation != null) {
-				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
-
-				UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
-					                                  "Near", 
-					                                  UIBarButtonItemStyle.Plain, 
-					                                  (s, e) => {
-						NavigationController.PushViewController (
-							new NearestDialogViewController (), 
-							true);
-					});
-
-				rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
-
-				// Get nearest location button
-				this.NavigationItem.SetRightBarButtonItem (
-					rightBarBtnItem,
-					true
-				);
-			}
+//			if (mapV.UserLocation != null) {
+//				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
+//
+//				UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
+//					                                  "Near", 
+//					                                  UIBarButtonItemStyle.Plain, 
+//					                                  (s, e) => {
+//						NavigationController.PushViewController (
+//							new NearestDialogViewController (), 
+//							true);
+//					});
+//
+//				rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
+//
+//				// Get nearest location button
+//				this.NavigationItem.SetRightBarButtonItem (
+//					rightBarBtnItem,
+//					true
+//				);
+//			}
 
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-pin"), w, h);

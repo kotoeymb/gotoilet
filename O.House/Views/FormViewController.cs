@@ -5,6 +5,7 @@ using System.Drawing;
 using Foundation;
 using UIKit;
 using CoreGraphics;
+using CoreLocation;
 using Commons;
 using Utils;
 
@@ -19,6 +20,21 @@ namespace OHouse
 	public partial class FormViewController : UIViewController
 	{
 		Common common = new Common ();
+		TextField tf;
+		TextField stf;
+		string message;
+		UIImagePickerController imagePicker;
+
+		private CLLocationCoordinate2D _userLocation;
+
+		public CLLocationCoordinate2D userLocation {
+			get {
+				return _userLocation;
+			}
+			set {
+				_userLocation = value;
+			}
+		}
 
 		public FormViewController () : base ("FormViewController", null)
 		{
@@ -28,7 +44,23 @@ namespace OHouse
 			this.NavigationItem.SetRightBarButtonItem (
 				new UIBarButtonItem (
 					UIImage.FromBundle ("images/icons/icon-mark"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-					NavigationController.PushViewController (new SubmitViewController (), true);	
+
+					if (GetDataFromTextField (tf) != "" && GetDataFromTextField (stf) != "") {
+						message = GetDataFromTextField (tf) + ", " + GetDataFromTextField (stf);
+					} else {
+						message = "Please insert data!!! MTFK!!";
+					}
+
+					UIAlertView av = new UIAlertView (
+						                  "Data",
+						                  message,
+						                  null,
+						                  "OK",
+						                  null
+					                  );
+
+					av.Show ();
+					//NavigationController.PushViewController (new SubmitViewController (), true);	
 				}
 				),
 				true
@@ -80,29 +112,29 @@ namespace OHouse
 			View.UserInteractionEnabled = true;
 
 			// Title
-			TextField tf = new TextField (
-				new CGRect (items.X, items.Y, items.Width, items.Height), 
+			CGRect tfRec = new CGRect (items.X, items.Y, items.Width, items.Height);
+			tf = new TextField (
+				tfRec,
 				common.ColorStyle_1, 
 				"Title", 
 				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
 			);
 
 			// Subtitle
-			TextField stf = new TextField (
-				new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height), 
+			CGRect stfRec = new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height);
+			stf = new TextField (
+				stfRec,
 				common.ColorStyle_1, 
 				"Description", 
 				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
 			);
 
 			// Camera upload
-			UIButton camera = new UIButton (
-				new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40)
-			);
+			CGRect cameraRec = new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40);
+			UIButton camera = new UIButton (cameraRec);
 
-			UIImageView cameraIcon = new UIImageView (
-				new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16)
-			) {
+			CGRect cameraIconRec = new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16);
+			UIImageView cameraIcon = new UIImageView (cameraIconRec) {
 				// Change image color overlay
 				Image = UtilImage.GetColoredImage ("images/icons/icon-camera", common.White)
 			};
@@ -118,7 +150,14 @@ namespace OHouse
 				UIAlertController actionSheetAlert = UIAlertController.Create ("Upload photo", "Please choose methods from below", UIAlertControllerStyle.ActionSheet);
 
 				// Add Actions
-				actionSheetAlert.AddAction (UIAlertAction.Create ("Choose from gallery", UIAlertActionStyle.Default, (action) => Console.WriteLine ("Item One pressed.")));
+				actionSheetAlert.AddAction (
+					UIAlertAction.Create (
+						"Choose from gallery",
+						UIAlertActionStyle.Default,
+						(action) => {
+							Console.WriteLine("WTF");
+						})
+				);
 				actionSheetAlert.AddAction (UIAlertAction.Create ("Take photo", UIAlertActionStyle.Default, (action) => Console.WriteLine ("Item Two pressed.")));
 				actionSheetAlert.AddAction (UIAlertAction.Create ("Cancel", UIAlertActionStyle.Cancel, (action) => Console.WriteLine ("Cancel button pressed.")));
 
@@ -137,6 +176,60 @@ namespace OHouse
 			sv.AddSubviews (tf, stf, camera);
 
 			View.AddSubview (sv);
+		}
+
+		/// <summary>
+		/// Handles the finish picking media.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">E.</param>
+		protected void Handle_FinishPickingMedia(object sender, UIImagePickerMediaPickedEventArgs e) {
+			bool isImage = false;
+
+			switch (e.Info [UIImagePickerController.MediaType].ToString ()) {
+
+			case "public.image":
+				isImage = true;
+				break;
+
+			case "public.video":
+				isImage = false;
+				break;
+			}
+
+			if (isImage) {
+				UIImage originalImage = e.Info [UIImagePickerController.OriginalImage] as UIImage;
+				if (originalImage != null) {
+					// Do something with image source
+				}
+			} else {
+				NSUrl mediaURL = e.Info [UIImagePickerController.MediaURL] as NSUrl;
+				if (mediaURL != null) {
+					//
+				}
+			}
+
+			imagePicker.DismissModalViewController (true);
+		}
+
+		/// <summary>
+		/// Only for TextField class
+		/// </summary>
+		/// <returns>The data.</returns>
+		private string GetDataFromTextField (TextField textfield)
+		{
+			foreach (var subview in textfield.Subviews) {
+				if (subview is UIView) {
+					foreach (var t in subview.Subviews) {
+						if (t is UITextField) {
+							var tf = t as UITextField;
+							return tf.Text.ToString ();
+						}
+					}
+				}
+			}
+
+			return "";
 		}
 	}
 }

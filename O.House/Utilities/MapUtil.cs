@@ -81,32 +81,7 @@ namespace MapUtils
 			}
 		}
 
-		/// <summary>
-		/// Gets the toilet list.
-		/// From plist file name
-		/// </summary>
-		/// <returns>The toilet list.</returns>
-		/// <param name="plistFileName">Plist file name.</param>
-		public static List<ToiletsBase> GetToiletList(string plistFileName) {
-			List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
 
-			var path = NSBundle.MainBundle.PathForResource ("database/Toilets", "plist");
-			var toilets = NSDictionary.FromFile (path);
-
-			foreach (var toilet in toilets) {
-				var obj = toilet.Value;
-				var nameKey = obj.ValueForKey ((NSString)"nameKey").ToString ();
-				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
-				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
-				double distance = 0.0;
-				toiletsList.Add (
-					//new ToiletsBase (nameKey, double.Parse (latitudeKey), double.Parse (longitudeKey), distance)	
-					new ToiletsBase (1, 3,nameKey, "subtitle", "picture", double.Parse (latitudeKey), double.Parse (longitudeKey), distance)	
-
-				);
-			}
-			return toiletsList;
-		}
 	}
 }
 

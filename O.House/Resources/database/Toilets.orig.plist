@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Toilet 01</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 01</string>
+		<key>latitudeKey</key>
+		<string>16.777024</string>
+		<key>longitudeKey</key>
+		<string>96.164964</string>
+	</dict>
+	<key>Toilet 02</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 02</string>
+		<key>latitudeKey</key>
+		<string>16.776768</string>
+		<key>longitudeKey</key>
+		<string>96.162622</string>
+	</dict>
+	<key>Toilet 03</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 03</string>
+		<key>latitudeKey</key>
+		<string>16.777364</string>
+		<key>longitudeKey</key>
+		<string>96.160315</string>
+	</dict>
+	<key>Toilet 04</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 04</string>
+		<key>latitudeKey</key>
+		<string>16.777114</string>
+		<key>longitudeKey</key>
+		<string>96.162486</string>
+	</dict>
+	<key>Toilet 05</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 06</string>
+		<key>latitudeKey</key>
+		<string>16.782406</string>
+		<key>longitudeKey</key>
+		<string>96.178641</string>
+	</dict>
+	<key>Toilet 06</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 07</string>
+		<key>latitudeKey</key>
+		<string>16.774438</string>
+		<key>longitudeKey</key>
+		<string>96.158796</string>
+	</dict>
+	<key>Toilet 07</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 08</string>
+		<key>latitudeKey</key>
+		<string>16.788157</string>
+		<key>longitudeKey</key>
+		<string>96.075439</string>
+	</dict>
+	<key>Toilet 08</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 09</string>
+		<key>latitudeKey</key>
+		<string>16.902507</string>
+		<key>longitudeKey</key>
+		<string>96.054153</string>
+	</dict>
+	<key>Toilet 09</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 10</string>
+		<key>latitudeKey</key>
+		<string>16.845341</string>
+		<key>longitudeKey</key>
+		<string>96.414642</string>
+	</dict>
+	<key>Toilet 10</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 11</string>
+		<key>latitudeKey</key>
+		<string>16.779903</string>
+		<key>longitudeKey</key>
+		<string>96.160169</string>
+	</dict>
+	<key>Toilet 11</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 12</string>
+		<key>latitudeKey</key>
+		<string>16.776863</string>
+		<key>longitudeKey</key>
+		<string>96.160040</string>
+	</dict>
+	<key>Toilet 12</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 14</string>
+		<key>latitudeKey</key>
+		<string>16.779472</string>
+		<key>longitudeKey</key>
+		<string>96.153217</string>
+	</dict>
+	<key>Toilet 13</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 13</string>
+		<key>latitudeKey</key>
+		<string>16.780458</string>
+		<key>longitudeKey</key>
+		<string>96.152852</string>
+	</dict>
+	<key>Toilet 14</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 16</string>
+		<key>latitudeKey</key>
+		<string>16.782533</string>
+		<key>longitudeKey</key>
+		<string>96.185918</string>
+	</dict>
+	<key>Toilet 15</key>
+	<dict>
+		<key>nameKey</key>
+		<string>Toilet 15</string>
+		<key>latitudeKey</key>
+		<string>16.776801</string>
+		<key>longitudeKey</key>
+		<string>96.161736</string>
+	</dict>
+</dict>
+</plist>

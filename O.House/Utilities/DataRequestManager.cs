@@ -149,10 +149,75 @@ namespace OHouse.DRM
 			return u;
 		}
 
+		/// <summary>
+		/// Gets the toilet list.
+		/// From plist file name
+		/// </summary>
+		/// <returns>The toilet list.</returns>
+		/// <param name="plistFileName">Plist file name.</param>
+		public List<ToiletsBase> GetToiletList(string plistFileName) {
+			List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
+
+			var path = NSBundle.MainBundle.PathForResource (plistFileName, "plist");
+			var toilets = NSDictionary.FromFile (path);
+
+			foreach (var toilet in toilets) {
+				var obj = toilet.Value;
+				var idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
+				var titleKey = obj.ValueForKey ((NSString)"titleKey").ToString ();
+				var subtitleKey = obj.ValueForKey ((NSString)"subtitleKey").ToString ();
+				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
+				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
+				var voteKey = obj.ValueForKey ((NSString)"voteKey").ToString ();
+				double distance = 0.0;
+
+				toiletsList.Add (
+					new ToiletsBase (Int32.Parse(idKey), Int32.Parse(voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance)	
+				);
+			}
+			return toiletsList;
+		}
+
+		/// <summary>
+		/// Gets the spot info.
+		/// </summary>
+		/// <returns>The spot info.</returns>
+		/// <param name="spot_id">Spot identifier.</param>
+		public List<ToiletsBase> GetSpotInfoFromLocal (string plistFileName, int spot_id)
+		{
+			List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
+
+			var path = NSBundle.MainBundle.PathForResource (plistFileName, "plist");
+			var toilets = NSDictionary.FromFile (path);
+
+			foreach (var toilet in toilets) {
+
+				var obj = toilet.Value;
+
+				var idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
+
+				if (idKey != spot_id.ToString()) {
+					continue;
+				}
+
+				idKey = obj.ValueForKey((NSString)"idKey").ToString();
+				var titleKey = obj.ValueForKey ((NSString)"titleKey").ToString ();
+				var subtitleKey = obj.ValueForKey ((NSString)"subtitleKey").ToString ();
+				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
+				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
+				var voteKey = obj.ValueForKey ((NSString)"voteKey").ToString ();
+				double distance = 0.0;
+
+				toiletsList.Add (
+					new ToiletsBase (Int32.Parse(idKey), Int32.Parse(voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance)	
+				);
+			}
+			return toiletsList;
+		}
+
 		#endregion
 
 		#region Setters
-
 		/// <summary>
 		/// Registers the user.
 		/// If user exists or user successfully register, return true
@@ -194,5 +259,7 @@ namespace OHouse.DRM
 		}
 
 		#endregion
+
+
 	}
 }

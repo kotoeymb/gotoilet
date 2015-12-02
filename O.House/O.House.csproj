@@ -153,6 +153,7 @@
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\UserBase.cs" />
+    <Compile Include="Utilities\ConnectionManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -180,7 +181,6 @@
     <BundleResource Include="Resources\images\icons\icon-about.png" />
     <BundleResource Include="Resources\images\icons\icon-credit.png" />
     <BundleResource Include="Resources\images\icons\icon-find.png" />
-    <BundleResource Include="Resources\database\Toilets.plist" />
     <BundleResource Include="Resources\images\icons\icon-manual.png" />
     <BundleResource Include="Resources\images\background\bg-2.png" />
     <BundleResource Include="Resources\images\background\bg-3.png" />
@@ -207,6 +207,8 @@
     <BundleResource Include="Resources\images\background\bg-map.png" />
     <BundleResource Include="Resources\images\icons\icon-camera.png" />
     <BundleResource Include="Resources\images\icons\icon-notes.png" />
+    <BundleResource Include="Resources\database\Toilets.orig.plist" />
+    <BundleResource Include="Resources\database\Toilets.plist" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

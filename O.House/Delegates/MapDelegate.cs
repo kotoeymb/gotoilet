@@ -7,9 +7,11 @@ using MapKit;
 using Utils;
 using MapUtils;
 using OHouse.DRM;
+using OHouse.Connectivity;
 
 namespace OHouse
 {
+
 	/// <summary>
 	/// Map delegate.
 	/// </summary>
@@ -19,10 +21,12 @@ namespace OHouse
 		/// Declaration
 		/// </summary>
 		protected string annId = "Basic Annotation";
-		UIButton detailButton;
 		MapViewController parent;
 		public static double latMeter = 1000;
 		public static double lonMeter = 1000;
+
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
+		bool networkStatus;
 
 		// *** modifying
 		// MKPointAnnotation[] pins;
@@ -41,11 +45,17 @@ namespace OHouse
 		public MapDelegate (MapViewController parent)
 		{
 			this.parent = parent;
-
-			//toiletsList = MapUtil.
-			//toiletsList = MapUtil.GetToiletList ("database/Toilets");
 			DataRequestManager drm = new DataRequestManager ();
-			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+
+			/// Check network status
+			UpdateStatus ();
+			if (internetStatus == NetworkStatus.NotReachable) {
+				networkStatus = false;
+				toiletsList = drm.GetToiletList ("database/Toilets");
+			} else {
+				networkStatus = true;
+				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+			}
 		}
 
 		/// <summary>
@@ -64,23 +74,26 @@ namespace OHouse
 
 				circleOverlay = MKCircle.Circle (new CLLocationCoordinate2D (coords.Latitude, coords.Longitude), maxDistance);
 				foreach (var a in toiletsList) {
-					//foreach (MKPointAnnotation a in pins) {
-					//CLLocation loc = new CLLocation (a.Coordinate.Latitude, a.Coordinate.Longitude);
-					//CLLocation loc = new CLLocation (a.Latitude, a.Longitude);
+
+
 					CLLocation loc = new CLLocation (a.latitude, a.longitude);
 					double dist = loc.DistanceFrom (userLC);
+
+					// Calculate minimal distance
 					if (dist > maxDistance) {
 						continue;
 					}
+						
+					// For near toilet list page
 					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, dist));
 
-					MKPointAnnotation point = new MKPointAnnotation () {
-						//Title = a.Name,
-						//Coordinate = new CLLocationCoordinate2D (a.Latitude, a.Longitude)
+					CustomAnnotation point = new CustomAnnotation () {
+						LocationID = a.spot_id,
 						Title = a.title,
-						Subtitle = a.spot_id.ToString (),
+						Subtitle = "",
 						Coordinate = new CLLocationCoordinate2D (a.latitude, a.longitude),
 					};
+
 					// Then add
 					mapView.AddOverlay (circleOverlay);
 					mapView.AddAnnotations (point);
@@ -145,7 +158,8 @@ namespace OHouse
 			// if we couldn't dequeue one, create a new one
 			if (annotationView == null) {
 				annotationView = new MKPinAnnotationView (annotation, annId);
-			} else { // if we did dequeue one for reuse, assign the annotation to it
+			} else { 
+				// if we did dequeue one for reuse, assign the annotation to it
 				annotationView.Annotation = annotation;
 			}
 
@@ -154,26 +168,25 @@ namespace OHouse
 			(annotationView as MKPinAnnotationView).AnimatesDrop = false;
 			annotationView.Selected = true;
 
-
-			// you can add an accessory view, in this case, we'll add a button on the right, and an image on the left
-			detailButton = UIButton.FromType (UIButtonType.DetailDisclosure);
-			detailButton.TouchUpInside += (s, e) => {
-				//double lat = annotation.Coordinate.Latitude;
-				//double lon = annotation.Coordinate.Longitude;
-
-				//string[] datas = { annotation.GetTitle (), lat.ToString (), lon.ToString (), annotation.GetSubtitle() };
-				uint datas = Convert.ToUInt32 (annotation.GetSubtitle ());
-				//DetailViewController infoView = new DetailViewController (datas);
-				DetailViewController infoView = new DetailViewController (datas);
-				UINavigationController nav = new UINavigationController (infoView);
-				parent.PresentViewController (nav, true, () => {
-				});
-			};
-
-			annotationView.RightCalloutAccessoryView = detailButton;
-			annotationView.Image = UIImage.FromBundle ("images/icons/icon-toilet");
-
+			annotationView.RightCalloutAccessoryView = UIButton.FromType (UIButtonType.DetailDisclosure);
 			return annotationView;
+		}
+
+		/// <summary>
+		/// Callouts the accessory control tapped.
+		/// </summary>
+		/// <param name="mapView">Map view.</param>
+		/// <param name="view">View.</param>
+		/// <param name="control">Control.</param>
+		public override void CalloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control)
+		{
+			CustomAnnotation id = view.Annotation as CustomAnnotation;
+
+			int datas = id.GetLocationID ();
+			DetailViewController infoView = new DetailViewController (datas);
+			UINavigationController nav = new UINavigationController (infoView);
+			parent.PresentViewController (nav, true, () => {
+			});
 		}
 
 		/// <summary>
@@ -190,6 +203,7 @@ namespace OHouse
 			};
 		}
 
+
 		/// <summary>
 		/// Regions the changed.
 		/// </summary>
@@ -197,6 +211,49 @@ namespace OHouse
 		/// <param name="animated">If set to <c>true</c> animated.</param>
 		public override void RegionChanged (MKMapView mapView, bool animated)
 		{
+		}
+
+		/// <summary>
+		/// Updates connection status.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">E.</param>
+		void UpdateStatus (object sender = null, EventArgs e = null)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+		}
+	}
+
+	/// <summary>
+	/// Custom annotation.
+	/// </summary>
+	public class CustomAnnotation : MKPointAnnotation
+	{
+
+		private int _locationID;
+
+		/// <summary>
+		/// Gets or sets the location I.
+		/// </summary>
+		/// <value>The location I.</value>
+		public int LocationID {
+			get {
+				return _locationID;
+			}
+			set {
+				_locationID = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the location I.
+		/// </summary>
+		/// <returns>The location I.</returns>
+		public int GetLocationID ()
+		{
+			return LocationID;
 		}
 	}
 }
