@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Drawing;
+using System.IO;
 
 using Foundation;
 using UIKit;
@@ -14,6 +15,8 @@ using Facebook.LoginKit;
 
 using MonoTouch.Dialog;
 using CustomElements;
+using OHouse.DRM;
+using AssetsLibrary;
 
 namespace OHouse
 {
@@ -22,46 +25,44 @@ namespace OHouse
 		Common common = new Common ();
 		TextField tf;
 		TextField stf;
-		string message;
 		UIImagePickerController imagePicker;
+		DataRequestManager drm;
+		UIImageView thumbnail;
+		UILabel imageURL;
 
-		private CLLocationCoordinate2D _userLocation;
-
-		public CLLocationCoordinate2D userLocation {
-			get {
-				return _userLocation;
-			}
-			set {
-				_userLocation = value;
-			}
-		}
-
-		public FormViewController () : base ("FormViewController", null)
+		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
 			Title = "Location";
 
+			drm = new DataRequestManager ();
+
 			this.NavigationItem.SetRightBarButtonItem (
 				new UIBarButtonItem (
-					UIImage.FromBundle ("images/icons/icon-mark"), UIBarButtonItemStyle.Plain, (ss, ee) => {
+					UIImage.FromBundle ("images/icons/icon-mark"), 
+					UIBarButtonItemStyle.Plain, 
+					(ss, ee) => {
 
-					if (GetDataFromTextField (tf) != "" && GetDataFromTextField (stf) != "") {
-						message = GetDataFromTextField (tf) + ", " + GetDataFromTextField (stf);
-					} else {
-						message = "Please insert data!!! MTFK!!";
+//						if(thumbnail.Image == null) {
+//							Console.WriteLine("nULL");
+//						}else {
+//							Stream bty = thumbnail.Image.AsPNG().AsStream();
+//						}
+
+						if (GetDataFromTextField (tf) != "" && GetDataFromTextField (stf) != "") {
+							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField (tf), GetDataFromTextField (stf), imageURL.Text.ToString (), coords.Longitude, coords.Latitude, 0, true), this);
+						} else {
+							UIAlertView av = new UIAlertView (
+								                 "Data Require",
+								                 "Please insert at least title for the location.",
+								                 null,
+								                 "Alright!",
+								                 null
+							                 );
+
+							av.Show ();
+						}
 					}
-
-					UIAlertView av = new UIAlertView (
-						                  "Data",
-						                  message,
-						                  null,
-						                  "OK",
-						                  null
-					                  );
-
-					av.Show ();
-					//NavigationController.PushViewController (new SubmitViewController (), true);	
-				}
 				),
 				true
 			);
@@ -115,7 +116,7 @@ namespace OHouse
 			CGRect tfRec = new CGRect (items.X, items.Y, items.Width, items.Height);
 			tf = new TextField (
 				tfRec,
-				common.ColorStyle_1, 
+				common.Black, 
 				"Title", 
 				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
 			);
@@ -124,14 +125,19 @@ namespace OHouse
 			CGRect stfRec = new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height);
 			stf = new TextField (
 				stfRec,
-				common.ColorStyle_1, 
+				common.Black, 
 				"Description", 
 				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
 			);
 
+			imageURL = new UILabel ();
+
 			// Camera upload
 			CGRect cameraRec = new CGRect (stf.Frame.X, stf.Frame.Y + stf.Frame.Height + 24, stf.Frame.Width, 40);
 			UIButton camera = new UIButton (cameraRec);
+
+			CGRect thumbnailRec = new CGRect (camera.Frame.X, camera.Frame.Y + camera.Frame.Height + 15, 75, 75);
+			thumbnail = new UIImageView (thumbnailRec);
 
 			CGRect cameraIconRec = new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16);
 			UIImageView cameraIcon = new UIImageView (cameraIconRec) {
@@ -144,6 +150,8 @@ namespace OHouse
 			camera.BackgroundColor = common.ColorStyle_1;
 			camera.AddSubview (cameraIcon);
 
+
+
 			// Action when pressed
 			camera.TouchUpInside += (sender, e) => {
 				// Create a new Alert Controller
@@ -155,7 +163,17 @@ namespace OHouse
 						"Choose from gallery",
 						UIAlertActionStyle.Default,
 						(action) => {
-							Console.WriteLine("WTF");
+							imagePicker = new UIImagePickerController ();
+							imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+
+							// set what media types
+							imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes (UIImagePickerControllerSourceType.PhotoLibrary);
+
+							imagePicker.FinishedPickingMedia += Handle_FinishPickingMedia;
+							imagePicker.Canceled += Handle_Canceled;
+
+							// show the picker
+							NavigationController.PresentModalViewController (imagePicker, true);
 						})
 				);
 				actionSheetAlert.AddAction (UIAlertAction.Create ("Take photo", UIAlertActionStyle.Default, (action) => Console.WriteLine ("Item Two pressed.")));
@@ -173,7 +191,9 @@ namespace OHouse
 				this.PresentViewController (actionSheetAlert, true, null);
 			};
 
-			sv.AddSubviews (tf, stf, camera);
+
+
+			sv.AddSubviews (tf, stf, camera, thumbnail);
 
 			View.AddSubview (sv);
 		}
@@ -183,7 +203,8 @@ namespace OHouse
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">E.</param>
-		protected void Handle_FinishPickingMedia(object sender, UIImagePickerMediaPickedEventArgs e) {
+		protected void Handle_FinishPickingMedia (object sender, UIImagePickerMediaPickedEventArgs e)
+		{
 			bool isImage = false;
 
 			switch (e.Info [UIImagePickerController.MediaType].ToString ()) {
@@ -197,10 +218,23 @@ namespace OHouse
 				break;
 			}
 
+			//NSUrl ip = e.Info [new NSString ("UIImagePickerControllerReferenceUrl")] as NSUrl;
+			//NSUrl ip = e.Info[UIImagePickerController] as NSUrl;
+			Console.WriteLine(Path.GetFileName(e.Info[UIImagePickerController.ReferenceUrl].ToString()));
+
+			//Console.WriteLine (ip.ToString ());
+			string ip = e.Info[UIImagePickerController.ReferenceUrl].ToString();
+
 			if (isImage) {
 				UIImage originalImage = e.Info [UIImagePickerController.OriginalImage] as UIImage;
+
+				imageURL.Text = ip.ToString ();
+				Console.WriteLine (imageURL.Text);
+
 				if (originalImage != null) {
 					// Do something with image source
+					thumbnail.Image = originalImage;
+
 				}
 			} else {
 				NSUrl mediaURL = e.Info [UIImagePickerController.MediaURL] as NSUrl;
@@ -209,6 +243,12 @@ namespace OHouse
 				}
 			}
 
+			imagePicker.DismissModalViewController (true);
+		}
+
+		void Handle_Canceled (object sender, EventArgs e)
+		{
+//			Console.WriteLine ("picker cancelled");
 			imagePicker.DismissModalViewController (true);
 		}
 

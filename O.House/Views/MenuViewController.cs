@@ -58,7 +58,6 @@ namespace OHouse
 			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 200));
 			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (0, 235, 255));
 			UIImage iconTL = UIImage.FromBundle ("images/icons/icon-timeline");
-			UIImage iconCdt = UIImage.FromBundle ("images/icons/icon-credit");
 			UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
 
 
@@ -75,11 +74,11 @@ namespace OHouse
 					new CustomElement ("Guide", () => NavigationController.PushViewController (new NearestDialogViewController (), true)) {
 						Image = iconMan,
 						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
-					},
-					new CustomElement ("Credit", () => NavigationController.PushViewController (new NearestDialogViewController (), true)) {
-						Image = iconCdt,
-						SubTitle = "Development teams and their members. Thank you!"
 					}
+//					new CustomElement ("Credit", () => NavigationController.PushViewController (new ScrollViewController (), true)) {
+//						Image = iconCdt,
+//						SubTitle = "Development teams and their members. Thank you!"
+//					}
 				}
 			};
 		}
@@ -87,6 +86,7 @@ namespace OHouse
 		public override void LoadView ()
 		{
 			base.LoadView ();
+
 			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 			//TableView.BackgroundColor = UIColor.FromRGBA(13,13,13, 200);
 			TableView.BackgroundColor = UIColor.Clear;

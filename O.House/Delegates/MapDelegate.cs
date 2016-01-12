@@ -85,7 +85,7 @@ namespace OHouse
 					}
 						
 					// For near toilet list page
-					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, dist));
+					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, dist, true));
 
 					CustomAnnotation point = new CustomAnnotation () {
 						LocationID = a.spot_id,

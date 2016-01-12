@@ -18,14 +18,15 @@ namespace CustomElements
 	{
 		private UIButton ShareBtn;
 
-		private UILabel Title;
+		//private UILabel Title;
+		private UIButton Title;
 		private UILabel Info;
 
 		private UILabel Count;
 
 		private UIButton LikeBtn;
 
-		private UIView Container;
+		private UIView Border;
 		//private UIImageView MapViewView;
 
 		private UIView customColorView = new UIView ();
@@ -34,17 +35,18 @@ namespace CustomElements
 
 		public TimelineCell (UITableViewCellStyle style, NSString id, UIImage mapView, string title, string info, int count) : base (style, id)
 		{
-			BackgroundColor = UIColor.Clear;
+			BackgroundColor = UIColor.White;
 
-			customColorView.BackgroundColor = UIColor.Clear;
+			customColorView.BackgroundColor = UIColor.White;
 			SelectedBackgroundView = customColorView;
 
-			Title = new UILabel () {
+			Title = new UIButton () {
 				Font = common.Font16F,
-				TextColor = common.ColorStyle_1,
-				TextAlignment = UITextAlignment.Left,
+				HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
+				TintColor = common.ColorStyle_1,
 				BackgroundColor = UIColor.Clear
 			};
+
 
 			Info = new UILabel () {
 				Font = common.Font13F,
@@ -59,47 +61,78 @@ namespace CustomElements
 			Count = new UILabel () {
 				Font = common.Font13F,
 				TextColor = common.Blackish,
-				TextAlignment = UITextAlignment.Left,
+				TextAlignment = UITextAlignment.Center,
 				BackgroundColor = UIColor.Clear
 			};
 
-			ShareBtn = new UIButton () {
-				BackgroundColor = UIColor.Clear
-			};
+//			ShareBtn = new UIButton () {
+//				BackgroundColor = UIColor.Clear
+//			};
 
-			ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
+
+
+			//ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 24, 24), UIControlState.Normal);
+			//ShareBtn.SetImage(UtilImage.RoundButton(UtilImage.ResizeImageKeepAspect (UtilImage.GetColoredImage ("images/icons/icon-share", common.White), 24, 24), new RectangleF(0, 0, 24, 24), common.ColorStyle_1, true), UIControlState.Normal);
+			//ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UtilImage.GetColoredImage ("images/icons/icon-share", common.White), 24, 24), UIControlState.Normal);
+			ShareBtn = UtilImage.RoundButton(
+				UtilImage.ResizeImageKeepAspect (
+					UtilImage.GetColoredImage (
+						"images/icons/icon-share", 
+						common.White
+					), 
+					24, 
+					24
+				), 
+				new RectangleF(0, 0, 35, 35), 
+				common.ColorStyle_1, 
+				true
+			);
+
+			ShareBtn.BackgroundColor = common.ColorStyle_1;
 			ShareBtn.TouchUpInside += (s, e) => {
 				UIAlertView alert = new UIAlertView ("hi", count.ToString (), null, "ok");
 				alert.Show ();
 			};
-					
-			LikeBtn = new UIButton () {
-				BackgroundColor = UIColor.Clear
-			};
 
-			LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 16, 16), UIControlState.Normal);
-
-//			MapViewView = new UIImageView () { 
-//				Image = mapView,
-//				BackgroundColor = UIColor.FromRGB (25, 25, 25)
-//			};
+			//LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 24, 24), UIControlState.Normal);
+			LikeBtn = UtilImage.RoundButton(
+				UtilImage.ResizeImageKeepAspect (
+					UtilImage.GetColoredImage (
+						"images/icons/icon-heart", 
+						common.White), 
+					24, 
+					24
+				),
+				new RectangleF(0, 0, 35, 35), 
+				common.ColorStyle_1,
+				true
+			);
+			//LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UtilImage.GetColoredImage ("images/icons/icon-heart", common.ColorStyle_1), 24, 24), UIControlState.Normal);
 
 			UpdateCell (mapView, title, info, count);
-			Container = new UIView () {
-				BackgroundColor = UIColor.White
+			Border = new UIView () {
+				BackgroundColor = UIColor.FromRGB (238, 238, 238)
 			};
-			//Container.AddSubviews (MapViewView, Title, Info, Count, ShareBtn, LikeBtn);
-			Container.AddSubviews (Title, Info, Count, ShareBtn, LikeBtn);
-
-			ContentView.Add (Container);
+			ContentView.AddSubviews (Title, Info, Count, ShareBtn, LikeBtn, Border);
 		}
 
 		public void UpdateCell (UIImage mapview, string title, string info, int count)
 		{
 			//MapViewView.Image = mapview;
-			Title.Text = title;
+			//Title.Title = title;
+			//Title.SetTitle(title, UIControlState.Normal);
+			NSAttributedString As = new NSAttributedString (title);
+			Title.SetAttributedTitle (As, UIControlState.Normal);
 			Info.Text = info;
 			Count.Text = count.ToString ();
+		}
+
+		public override void SetSelected (bool selected, bool animated)
+		{
+			base.SetSelected (selected, animated);
+			Border.BackgroundColor = UIColor.FromRGB (238, 238, 238);
+			ShareBtn.BackgroundColor = common.ColorStyle_1;
+			LikeBtn.BackgroundColor = common.ColorStyle_1;
 		}
 
 		public override void LayoutSubviews ()
@@ -108,33 +141,29 @@ namespace CustomElements
 
 			//CGRect full = ContentView.Bounds;
 			CGRect full = ContentView.Frame;
-			float padding = 15;
 
 			// UIView - container
-			Container.Frame = new CGRect (padding, padding, full.Width - (padding * 2), full.Height - padding);
-			CGRect CFull = Container.Frame;
-
-			// UIImageView mapView
-			//MapViewView.Frame = new CGRect (10, 10, CFull.Width - 20, 128);
+			Border.Frame = new CGRect (0, 0, full.Width, 2);
 
 			// UILabel title
-			//Title.Frame = new CGRect (10, MapViewView.Frame.Height + MapViewView.Frame.Y + 10, CFull.Width - 20, 24);
-			Title.Frame = new CGRect (10, 10, CFull.Width - 20, 24);
+			//Title.Frame = new CGRect (10, 10, CFull.Width - 20, 24);
+			Title.Frame = new CGRect (65, 12, full.Width - 65 + 15, 24);
 
 			// UILabe info
-			CGSize size = UIStringDrawing.StringSize (Info.Text, common.Font13F, new CGSize (CFull.Width, 60), UILineBreakMode.WordWrap);
-			Info.Frame = new CGRect (10, Title.Frame.Y + Title.Frame.Height, CFull.Width - 20, size.Height);
+			CGSize size = UIStringDrawing.StringSize (Info.Text, common.Font13F, new CGSize (full.Width, 60), UILineBreakMode.WordWrap);
+			//Info.Frame = new CGRect (10, Title.Frame.Y + Title.Frame.Height, CFull.Width - 20, size.Height);
+			Info.Frame = new CGRect (Title.Frame.X, Title.Frame.Y + Title.Frame.Height, Title.Frame.Width, size.Height);
 
 			// UIImage likeBtn
-			//LikeBtn.Frame = new CGRect (10, Info.Frame.Y + size.Height + 15, 16, 16);
-			LikeBtn.Frame = new CGRect (10, full.Height - 16 - 30, 16, 16);
+			LikeBtn.Frame = new CGRect (15, full.Height - 15 - 35, 35, 35);
 
 			// UILabel count
 			//Count.Frame = new CGRect (10 + LikeBtn.Frame.Width + 5, LikeBtn.Frame.Y, 16, 16);
-			Count.Frame = new CGRect (10 + LikeBtn.Frame.Width + 5, LikeBtn.Frame.Y, 16, 16);
+			Count.Frame = new CGRect (15, LikeBtn.Frame.Y - 28, 35, 35);
 
 			// UIButton shareBtn
-			ShareBtn.Frame = new CGRect (CFull.Width - 10 - 16, LikeBtn.Frame.Y, 16, 16);
+			//ShareBtn.Frame = new CGRect (CFull.Width - 10 - 16, LikeBtn.Frame.Y, 16, 16);
+			ShareBtn.Frame = new CGRect (15, 15, 35, 35);
 		}
 	}
 
@@ -165,6 +194,7 @@ namespace CustomElements
 			Tapped += tapped;
 		}
 
+
 		public override UITableViewCell GetCell (UITableView tv)
 		{
 			var cell = tv.DequeueReusableCell (Key);
@@ -181,9 +211,10 @@ namespace CustomElements
 		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath path)
 		{
 			base.Selected (dvc, tableView, path);
-			if (Tapped != null) {
-				Tapped ();
-			}
+//			if (Tapped != null) {
+//				Tapped ();
+//			}
+			//base.Selected (dvc, tableView, path);
 		}
 
 		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
@@ -338,7 +369,6 @@ namespace CustomElements
 
 			box.Layer.BorderWidth = 1f;
 			box.Layer.BorderColor = bordercolor.CGColor;
-			//box.Layer.CornerRadius = 3;
 
 			if (transparent)
 				bgcolor = UIColor.Clear;
@@ -378,53 +408,6 @@ namespace CustomElements
 			this.AddSubviews (box, lbl);
 		}
 	}
-
-	/// <summary>
-	/// Text field.
-	/// </summary>
-	//	public class TextField : UITextField
-	//	{
-	//		public UIEdgeInsets EdgeInsets { get; set; }
-	//
-	//		Common common = new Common();
-	//
-	//		public TextField (CGRect bounds, UIColor bordercolor, UIImage icon = null, bool transparent = true)
-	//		{
-	//			this.Frame = bounds;
-	//			UIColor bgcolor = null;
-	//
-	//			if (transparent == true)
-	//				bgcolor = UIColor.Clear;
-	//			else
-	//				bgcolor = UIColor.White;
-	//
-	//			BackgroundColor = bgcolor;
-	//			Font = common.Font13F;
-	//			TextColor = bordercolor;
-	//
-	//			//EdgeInsets = UIEdgeInsets.Zero;
-	//			Layer.BorderWidth = 1f;
-	//			Layer.BorderColor = bordercolor.CGColor;
-	//			Layer.CornerRadius = 3;
-	//			KeyboardType = UIKeyboardType.Default;
-	//			Layer.MasksToBounds = true;
-	//
-	//			if (icon != null) {
-	//				UIImageView iv = UtilImage.RoundImage (icon, new RectangleF ((float)bounds.Width - 16 - 10, (float)bounds.Height / 2 - 8, 16, 16), false);
-	//				AddSubview (iv);
-	//			}
-	//		}
-	//
-	//		public override CGRect TextRect (CGRect forBounds)
-	//		{
-	//			return CGRect.Inflate (forBounds, -20, 10);
-	//		}
-	//
-	//		public override CGRect EditingRect (CGRect forBounds)
-	//		{
-	//			return CGRect.Inflate (forBounds, -20, 10);
-	//		}
-	//	}
 
 	#endregion
 }

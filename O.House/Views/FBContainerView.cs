@@ -46,7 +46,7 @@ namespace OHouse
 				// register user
 				drm.RegisterUser(e.NewProfile.UserID);
 
-				new UIAlertView ("Login", "Welcome back! " + nameLabel.Text.ToString(), null, "Ok", null).Show ();
+				new UIAlertView ("Login", "Welcome back! " + nameLabel.Text.ToString(), null, "OK", null).Show ();
 			});
 
 			// The user image profile is set automatically once is logged in

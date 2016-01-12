@@ -50,15 +50,6 @@ namespace OHouse
 				rightBarBtnItem,
 				true
 			);
-
-			this.NavigationItem.SetLeftBarButtonItem (
-				new UIBarButtonItem (
-					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-					this.DismissModalViewController (true);
-				}
-				),
-				true
-			);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -116,6 +107,8 @@ namespace OHouse
 					}
 				}
 			};
+
+			//System.Text.Encoding.UTF8.GetString ();
 		}
 
 		public override void LoadView ()

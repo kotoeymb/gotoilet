@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 using Foundation;
 using UIKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+using AssetsLibrary;
 
 namespace OHouse.DRM
 {
@@ -15,6 +19,9 @@ namespace OHouse.DRM
 	/// </summary>
 	public class DataRequestManager
 	{
+
+		private static readonly Encoding encoding = Encoding.UTF8;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OHouse.DRM.DataRequestManager"/> class.
 		/// </summary>
@@ -155,7 +162,8 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <returns>The toilet list.</returns>
 		/// <param name="plistFileName">Plist file name.</param>
-		public List<ToiletsBase> GetToiletList(string plistFileName) {
+		public List<ToiletsBase> GetToiletList (string plistFileName)
+		{
 			List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
 
 			var path = NSBundle.MainBundle.PathForResource (plistFileName, "plist");
@@ -172,7 +180,7 @@ namespace OHouse.DRM
 				double distance = 0.0;
 
 				toiletsList.Add (
-					new ToiletsBase (Int32.Parse(idKey), Int32.Parse(voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance)	
+					new ToiletsBase (Int32.Parse (idKey), Int32.Parse (voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance, true)	
 				);
 			}
 			return toiletsList;
@@ -196,11 +204,11 @@ namespace OHouse.DRM
 
 				var idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
 
-				if (idKey != spot_id.ToString()) {
+				if (idKey != spot_id.ToString ()) {
 					continue;
 				}
 
-				idKey = obj.ValueForKey((NSString)"idKey").ToString();
+				idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
 				var titleKey = obj.ValueForKey ((NSString)"titleKey").ToString ();
 				var subtitleKey = obj.ValueForKey ((NSString)"subtitleKey").ToString ();
 				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
@@ -209,7 +217,7 @@ namespace OHouse.DRM
 				double distance = 0.0;
 
 				toiletsList.Add (
-					new ToiletsBase (Int32.Parse(idKey), Int32.Parse(voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance)	
+					new ToiletsBase (Int32.Parse (idKey), Int32.Parse (voteKey), titleKey, subtitleKey, "", double.Parse (longitudeKey), double.Parse (latitudeKey), distance, true)	
 				);
 			}
 			return toiletsList;
@@ -218,6 +226,12 @@ namespace OHouse.DRM
 		#endregion
 
 		#region Setters
+
+		public bool RegisterVote ()
+		{
+			return true;
+		}
+
 		/// <summary>
 		/// Registers the user.
 		/// If user exists or user successfully register, return true
@@ -258,8 +272,207 @@ namespace OHouse.DRM
 			return false;
 		}
 
+		public void RegisterSpot (ToiletsBase info, UIViewController modalViewController)
+		{
+			Uri setUrl = new Uri ("http://gstore.pcp.jp/api/reg_spot.php");
+			NameValueCollection postParameters = new NameValueCollection ();
+
+			NSUrl url = new NSUrl (info.picture);
+
+			ALAssetsLibrary assetLibrary = new ALAssetsLibrary ();
+			ALAsset asset = new ALAsset ();
+
+			assetLibrary.AssetForUrl (url, (ALAsset) => {
+				var rep = ALAsset.DefaultRepresentation;
+				string name = rep.Filename;
+
+				using (var stream = File.Open (name, FileMode.Open)) {
+					var files = new[] {
+						new UploadFile {
+							Name = "picture",
+							Filename = Path.GetFileName (info.picture),
+							ContentType = "text/plain",
+							Stream = stream
+						}
+					};
+				
+					postParameters.Add ("user_id", "default");
+					postParameters.Add ("title", info.title);
+					postParameters.Add ("sub_title", info.sub_title);
+					postParameters.Add ("latitude", info.latitude.ToString ());
+					postParameters.Add ("longitude", info.longitude.ToString ());
+				
+					byte[] result = UploadFiles (setUrl.ToString (), files, postParameters);
+					Console.WriteLine (Encoding.ASCII.GetString (result));
+				}
+
+			}, (NSError) => {
+				Console.WriteLine ("BOBOO");
+			});
+		}
+
+		/// <summary>
+		/// Registers the spot.
+		/// </summary>
+		/// <returns><c>true</c>, if spot was registered, <c>false</c> otherwise.</returns>
+		/// <param name="info">Info.</param>
+		//		public void RegisterSpot (ToiletsBase info, UIViewController modalViewController)
+		//		{
+		//			Uri setUrl = new Uri("http://gstore.pcp.jp/api/reg_spot.php");
+		//
+		//			WebClient request = new WebClient ();
+		//			NameValueCollection postParameters = new NameValueCollection ();
+		//
+		//			postParameters.Add ("user_id", "default");
+		//			postParameters.Add ("title", info.title);
+		//			postParameters.Add ("sub_title", info.sub_title);
+		//			postParameters.Add ("latitude", info.latitude.ToString ());
+		//			postParameters.Add ("longitude", info.longitude.ToString ());
+		//			//postParameters.Add ("picture", info.picture);
+		//
+		//			//request.UploadValuesCompleted += UploadValuesCompletedEvent;
+		//			request.UploadValuesCompleted += (object sender, UploadValuesCompletedEventArgs e) => {
+		//				string result = Encoding.UTF8.GetString (e.Result);
+		//				var json = JObject.Parse (result);
+		//				bool responseStatus = (bool)json ["status"];
+		//
+		//				Console.WriteLine(info.picture + ":" + responseStatus.ToString());
+		//
+		//				if (responseStatus) {
+		//
+		////					request.UploadFileCompleted += UploadFileCompletedEvent;
+		////					request.UploadFileAsync(setUrl, info.picture);
+		//					byte[] response = request.UploadFile(setUrl, info.picture);
+		//					Console.WriteLine(Encoding.ASCII.GetString(response));
+		//
+		//					//this.DismissModalViewController (true);
+		//				} else {
+		//					UIAlertView av = new UIAlertView (
+		//						"Error",
+		//						"Sorry for any incovenience, the data post has occured an error. Please try again!",
+		//						null,
+		//						"OK",
+		//						null
+		//					);
+		//
+		//					av.Show ();
+		//				}
+		//			};
+		//
+		//			request.UploadValuesAsync (setUrl, postParameters);
+		//
+		//			modalViewController.DismissModalViewController (true);
+		//		}
+
+		public class UploadFile
+		{
+			public UploadFile ()
+			{
+				ContentType = "application/octet-stream";
+			}
+
+			public string Name { get; set; }
+
+			public string Filename { get; set; }
+
+			public string ContentType { get; set; }
+
+			public Stream Stream { get; set; }
+		}
+
+		public byte[] UploadFiles (string address, IEnumerable<UploadFile> files, NameValueCollection values)
+		{
+			var request = WebRequest.Create (address);
+			request.Method = "POST";
+			var boundary = "---------------------------" + DateTime.Now.Ticks.ToString ();
+			request.ContentType = "multipart/form-data; boundary=" + boundary;
+			boundary = "--" + boundary;
+
+			using (var requestStream = request.GetRequestStream ()) {
+				// Write the values
+				foreach (string name in values.Keys) {
+					var buffer = Encoding.ASCII.GetBytes (boundary + Environment.NewLine);
+					requestStream.Write (buffer, 0, buffer.Length);
+					buffer = Encoding.ASCII.GetBytes (string.Format ("Content-Disposition: form-data; name=\"{0}\"{1}{1}", name, Environment.NewLine));
+					requestStream.Write (buffer, 0, buffer.Length);
+					buffer = Encoding.UTF8.GetBytes (values [name] + Environment.NewLine);
+					requestStream.Write (buffer, 0, buffer.Length);
+				}
+
+				// Write the files
+				foreach (var file in files) {
+					var buffer = Encoding.ASCII.GetBytes (boundary + Environment.NewLine);
+					requestStream.Write (buffer, 0, buffer.Length);
+					buffer = Encoding.UTF8.GetBytes (string.Format ("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"{2}", file.Name, file.Filename, Environment.NewLine));
+					requestStream.Write (buffer, 0, buffer.Length);
+					buffer = Encoding.ASCII.GetBytes (string.Format ("Content-Type: {0}{1}{1}", file.ContentType, Environment.NewLine));
+					requestStream.Write (buffer, 0, buffer.Length);
+					file.Stream.CopyTo (requestStream);
+					buffer = Encoding.ASCII.GetBytes (Environment.NewLine);
+					requestStream.Write (buffer, 0, buffer.Length);
+				}
+
+				var boundaryBuffer = Encoding.ASCII.GetBytes (boundary + "--");
+				requestStream.Write (boundaryBuffer, 0, boundaryBuffer.Length);
+			}
+
+			using (var response = request.GetResponse ())
+			using (var responseStream = response.GetResponseStream ())
+			using (var stream = new MemoryStream ()) {
+				responseStream.CopyTo (stream);
+				return stream.ToArray ();
+			}
+		}
+
+		void UploadFileCompletedEvent (object sender, UploadFileCompletedEventArgs e)
+		{
+			UIAlertView av = new UIAlertView (
+				                 "Thank you !!",
+				                 "Thank you for coorporation with us by sending us the new toilet spots. We hope your locaiton approved soon!",
+				                 null,
+				                 "OK",
+				                 null
+			                 );
+
+			av.Show ();
+		}
+
+		/// <summary>
+		/// Uploads the values completed event.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">E.</param>
+		void UploadValuesCompletedEvent (object sender, UploadValuesCompletedEventArgs e)
+		{
+			string result = Encoding.UTF8.GetString (e.Result);
+			var json = JObject.Parse (result);
+			bool responseStatus = (bool)json ["status"];
+
+			if (responseStatus) {
+				UIAlertView av = new UIAlertView (
+					                 "Thank you !!",
+					                 "Thank you for coorporation with us by sending us the new toilet spots. We hope your locaiton approved soon!",
+					                 null,
+					                 "OK",
+					                 null
+				                 );
+
+				av.Show ();
+
+				//this.DismissModalViewController (true);
+			} else {
+				UIAlertView av = new UIAlertView (
+					                 "Error",
+					                 "Sorry for any incovenience, the data post has occured an error. Please try again!",
+					                 null,
+					                 "OK",
+					                 null
+				                 );
+
+				av.Show ();
+			}
+		}
+
 		#endregion
-
-
 	}
 }

@@ -20,7 +20,9 @@ namespace OHouse
 
 		public double distance { get; set; }
 
-		public ToiletsBase (int spot_id, int vote_cnt, string title, string sub_title, string picture, double longitude, double latitude, double distance)
+		public bool status { get; set;}
+
+		public ToiletsBase (int spot_id, int vote_cnt, string title, string sub_title, string picture, double longitude, double latitude, double distance, bool status)
 		{
 			this.spot_id = spot_id;
 			this.vote_cnt = vote_cnt;
@@ -30,6 +32,7 @@ namespace OHouse
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.distance = distance;
+			this.status = status;
 		}
 	}
 }

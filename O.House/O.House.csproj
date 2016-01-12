@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -114,6 +114,7 @@
     <None Include="Entitlements.plist" />
     <None Include="Views.exclude\MenuDialogViewController.cs" />
     <None Include="Views.exclude\InfoDialogViewController.cs" />
+    <None Include="Views.exclude\List.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -201,7 +202,6 @@
     <BundleResource Include="Resources\images\icons\icon-pin.png" />
     <BundleResource Include="Resources\images\icons\icon-pin%402x.png" />
     <BundleResource Include="Resources\images\background\bg-0.png" />
-    <BundleResource Include="Resources\images\icons\icon-heart.png" />
     <BundleResource Include="Resources\images\icons\icon-share.png" />
     <BundleResource Include="Resources\images\icons\icon-timeline.png" />
     <BundleResource Include="Resources\images\background\bg-map.png" />
@@ -209,6 +209,7 @@
     <BundleResource Include="Resources\images\icons\icon-notes.png" />
     <BundleResource Include="Resources\database\Toilets.orig.plist" />
     <BundleResource Include="Resources\database\Toilets.plist" />
+    <BundleResource Include="Resources\images\icons\icon-heart.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

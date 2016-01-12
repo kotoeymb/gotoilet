@@ -21,7 +21,7 @@ namespace OHouse
 	{
 		public static LocationUtil Manager { get; set; }
 
-		NetworkStatus remoteHostStatus,internetStatus, localWifiStatus;
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 		bool networkStatus;
 
 		UIButton addLocationButton;
@@ -30,7 +30,7 @@ namespace OHouse
 		float h = 50;
 
 		Common common = new Common ();
-		FormViewController form = new FormViewController ();
+		FormViewController form;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
@@ -69,27 +69,6 @@ namespace OHouse
 			mapV.ZoomEnabled = true;
 			mapV.ScrollEnabled = true;
 
-//			if (mapV.UserLocation != null) {
-//				CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
-//
-//				UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
-//					                                  "Near", 
-//					                                  UIBarButtonItemStyle.Plain, 
-//					                                  (s, e) => {
-//						NavigationController.PushViewController (
-//							new NearestDialogViewController (), 
-//							true);
-//					});
-//
-//				rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
-//
-//				// Get nearest location button
-//				this.NavigationItem.SetRightBarButtonItem (
-//					rightBarBtnItem,
-//					true
-//				);
-//			}
-
 			// Create button for MyLocation
 			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-pin"), w, h);
 			myLocationButton = UtilImage.RoundButton (
@@ -115,16 +94,22 @@ namespace OHouse
 					mapV.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
 				}
 			};
-
-			// Action for Create location button
+				
 			addLocationButton.TouchUpInside += (sender, e) => {
-				UINavigationController nav = new UINavigationController (form);
-				this.PresentViewController (nav, true, () => {
-				});
+				if (mapV.UserLocation != null) {
+
+					CLLocationCoordinate2D userloc = mapV.UserLocation.Coordinate;
+					form = new FormViewController (userloc);
+
+					UINavigationController nav = new UINavigationController (form);
+					this.PresentViewController (nav, true, () => {
+					});
+				}
 			};
 
-			mapV.AddSubview (myLocationButton);
 			mapV.AddSubview (addLocationButton);
+			mapV.AddSubview (myLocationButton);
+
 			View.AddSubview (mapV);
 		}
 
