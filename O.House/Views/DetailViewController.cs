@@ -1,7 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
-
+using CoreGraphics;
+using System.Drawing;
 using Foundation;
 using UIKit;
 using Commons;
@@ -12,15 +13,24 @@ using OHouse.Connectivity;
 
 namespace OHouse
 {
+
+
 	/// <summary>
 	/// Detail view controller.
 	/// </summary>
+	/// 
+	/// 
 	public partial class DetailViewController : UIViewController
 	{
 		DataRequestManager drm;
 		List<ToiletsBase> tb;
 		Common common;
 		ConnectionManager connMgr;
+		UIView DView;
+		UILabel label1;
+		UILabel label2;
+		UIButton buttonRect;
+		UIImageView ImageView;
 
 		public DetailViewController (int datas) : base ("DetailViewController", null)
 		{
@@ -64,12 +74,56 @@ namespace OHouse
 		{
 			base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
-			
-			// Perform any additional setup after loading the view, typically from a nib.
-			DialogView detail = new DialogView (tb);
-			View.AddSubview (detail.View);
+
+
+			DView = new UIView();
+			DView.Frame = new CGRect (10, 100,300, 400);
+
+			buttonRect = UIButton.FromType (UIButtonType.RoundedRect);
+			buttonRect.SetTitle ("", UIControlState.Normal);
+			buttonRect.Frame = new RectangleF (0,0,(float)View.Frame.Width,(float) View.Frame.Height);
+			buttonRect.BackgroundColor = UIColor.Clear;
+			buttonRect.TouchUpInside += CloseButtonClicked;
+
+
+			ImageView = new UIImageView();
+			if (tb [0].picture != null && tb [0].picture != "") {
+				ImageView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (tb [0].picture),(float)View.Frame.Width, 100);
+				ImageView.Frame = new CGRect (10, 10, 280, 250);
+				label1 = new UILabel () {
+					TextColor = UIColor.Black,
+					Font = common.Font16F,
+				};
+				label1.Text =tb [0].title;
+				label1.Frame = new CGRect (10, 250, View.Frame.Width, 100);
+
+				label2 = new UILabel () {
+					TextColor = UIColor.Black,
+					Font = common.Font16F,
+				};
+				label2.Text =  tb [0].latitude + ", " + tb [0].longitude;
+				label2.Frame = new CGRect (10, 300,View.Frame.Width, 100);
+
+
+				DView.BackgroundColor = UIColor.White;
+
+				View.Add (buttonRect);
+
+				DView.Add (ImageView);
+				DView.Add(label1);
+				DView.Add(label2);
+				View.AddSubview(DView);
+			};
 		}
+
+		void CloseButtonClicked (object sender, EventArgs e)
+		{
+
+			this.View.RemoveFromSuperview();
+			this.RemoveFromParentViewController();
+		}
+
+
 	}
 
 	/// <summary>
