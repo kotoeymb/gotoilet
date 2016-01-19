@@ -68,7 +68,7 @@
       <HintPath>..\Library\Json\ios-unified\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Facebook">
-      <HintPath>..\..\..\..\Desktop\ToeImagePrj\O.House\bin\iPhone\Debug\Facebook.dll</HintPath>
+      <HintPath>..\Library\Facebook\ios-unified\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -69,7 +69,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CFBundleIdentifier</key>
-	<string>com.pcpmyanmar.ohouse</string>
+	<string>com.pcpmyanmar.forallsearvice</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

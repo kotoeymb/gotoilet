@@ -178,16 +178,6 @@ namespace OHouse
 		/// <param name="mapView">Map view.</param>
 		/// <param name="view">View.</param>
 		/// <param name="control">Control.</param>
-//		public override void CalloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control)
-//		{
-//			CustomAnnotation id = view.Annotation as CustomAnnotation;
-//
-//			int datas = id.GetLocationID ();
-//			DetailViewController infoView = new DetailViewController (datas);
-//			UINavigationController nav = new UINavigationController (infoView);
-//			parent.PresentViewController (nav, true, () => {
-//			});
-//		}
 
 
 		public override void CalloutAccessoryControlTapped (MKMapView mapView, MKAnnotationView view, UIControl control)
@@ -196,21 +186,24 @@ namespace OHouse
 
 			int datas = id.GetLocationID ();
 			DetailViewController infoView = new DetailViewController (datas);
-			UINavigationController nav = new UINavigationController (infoView);
-			parent.PresentViewController (nav, true, () => {
+				
 
-
+			parent.AddChildViewController (infoView);
+			parent.DidMoveToParentViewController (parent);
+			parent.View.AddSubview(infoView.View);
 				UIView.Animate (
-					0.25,
+					0.1,
 					() => {
 						infoView.View.Alpha = 0.9f;
+					    
 
-						infoView.View.BackgroundColor = UIColor.Black;
+					infoView.View.BackgroundColor = UIColor.LightGray;
+					   
+
 		
-					}
-				);
-			});
-		}
+					}); 
+			
+		}	
 		/// <summary>
 		/// Overlaies the renderer.
 		/// </summary>
