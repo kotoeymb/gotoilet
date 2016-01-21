@@ -107,6 +107,9 @@ namespace OHouse
 				}
 			};
 
+
+
+				
 			mapV.AddSubview (addLocationButton);
 			mapV.AddSubview (myLocationButton);
 
