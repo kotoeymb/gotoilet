@@ -120,9 +120,12 @@ namespace OHouse
 						new TimelineElement (() => {
 							NavigationController.PushViewController(new DetailViewController(d.spot_id), true);
 						}) {
+							
 							Count = d.vote_cnt,
 							Header = d.title,
-							Description = d.sub_title
+							//Description = d.sub_title,
+							Description = d.latitude + "," + d.longitude
+
 						}
 					);
 				}

@@ -7,6 +7,7 @@ using CoreGraphics;
 using CoreAnimation;
 using Commons;
 using Utils;
+using Facebook.ShareKit;
 
 namespace CustomElements
 {
@@ -31,6 +32,8 @@ namespace CustomElements
 
 		private UIView customColorView = new UIView ();
 
+		private ShareButton shareButton;
+
 		Common common = new Common ();
 
 		public TimelineCell (UITableViewCellStyle style, NSString id, UIImage mapView, string title, string info, int count) : base (style, id)
@@ -40,13 +43,23 @@ namespace CustomElements
 			customColorView.BackgroundColor = UIColor.White;
 			SelectedBackgroundView = customColorView;
 
+			ShareLinkContent slc = new ShareLinkContent ();
+			slc.SetContentUrl (new NSUrl ("https://www.google.com.mm/maps/place/" + info));
+			slc.ContentTitle = title;
+
+			shareButton = new ShareButton (new CGRect (0, 0, 34, 34)) {
+				BackgroundColor = common.ColorStyle_1
+			};
+
+			shareButton.SetShareContent (slc);
+
 			Title = new UIButton () {
 				Font = common.Font16F,
 				HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
 				TintColor = common.ColorStyle_1,
 				BackgroundColor = UIColor.Clear
 			};
-
+					
 
 			Info = new UILabel () {
 				Font = common.Font13F,
@@ -74,7 +87,7 @@ namespace CustomElements
 			//ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 24, 24), UIControlState.Normal);
 			//ShareBtn.SetImage(UtilImage.RoundButton(UtilImage.ResizeImageKeepAspect (UtilImage.GetColoredImage ("images/icons/icon-share", common.White), 24, 24), new RectangleF(0, 0, 24, 24), common.ColorStyle_1, true), UIControlState.Normal);
 			//ShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UtilImage.GetColoredImage ("images/icons/icon-share", common.White), 24, 24), UIControlState.Normal);
-			ShareBtn = UtilImage.RoundButton(
+			ShareBtn = UtilImage.RoundButton (
 				UtilImage.ResizeImageKeepAspect (
 					UtilImage.GetColoredImage (
 						"images/icons/icon-share", 
@@ -83,19 +96,19 @@ namespace CustomElements
 					24, 
 					24
 				), 
-				new RectangleF(0, 0, 35, 35), 
+				new RectangleF (0, 0, 35, 35), 
 				common.ColorStyle_1, 
 				true
 			);
 
 			ShareBtn.BackgroundColor = common.ColorStyle_1;
 			ShareBtn.TouchUpInside += (s, e) => {
-				UIAlertView alert = new UIAlertView ("hi", count.ToString (), null, "ok");
+				UIAlertView alert = new UIAlertView (title, count.ToString (), null, "ok");
 				alert.Show ();
 			};
 
 			//LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 24, 24), UIControlState.Normal);
-			LikeBtn = UtilImage.RoundButton(
+			LikeBtn = UtilImage.RoundButton (
 				UtilImage.ResizeImageKeepAspect (
 					UtilImage.GetColoredImage (
 						"images/icons/icon-heart", 
@@ -103,7 +116,7 @@ namespace CustomElements
 					24, 
 					24
 				),
-				new RectangleF(0, 0, 35, 35), 
+				new RectangleF (0, 0, 35, 35), 
 				common.ColorStyle_1,
 				true
 			);
@@ -113,7 +126,7 @@ namespace CustomElements
 			Border = new UIView () {
 				BackgroundColor = UIColor.FromRGB (238, 238, 238)
 			};
-			ContentView.AddSubviews (Title, Info, Count, ShareBtn, LikeBtn, Border);
+			ContentView.AddSubviews (Title, Info, Count, LikeBtn, Border, shareButton);
 		}
 
 		public void UpdateCell (UIImage mapview, string title, string info, int count)
@@ -146,24 +159,22 @@ namespace CustomElements
 			Border.Frame = new CGRect (0, 0, full.Width, 2);
 
 			// UILabel title
-			//Title.Frame = new CGRect (10, 10, CFull.Width - 20, 24);
 			Title.Frame = new CGRect (65, 12, full.Width - 65 + 15, 24);
 
 			// UILabe info
 			CGSize size = UIStringDrawing.StringSize (Info.Text, common.Font13F, new CGSize (full.Width, 60), UILineBreakMode.WordWrap);
-			//Info.Frame = new CGRect (10, Title.Frame.Y + Title.Frame.Height, CFull.Width - 20, size.Height);
 			Info.Frame = new CGRect (Title.Frame.X, Title.Frame.Y + Title.Frame.Height, Title.Frame.Width, size.Height);
 
 			// UIImage likeBtn
 			LikeBtn.Frame = new CGRect (15, full.Height - 15 - 35, 35, 35);
 
 			// UILabel count
-			//Count.Frame = new CGRect (10 + LikeBtn.Frame.Width + 5, LikeBtn.Frame.Y, 16, 16);
+
 			Count.Frame = new CGRect (15, LikeBtn.Frame.Y - 28, 35, 35);
 
 			// UIButton shareBtn
-			//ShareBtn.Frame = new CGRect (CFull.Width - 10 - 16, LikeBtn.Frame.Y, 16, 16);
-			ShareBtn.Frame = new CGRect (15, 15, 35, 35);
+			//ShareBtn.Frame = new CGRect (15, 15, 35, 35);
+			shareButton.Frame = new CGRect (15, 15, 35, 35);
 		}
 	}
 
