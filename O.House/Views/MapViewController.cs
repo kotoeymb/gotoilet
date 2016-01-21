@@ -70,23 +70,29 @@ namespace OHouse
 			mapV.ScrollEnabled = true;
 
 			// Create button for MyLocation
-			var myLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-pin"), w, h);
-			myLocationButton = UtilImage.RoundButton (
-				myLocation, 
-				new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h),
-				common.ColorStyle_1,
-				false
-			);
+			myLocationButton = new UIButton (UIButtonType.System);
+			myLocationButton.TintColor = UIColor.White;
+			myLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-pin"), UIControlState.Normal);
+			myLocationButton.BackgroundColor = common.ColorStyle_1;
+			myLocationButton.Frame = new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h);
+			myLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
+			myLocationButton.Layer.ShadowOffset = new CGSize (0,2);
+			myLocationButton.Layer.ShadowOpacity = 1f;
+			myLocationButton.Layer.ShadowRadius = 2;
+			myLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
 
 			// Create button for Add location
-			var addLocation = UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-add"), w, h);
-			addLocationButton = UtilImage.RoundButton (
-				addLocation, 
-				new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h), 
-				common.ColorStyle_1,
-				false
-			);
-				
+			addLocationButton = new UIButton (UIButtonType.System);
+			addLocationButton.TintColor = UIColor.White;
+			addLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-add"), UIControlState.Normal);
+			addLocationButton.BackgroundColor = common.ColorStyle_1;
+			addLocationButton.Frame = new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h);
+			addLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
+			addLocationButton.Layer.ShadowOffset = new CGSize (0,2);
+			addLocationButton.Layer.ShadowOpacity = 1f;
+			addLocationButton.Layer.ShadowRadius = 2;
+			addLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
+
 			// Action for MyLocation button
 			myLocationButton.TouchUpInside += (sender, e) => {
 				if (mapV.UserLocation != null) {

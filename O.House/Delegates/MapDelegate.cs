@@ -197,7 +197,7 @@ namespace OHouse
 						infoView.View.Alpha = 0.9f;
 					    
 
-					infoView.View.BackgroundColor = UIColor.LightGray;
+					infoView.View.BackgroundColor = UIColor.Clear;
 					   
 
 		

@@ -80,8 +80,13 @@ namespace OHouse
 			DView.BackgroundColor = UIColor.White;
 			DView.Frame = new CGRect (25, View.Frame.Width / 2.5, 270, 350);
 			DView.Layer.BorderWidth = 1f;
-			DView.Layer.BorderColor = new CGColor (255, 255, 255);
+			DView.Layer.BorderColor = new CGColor (112,128,144);
 			DView.Layer.CornerRadius = 10f;
+
+			DView.Layer.ShadowOffset = new CGSize (2,2);
+			DView.Layer.ShadowOpacity = 1f;
+			DView.Layer.ShadowRadius = 1;
+			DView.Layer.ShadowColor = new CGColor(0,0,0);
 
 			buttonRect = UIButton.FromType (UIButtonType.RoundedRect);
 			buttonRect.SetTitle ("", UIControlState.Normal);
