@@ -50,7 +50,7 @@ namespace OHouse
 //						}
 
 						if (GetDataFromTextField (tf) != "" && GetDataFromTextField (stf) != "") {
-							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField (tf), GetDataFromTextField (stf), imageURL.Text.ToString (), coords.Longitude, coords.Latitude, 0, true), this);
+							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField (tf), GetDataFromTextField (stf), "", coords.Longitude, coords.Latitude, 0, true), this);
 						} else {
 							UIAlertView av = new UIAlertView (
 								                 "Data Require",
