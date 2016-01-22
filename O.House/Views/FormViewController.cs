@@ -43,12 +43,6 @@ namespace OHouse
 					UIBarButtonItemStyle.Plain, 
 					(ss, ee) => {
 
-//						if(thumbnail.Image == null) {
-//							Console.WriteLine("nULL");
-//						}else {
-//							Stream bty = thumbnail.Image.AsPNG().AsStream();
-//						}
-
 						if (GetDataFromTextField (tf) != "" && GetDataFromTextField (stf) != "") {
 							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField (tf), GetDataFromTextField (stf), "", coords.Longitude, coords.Latitude, 0, true), this);
 						} else {
@@ -99,9 +93,9 @@ namespace OHouse
 		/// </summary>
 		void SetupUI ()
 		{
-			UIScrollView sv = new UIScrollView (View.Bounds);
+			UIScrollView sv = new UIScrollView (this.NavigationController.View.Bounds);
 
-			CGRect screen = View.Bounds;
+			CGRect screen = this.NavigationController.View.Bounds;
 			sv.BackgroundColor = UIColor.FromRGBA (255, 255, 255, 240);
 			float sw = (float)screen.Width;
 			float sh = (float)screen.Height;

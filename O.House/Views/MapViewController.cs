@@ -58,11 +58,10 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			CGRect screen = View.Bounds;
+			CGRect screen = this.NavigationController.View.Bounds;
 
 			// Create MKMapView and set bounds to fit with the UIScreen
-			var mapV = new MKMapView (View.Bounds);
+			var mapV = new MKMapView (screen);
 			mapV.Delegate = new MapDelegate (this);
 
 			mapV.ShowsUserLocation = true;
