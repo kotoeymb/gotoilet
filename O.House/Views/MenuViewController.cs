@@ -71,10 +71,10 @@ namespace OHouse
 						Image = iconFind,
 						SubTitle = "Find nearest toilets within 500 m from your location!"
 					},
-					new CustomElement ("Guide", () => NavigationController.PushViewController (new NearestDialogViewController (), true)) {
-						Image = iconMan,
-						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
-					}
+//					new CustomElement ("Guide", () => NavigationController.PushViewController (new TestListVC (), true)) {
+//						Image = iconMan,
+//						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
+//					}
 //					new CustomElement ("Credit", () => NavigationController.PushViewController (new ScrollViewController (), true)) {
 //						Image = iconCdt,
 //						SubTitle = "Development teams and their members. Thank you!"

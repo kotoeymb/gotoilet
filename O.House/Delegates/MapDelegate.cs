@@ -190,20 +190,15 @@ namespace OHouse
 
 			parent.AddChildViewController (infoView);
 			parent.DidMoveToParentViewController (parent);
-			parent.View.AddSubview(infoView.View);
-				UIView.Animate (
-					0.1,
-					() => {
-						infoView.View.Alpha = 0.9f;
-					    
+			parent.View.AddSubview (infoView.View);
+			UIView.Animate (
+				0.1,
+				() => {
+					infoView.View.Alpha = 0.9f;
+					infoView.View.BackgroundColor = UIColor.Black;
+				}); 
+		}
 
-					infoView.View.BackgroundColor = UIColor.Clear;
-					   
-
-		
-					}); 
-			
-		}	
 		/// <summary>
 		/// Overlaies the renderer.
 		/// </summary>

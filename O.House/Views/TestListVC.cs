@@ -1,53 +1,29 @@
-﻿
-using System;
-using System.Drawing;
+﻿using System;
 using System.Collections.Generic;
-
+using System.Drawing;
 using Foundation;
-using UIKit;
-using MonoTouch.Dialog;
-using Commons;
-using CustomElements;
-using Utils;
 using OHouse.DRM;
+using Utils;
+using Facebook.ShareKit;
+using Commons;
 using CoreGraphics;
 
-using Facebook.ShareKit;
+using UIKit;
 
 namespace OHouse
 {
-	public partial class TimelineViewController : UIViewController
+	public partial class TestListVC : UIViewController
 	{
 		Feed feed;
 		DataRequestManager drm;
 
-		public TimelineViewController () : base ("TimelineViewController", null)
+		public TestListVC () : base ("TestListVC", null)
 		{
-			Title = "Timeline";
-		}
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
 		}
 
 		public override void ViewDidLoad ()
 		{
-//			base.ViewDidLoad ();
-//
-//			TimelineDialogViewController tdvc = new TimelineDialogViewController ();
-//
-//			//View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
-//
-//			this.AddChildViewController (tdvc);
-//			this.View.AddSubview (tdvc.View);
-//
-//			this.View.BackgroundColor = UIColor.Black;
-//			
-//			// Perform any additional setup after loading the view, typically from a nib.
+			base.ViewDidLoad ();
 
 			feed = new Feed ();
 			drm = new DataRequestManager ();
@@ -64,114 +40,26 @@ namespace OHouse
 			// Perform any additional setup after loading the view, typically from a nib.
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
 
+//			tbl.DataSource = new TableSource (chunk, newPost);
 			tbl.Source = new TableSource (chunk, newPost);
+//			tbl.RowHeight = 120f;
+//			tbl.EstimatedRowHeight = 80f;
+//			tbl.ReloadData ();
 
 			View = tbl;
 		}
-	}
 
-//	/// <summary>
-//	/// Menu dialog view controller.
-//	/// </summary>
-//	public partial class TimelineDialogViewController : DialogViewController
-//	{
-//		DataRequestManager drm;
-//		List<ToiletsBase> tb;
-//		Section section;
-//
-//		bool dataLoaded;
-//
-//		/// <summary>
-//		/// Initializes a new instance of the <see cref="OHouse.TimelineDialogViewController"/> class.
-//		/// </summary>
-//		public TimelineDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
-//		{
-////			drm = new DataRequestManager ();
-////			tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-////
-////			startIndex = 2;
-////			endIndex = 4;
-////
-////			//Console.WriteLine (tb.Count);
-////
-////			section = new Section ("");
-////
-////			for (var i = startIndex - 1; i < tb.Count; i++) {
-////				Console.WriteLine (tb [i].spot_id);
-////			}
-////
-////			foreach (var d in tb) {
-////				section.Add (
-////					new TimelineElement (() => {
-////						NavigationController.PushViewController (new SubmitViewController (), true);
-////					}) {
-////						Count = d.vote_cnt,
-////						Header = d.title,
-////						Description = d.sub_title
-////					}
-////				);
-////			}
-////
-////			Root = new RootElement ("Timeline") {
-////				section
-////			};
-//		}
-//
-//		public override void ViewDidLoad ()
-//		{
-//			base.ViewDidLoad ();
-//			dataLoaded = false;
-//		}
-//
-//		public override void ViewDidAppear (bool animated)
-//		{
-//			base.ViewDidAppear (animated);
-//
-//			var limit = 0;
-//
-//			if (!dataLoaded) {
-//
-//				drm = new DataRequestManager ();
-//				tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-//
-//				section = new Section ("");
-//
-//				foreach (var d in tb) {
-//
-////					if (limit >= 4) {
-////						break;
-////					}
-//
-//					limit++;
-//
-//					section.Add (
-//						new TimelineElement (() => {
-//							NavigationController.PushViewController(new DetailViewController(d.spot_id), true);
-//						}) {
-//							
-//							Count = d.vote_cnt,
-//							Header = d.title,
-//							Description = d.latitude + "," + d.longitude
-//
-//						}
-//					);
-//				}
-//
-//				Root = new RootElement ("Timeline") {
-//					section
-//				};
-//				dataLoaded = true;
-//			}
-//
-//		}
-//
-//		public override void LoadView ()
-//		{
-//			base.LoadView ();
-//			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-//			TableView.BackgroundColor = UIColor.FromRGB (238, 238, 238);
-//		}
-//	}
+		public override void DidReceiveMemoryWarning ()
+		{
+			base.DidReceiveMemoryWarning ();
+			// Release any cached data, images, etc that aren't in use.
+		}
+
+		/// <summary>
+		/// Return 5 posts
+		/// </summary>
+		/// <returns>The posts.</returns>
+	}
 
 	public class TableSource : UITableViewSource
 	{
@@ -206,8 +94,8 @@ namespace OHouse
 			int count = posts.Count;
 
 			int totalRows = (int)tableView.NumberOfRowsInSection (0);
-			//			Console.WriteLine (totalRows); ///logged
-			//			Console.WriteLine(row + ":" + totalRows); ///logged
+//			Console.WriteLine (totalRows); ///logged
+//			Console.WriteLine(row + ":" + totalRows); ///logged
 
 			if (row == totalRows - 1) {
 				//cell = tableView.DequeueReusableCell (moreCellId) as TimelineCell;
@@ -231,14 +119,14 @@ namespace OHouse
 				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
 
 				if (cell == null) {
-					//					cell = new UITableViewCell (UITableViewCellStyle.Default, postCellId);
+//					cell = new UITableViewCell (UITableViewCellStyle.Default, postCellId);
 
 					cell = new TimelineCell((NSString)postCellId);
 					((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
 				}
 
-				//				ToiletsBase currentPost = posts [indexPath.Row];
-				//				cell.TextLabel.Text = currentPost.title;
+//				ToiletsBase currentPost = posts [indexPath.Row];
+//				cell.TextLabel.Text = currentPost.title;
 				tableView.RowHeight = 120f;
 			}
 
@@ -281,7 +169,7 @@ namespace OHouse
 			}
 		}
 
-
+	
 	}
 
 	public class TimelineCell : UITableViewCell
@@ -315,7 +203,7 @@ namespace OHouse
 			shareButton = new ShareButton (new CGRect (0, 0, 34, 34)) {
 				BackgroundColor = common.ColorStyle_1
 			};
-
+					
 			Title = new UIButton () {
 				Font = common.Font16F,
 				HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
@@ -356,10 +244,10 @@ namespace OHouse
 			);
 
 			ShareBtn.BackgroundColor = common.ColorStyle_1;
-			//			ShareBtn.TouchUpInside += (s, e) => {
-			//				UIAlertView alert = new UIAlertView (title, count.ToString (), null, "ok");
-			//				alert.Show ();
-			//			};
+//			ShareBtn.TouchUpInside += (s, e) => {
+//				UIAlertView alert = new UIAlertView (title, count.ToString (), null, "ok");
+//				alert.Show ();
+//			};
 
 			//LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 24, 24), UIControlState.Normal);
 			LikeBtn = UtilImage.RoundButton (
@@ -441,4 +329,3 @@ namespace OHouse
 		}
 	}
 }
-

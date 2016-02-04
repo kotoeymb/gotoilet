@@ -73,20 +73,29 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-
+			View.BackgroundColor = UIColor.White;
+			View.Frame = this.NavigationController.View.Bounds;
+			CGRect screen = this.NavigationController.View.Bounds;
 
 			DView = new UIView ();
+			// left 20, right 20
+			nfloat dViewWidth = screen.Width - 40 * 2;
+			// top 20, bot 20
+			nfloat dViewHeight = screen.Height - 80 * 2;
+			nfloat centerY = screen.Height / 2 - dViewHeight / 2;
+
+			DView.Frame = new CGRect (40, centerY, dViewWidth, dViewHeight);
+
+
 			DView.BackgroundColor = UIColor.White;
-			DView.Frame = new CGRect (25, View.Frame.Width / 2.5, 270, 350);
 			DView.Layer.BorderWidth = 1f;
-			DView.Layer.BorderColor = new CGColor (112,128,144);
+			DView.Layer.BorderColor = new CGColor (112, 128, 144);
 			DView.Layer.CornerRadius = 10f;
 
-			DView.Layer.ShadowOffset = new CGSize (2,2);
+			DView.Layer.ShadowOffset = new CGSize (2, 2);
 			DView.Layer.ShadowOpacity = 1f;
 			DView.Layer.ShadowRadius = 1;
-			DView.Layer.ShadowColor = new CGColor(0,0,0);
+			DView.Layer.ShadowColor = new CGColor (0, 0, 0);
 
 			buttonRect = UIButton.FromType (UIButtonType.RoundedRect);
 			buttonRect.SetTitle ("", UIControlState.Normal);
@@ -125,8 +134,7 @@ namespace OHouse
 				DView.Add (label1);
 				DView.Add (label2);
 				View.AddSubview (DView);
-			}
-			;
+			};
 		}
 
 		void CloseButtonClicked (object sender, EventArgs e)

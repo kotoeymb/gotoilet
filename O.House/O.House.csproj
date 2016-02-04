@@ -108,6 +108,7 @@
     <InterfaceDefinition Include="Views\TimelineViewController.xib">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\TestListVC.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -115,6 +116,7 @@
     <None Include="Views.exclude\MenuDialogViewController.cs" />
     <None Include="Views.exclude\InfoDialogViewController.cs" />
     <None Include="Views.exclude\List.cs" />
+    <None Include="Views\TestListVC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -155,6 +157,11 @@
     </Compile>
     <Compile Include="Base\UserBase.cs" />
     <Compile Include="Utilities\ConnectionManager.cs" />
+    <Compile Include="Views\TestListVC.designer.cs">
+      <DependentUpon>TestListVC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Post.cs" />
+    <Compile Include="Views\Feed.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
