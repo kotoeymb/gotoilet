@@ -65,6 +65,7 @@ namespace OHouse
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
 
 			tbl.Source = new TableSource (chunk, newPost);
+			tbl.RowHeight = 120f;
 
 			View = tbl;
 		}
@@ -177,11 +178,10 @@ namespace OHouse
 	{
 		List<ToiletsBase> posts;
 		List<ToiletsBase> dataToLoad;
-		DataRequestManager drm;
 
-		public TableSource (List<ToiletsBase> items, List<ToiletsBase> data)
+		public TableSource (List<ToiletsBase> chunks, List<ToiletsBase> data)
 		{
-			posts = items;
+			posts = chunks;
 			dataToLoad = data;
 		}
 
@@ -206,16 +206,11 @@ namespace OHouse
 			int count = posts.Count;
 
 			int totalRows = (int)tableView.NumberOfRowsInSection (0);
-			//			Console.WriteLine (totalRows); ///logged
-			//			Console.WriteLine(row + ":" + totalRows); ///logged
 
 			if (row == totalRows - 1) {
-				//cell = tableView.DequeueReusableCell (moreCellId) as TimelineCell;
 				cell = tableView.DequeueReusableCell (moreCellId);
 				if (cell == null) {
 					cell = new UITableViewCell (UITableViewCellStyle.Default, moreCellId);
-					//cell = new TimelineCell(moreCellId);
-					//cell.UpdateCell ();
 				}
 
 				if (row == dataToLoad.Count - 1) {
@@ -224,22 +219,15 @@ namespace OHouse
 					cell.TextLabel.Text = "Load more items ...";
 
 				}
-
-				tableView.RowHeight = 40f;
 			} else {
-				//cell = tableView.DequeueReusableCell (postCellId) as TimelineCell;
 				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
 
 				if (cell == null) {
-					//					cell = new UITableViewCell (UITableViewCellStyle.Default, postCellId);
-
 					cell = new TimelineCell((NSString)postCellId);
-					((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
+
 				}
 
-				//				ToiletsBase currentPost = posts [indexPath.Row];
-				//				cell.TextLabel.Text = currentPost.title;
-				tableView.RowHeight = 120f;
+				((TimelineCell)cell).UpdateCell (dataToLoad [indexPath.Row]);
 			}
 
 			return cell;
@@ -249,13 +237,13 @@ namespace OHouse
 		{
 			int row = indexPath.Row;
 			int count = (int)posts.Count;
-			int noOfRowsToLoad = (int)tableView.NumberOfRowsInSection (0);
+			int noOfRowsInSection = (int)tableView.NumberOfRowsInSection (0);
 			int rowsToLoad = 5;
 
 			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
 			Console.WriteLine ("Current row : " + row);
 
-			if (row == noOfRowsToLoad - 1) {
+			if (row == noOfRowsInSection - 1) {
 
 				posts.RemoveAt (indexPath.Row - 1);
 
@@ -270,10 +258,17 @@ namespace OHouse
 				}
 
 				for (var i = row; i < row + rowsToLoad; i++) {
-					indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
 					posts.Add (dataToLoad [i]);
-				}
+					indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
 
+
+					for (var d = 0; d < posts.Count; d++) {
+						Console.WriteLine ("spot_ids in chunk : " + posts [d].spot_id);
+					}
+
+					Console.WriteLine ("spot_ids : " + dataToLoad [i].spot_id);
+
+				}
 				tableView.BeginUpdates ();
 				tableView.DeleteRows (new NSIndexPath[] { NSIndexPath.FromRowSection (indexPath.Row, 0) }, UITableViewRowAnimation.Fade);
 				tableView.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
@@ -356,12 +351,6 @@ namespace OHouse
 			);
 
 			ShareBtn.BackgroundColor = common.ColorStyle_1;
-			//			ShareBtn.TouchUpInside += (s, e) => {
-			//				UIAlertView alert = new UIAlertView (title, count.ToString (), null, "ok");
-			//				alert.Show ();
-			//			};
-
-			//LikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 24, 24), UIControlState.Normal);
 			LikeBtn = UtilImage.RoundButton (
 				UtilImage.ResizeImageKeepAspect (
 					UtilImage.GetColoredImage (
@@ -385,8 +374,7 @@ namespace OHouse
 
 			ContentView.AddSubviews (Title, Info, Count, LikeBtn, Border, shareButton);
 		}
-
-		//		public void UpdateCell (UIImage mapview, string title, string info, int count)
+			
 		public void UpdateCell (ToiletsBase toiletBaseInfo)
 		{
 			if (toiletBaseInfo != null) {

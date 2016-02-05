@@ -58,8 +58,7 @@ namespace OHouse
 			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 200));
 			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (0, 235, 255));
 			UIImage iconTL = UIImage.FromBundle ("images/icons/icon-timeline");
-			UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
-
+			//UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
 
 			Root = new RootElement ("Menu") {
 				new Section (fbContainer) {
