@@ -66,6 +66,111 @@ namespace OHouse
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	//	/// <summary>
+	//	/// Menu dialog view controller.
+	//	/// </summary>
+	//	public partial class TimelineDialogViewController : DialogViewController
+	//	{
+	//		DataRequestManager drm;
+	//		List<ToiletsBase> tb;
+	//		Section section;
+	//
+	//		bool dataLoaded;
+	//
+	//		/// <summary>
+	//		/// Initializes a new instance of the <see cref="OHouse.TimelineDialogViewController"/> class.
+	//		/// </summary>
+	//		public TimelineDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
+	//		{
+	////			drm = new DataRequestManager ();
+	////			tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+	////
+	////			startIndex = 2;
+	////			endIndex = 4;
+	////
+	////			//Console.WriteLine (tb.Count);
+	////
+	////			section = new Section ("");
+	////
+	////			for (var i = startIndex - 1; i < tb.Count; i++) {
+	////				Console.WriteLine (tb [i].spot_id);
+	////			}
+	////
+	////			foreach (var d in tb) {
+	////				section.Add (
+	////					new TimelineElement (() => {
+	////						NavigationController.PushViewController (new SubmitViewController (), true);
+	////					}) {
+	////						Count = d.vote_cnt,
+	////						Header = d.title,
+	////						Description = d.sub_title
+	////					}
+	////				);
+	////			}
+	////
+	////			Root = new RootElement ("Timeline") {
+	////				section
+	////			};
+	//		}
+	//
+	//		public override void ViewDidLoad ()
+	//		{
+	//			base.ViewDidLoad ();
+	//			dataLoaded = false;
+	//		}
+	//
+	//		public override void ViewDidAppear (bool animated)
+	//		{
+	//			base.ViewDidAppear (animated);
+	//
+	//			var limit = 0;
+	//
+	//			if (!dataLoaded) {
+	//
+	//				drm = new DataRequestManager ();
+	//				tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+	//
+	//				section = new Section ("");
+	//
+	//				foreach (var d in tb) {
+	//
+	////					if (limit >= 4) {
+	////						break;
+	////					}
+	//
+	//					limit++;
+	//
+	//					section.Add (
+	//						new TimelineElement (() => {
+	//							NavigationController.PushViewController(new DetailViewController(d.spot_id), true);
+	//						}) {
+	//							
+	//							Count = d.vote_cnt,
+	//							Header = d.title,
+	//							Description = d.latitude + "," + d.longitude
+	//
+	//						}
+	//					);
+	//				}
+	//
+	//				Root = new RootElement ("Timeline") {
+	//					section
+	//				};
+	//				dataLoaded = true;
+	//			}
+	//
+	//		}
+	//
+	//		public override void LoadView ()
+	//		{
+	//			base.LoadView ();
+	//			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+	//			TableView.BackgroundColor = UIColor.FromRGB (238, 238, 238);
+	//		}
+	//	}
+>>>>>>> c8b56ac2bb3001c924575a77175db5dd1999efb8
 
 	public class TableSource : UITableViewSource
 	{
@@ -88,16 +193,6 @@ namespace OHouse
 		{
 			return 1;
 		}
-
-//		private void LikeButtonPressedEvent (object s, EventArgs e, ToiletsBase t)
-//		{
-//			
-//			int vote_cnt = t.vote_cnt;
-//			vote_cnt++;
-//			t.vote_cnt = vote_cnt;
-//
-//
-//		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
@@ -135,8 +230,8 @@ namespace OHouse
 						int vote_cnt = posts[indexPath.Row].vote_cnt;
 						vote_cnt++;
 						posts[indexPath.Row].vote_cnt = vote_cnt;
-						//Console.WriteLine(posts[indexPath.Row].vote_cnt);
 						drm.RegisterVote(posts[indexPath.Row].spot_id);
+
 						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
 					};
 				}
@@ -155,7 +250,6 @@ namespace OHouse
 			int rowsToLoad = 5;
 
 			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
-
 				
 			if (row == noOfRowsInSection - 1) {
 
@@ -284,7 +378,6 @@ namespace OHouse
 
 			ContentView.AddSubviews (Title, Info, Count, LikeBtn, Border, shareButton);
 		}
-
 
 		public void UpdateCell (ToiletsBase toiletBaseInfo)
 		{
