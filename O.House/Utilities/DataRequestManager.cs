@@ -299,12 +299,12 @@ namespace OHouse.DRM
 		
 				if (responseStatus) {
 					UIAlertView av = new UIAlertView (
-						"Thank you!",
-						"Your support has been registered!",
-						null,
-						"Got it!",
-						null
-					);
+						                 "Thank you!",
+						                 "Your support has been registered!",
+						                 null,
+						                 "Got it!",
+						                 null
+					                 );
 
 					av.Show ();
 
@@ -324,6 +324,32 @@ namespace OHouse.DRM
 			request.UploadValuesAsync (setUrl, postParameters);
 		
 			modalViewController.DismissModalViewController (true);
+		}
+
+		public void RegisterVote (int spotid)
+		{
+			Uri setUrl = new Uri ("http://gstore.pcp.jp/api/vote_spot.php");
+
+			WebClient request = new WebClient ();
+			NameValueCollection postParameters = new NameValueCollection ();
+
+			postParameters.Add ("spot_id", spotid.ToString ());
+			postParameters.Add ("user_id", "9cd18824abbdeaf5d7ca0d71b99a0267");
+
+			Console.WriteLine (spotid);
+
+			request.UploadValuesAsync (setUrl, postParameters);
+			request.UploadValuesCompleted += (object sender, UploadValuesCompletedEventArgs e) => {
+				string result = Encoding.UTF8.GetString (e.Result);
+				var json = JObject.Parse (result);
+				bool responseStatus = (bool)json ["status"];
+
+				if (responseStatus) {
+					Console.WriteLine ("true");
+				} else {
+					Console.WriteLine ("false");
+				}
+			};
 		}
 
 		#endregion

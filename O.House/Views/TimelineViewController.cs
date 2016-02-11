@@ -12,6 +12,9 @@ using Utils;
 using OHouse.DRM;
 using CoreGraphics;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using Facebook.ShareKit;
 
 namespace OHouse
@@ -21,9 +24,11 @@ namespace OHouse
 		Feed feed;
 		DataRequestManager drm;
 
+
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
 			Title = "Timeline";
+
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -36,18 +41,7 @@ namespace OHouse
 
 		public override void ViewDidLoad ()
 		{
-//			base.ViewDidLoad ();
-//
-//			TimelineDialogViewController tdvc = new TimelineDialogViewController ();
-//
-//			//View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromBundle ("images/background/bg-7-nightlife"));
-//
-//			this.AddChildViewController (tdvc);
-//			this.View.AddSubview (tdvc.View);
-//
-//			this.View.BackgroundColor = UIColor.Black;
-//			
-//			// Perform any additional setup after loading the view, typically from a nib.
+
 
 			feed = new Feed ();
 			drm = new DataRequestManager ();
@@ -66,125 +60,25 @@ namespace OHouse
 
 			tbl.Source = new TableSource (chunk, newPost);
 			tbl.RowHeight = 120f;
+			tbl.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
 			View = tbl;
 		}
 	}
 
-//	/// <summary>
-//	/// Menu dialog view controller.
-//	/// </summary>
-//	public partial class TimelineDialogViewController : DialogViewController
-//	{
-//		DataRequestManager drm;
-//		List<ToiletsBase> tb;
-//		Section section;
-//
-//		bool dataLoaded;
-//
-//		/// <summary>
-//		/// Initializes a new instance of the <see cref="OHouse.TimelineDialogViewController"/> class.
-//		/// </summary>
-//		public TimelineDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
-//		{
-////			drm = new DataRequestManager ();
-////			tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-////
-////			startIndex = 2;
-////			endIndex = 4;
-////
-////			//Console.WriteLine (tb.Count);
-////
-////			section = new Section ("");
-////
-////			for (var i = startIndex - 1; i < tb.Count; i++) {
-////				Console.WriteLine (tb [i].spot_id);
-////			}
-////
-////			foreach (var d in tb) {
-////				section.Add (
-////					new TimelineElement (() => {
-////						NavigationController.PushViewController (new SubmitViewController (), true);
-////					}) {
-////						Count = d.vote_cnt,
-////						Header = d.title,
-////						Description = d.sub_title
-////					}
-////				);
-////			}
-////
-////			Root = new RootElement ("Timeline") {
-////				section
-////			};
-//		}
-//
-//		public override void ViewDidLoad ()
-//		{
-//			base.ViewDidLoad ();
-//			dataLoaded = false;
-//		}
-//
-//		public override void ViewDidAppear (bool animated)
-//		{
-//			base.ViewDidAppear (animated);
-//
-//			var limit = 0;
-//
-//			if (!dataLoaded) {
-//
-//				drm = new DataRequestManager ();
-//				tb = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-//
-//				section = new Section ("");
-//
-//				foreach (var d in tb) {
-//
-////					if (limit >= 4) {
-////						break;
-////					}
-//
-//					limit++;
-//
-//					section.Add (
-//						new TimelineElement (() => {
-//							NavigationController.PushViewController(new DetailViewController(d.spot_id), true);
-//						}) {
-//							
-//							Count = d.vote_cnt,
-//							Header = d.title,
-//							Description = d.latitude + "," + d.longitude
-//
-//						}
-//					);
-//				}
-//
-//				Root = new RootElement ("Timeline") {
-//					section
-//				};
-//				dataLoaded = true;
-//			}
-//
-//		}
-//
-//		public override void LoadView ()
-//		{
-//			base.LoadView ();
-//			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-//			TableView.BackgroundColor = UIColor.FromRGB (238, 238, 238);
-//		}
-//	}
 
 	public class TableSource : UITableViewSource
 	{
 		List<ToiletsBase> posts;
 		List<ToiletsBase> dataToLoad;
+		DataRequestManager drm;
 
 		public TableSource (List<ToiletsBase> chunks, List<ToiletsBase> data)
 		{
 			posts = chunks;
 			dataToLoad = data;
 		}
-
+			
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			return posts.Count + 1;
@@ -195,10 +89,22 @@ namespace OHouse
 			return 1;
 		}
 
+//		private void LikeButtonPressedEvent (object s, EventArgs e, ToiletsBase t)
+//		{
+//			
+//			int vote_cnt = t.vote_cnt;
+//			vote_cnt++;
+//			t.vote_cnt = vote_cnt;
+//
+//
+//		}
+
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			string postCellId = "postCell";
+			string postCellId = "postCell" + indexPath.Row.ToString ();
 			string moreCellId = "moreCell";
+
+			drm = new DataRequestManager ();
 
 			UITableViewCell cell = null;
 
@@ -217,17 +123,25 @@ namespace OHouse
 					cell.TextLabel.Text = "Nothing more to load ...";
 				} else {
 					cell.TextLabel.Text = "Load more items ...";
-
 				}
 			} else {
 				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
 
 				if (cell == null) {
-					cell = new TimelineCell((NSString)postCellId);
+					cell = new TimelineCell ((NSString)postCellId);
 
+					((TimelineCell)cell).LikeBtn.TouchUpInside += (object sender, EventArgs e) => {
+						
+						int vote_cnt = posts[indexPath.Row].vote_cnt;
+						vote_cnt++;
+						posts[indexPath.Row].vote_cnt = vote_cnt;
+						//Console.WriteLine(posts[indexPath.Row].vote_cnt);
+						drm.RegisterVote(posts[indexPath.Row].spot_id);
+						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
+					};
 				}
 
-				((TimelineCell)cell).UpdateCell (dataToLoad [indexPath.Row]);
+				((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
 			}
 
 			return cell;
@@ -241,8 +155,8 @@ namespace OHouse
 			int rowsToLoad = 5;
 
 			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
-			Console.WriteLine ("Current row : " + row);
 
+				
 			if (row == noOfRowsInSection - 1) {
 
 				posts.RemoveAt (indexPath.Row - 1);
@@ -251,7 +165,7 @@ namespace OHouse
 					rowsToLoad = (row + rowsToLoad) - dataToLoad.Count - 1;
 				}
 
-				Console.WriteLine ("Row and dataToLoad.count : " + row + ", " + dataToLoad.Count);
+//				Console.WriteLine ("Row and dataToLoad.count : " + row + ", " + dataToLoad.Count);
 
 				if (row == dataToLoad.Count - 1) {
 					rowsToLoad = 0;
@@ -261,13 +175,11 @@ namespace OHouse
 					posts.Add (dataToLoad [i]);
 					indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
 
-
 					for (var d = 0; d < posts.Count; d++) {
-						Console.WriteLine ("spot_ids in chunk : " + posts [d].spot_id);
+//						Console.WriteLine ("spot_ids in chunk : " + posts [d].spot_id);
 					}
 
-					Console.WriteLine ("spot_ids : " + dataToLoad [i].spot_id);
-
+//					Console.WriteLine ("spot_ids : " + dataToLoad [i].spot_id);
 				}
 				tableView.BeginUpdates ();
 				tableView.DeleteRows (new NSIndexPath[] { NSIndexPath.FromRowSection (indexPath.Row, 0) }, UITableViewRowAnimation.Fade);
@@ -275,8 +187,6 @@ namespace OHouse
 				tableView.EndUpdates ();
 			}
 		}
-
-
 	}
 
 	public class TimelineCell : UITableViewCell
@@ -287,7 +197,7 @@ namespace OHouse
 
 		private UILabel Count;
 
-		private UIButton LikeBtn;
+		public UIButton LikeBtn;
 
 		private UIView Border;
 
@@ -369,23 +279,23 @@ namespace OHouse
 			Border = new UIView () {
 				BackgroundColor = UIColor.FromRGB (238, 238, 238)
 			};
-
+					
 			UpdateCell (toiletBase);
 
 			ContentView.AddSubviews (Title, Info, Count, LikeBtn, Border, shareButton);
 		}
-			
+
+
 		public void UpdateCell (ToiletsBase toiletBaseInfo)
 		{
 			if (toiletBaseInfo != null) {
-
 				NSAttributedString As = new NSAttributedString (toiletBaseInfo.title);
 				Title.SetAttributedTitle (As, UIControlState.Normal);
 				Info.Text = toiletBaseInfo.sub_title;
 				Count.Text = toiletBaseInfo.vote_cnt.ToString ();
 
 				slc = new ShareLinkContent ();
-				slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@"+toiletBaseInfo.latitude+","+toiletBaseInfo.longitude+",15z"));
+				slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" + toiletBaseInfo.latitude + "," + toiletBaseInfo.longitude + ",15z"));
 				slc.ContentTitle = toiletBaseInfo.title;
 				shareButton.SetShareContent (slc);
 			}
@@ -403,7 +313,6 @@ namespace OHouse
 		{
 			base.LayoutSubviews ();
 
-			//CGRect full = ContentView.Bounds;
 			CGRect full = ContentView.Frame;
 
 			// UIView - container
@@ -424,9 +333,7 @@ namespace OHouse
 			Count.Frame = new CGRect (15, LikeBtn.Frame.Y - 28, 35, 35);
 
 			// UIButton shareBtn
-			//ShareBtn.Frame = new CGRect (15, 15, 35, 35);
 			shareButton.Frame = new CGRect (15, 15, 35, 35);
 		}
 	}
 }
-
