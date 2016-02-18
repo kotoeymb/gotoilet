@@ -171,12 +171,12 @@ namespace OHouse.DRM
 
 			foreach (var toilet in toilets) {
 				var obj = toilet.Value;
-				var idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
-				var titleKey = obj.ValueForKey ((NSString)"titleKey").ToString ();
-				var subtitleKey = obj.ValueForKey ((NSString)"subtitleKey").ToString ();
-				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
-				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
-				var voteKey = obj.ValueForKey ((NSString)"voteKey").ToString ();
+				var idKey = obj.ValueForKey ((NSString)"spot_id").ToString ();
+				var titleKey = obj.ValueForKey ((NSString)"title").ToString ();
+				var subtitleKey = obj.ValueForKey ((NSString)"sub_title").ToString ();
+				var latitudeKey = obj.ValueForKey ((NSString)"latitude").ToString ();
+				var longitudeKey = obj.ValueForKey ((NSString)"longitude").ToString ();
+				var voteKey = obj.ValueForKey ((NSString)"vote_cnt").ToString ();
 				double distance = 0.0;
 
 				toiletsList.Add (
@@ -184,6 +184,71 @@ namespace OHouse.DRM
 				);
 			}
 			return toiletsList;
+		}
+
+		/// <summary>
+		/// Gets the sample list.
+		/// </summary>
+		/// <returns>The sample list.</returns>
+		/// <param name="plistFileName">Plist file name.</param>
+		public void UpdateList ()
+		{
+			Console.WriteLine ("Updating local list from server ...");
+			List<ToiletsBase> dataFromServer;
+
+			NSMutableDictionary dataToWrite = new NSMutableDictionary ();
+			string plistFilePath = "database/Toilets";
+
+			var path = NSBundle.MainBundle.PathForResource (plistFilePath, "plist");
+			NSFileManager fileMgn = NSFileManager.DefaultManager;
+
+			//////
+			/// Check internet connection and update the local list if available 
+			if (AppDelegate.connectivity) {
+				Console.WriteLine ("Connectivity available ...");
+				//////
+				/// retrieve data from server
+				dataFromServer = this.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+				foreach (var obj in dataFromServer) {
+
+					Console.WriteLine ("Retriving data from server ...");
+
+					//////
+					/// add object to dataToWrite (NSMutableDictionary)
+					NSMutableDictionary temp = new NSMutableDictionary();
+					temp.Add (new NSString ("spot_id"), new NSString (obj.spot_id.ToString ()));
+					temp.Add (new NSString ("vote_cnt"), new NSString (obj.vote_cnt.ToString ()));
+					temp.Add (new NSString ("title"), new NSString (obj.title.ToString ()));
+					temp.Add (new NSString ("sub_title"), new NSString (obj.sub_title.ToString ()));
+					temp.Add (new NSString ("picture"), obj.picture == null? new NSString("null"): new NSString(obj.picture.ToString()));
+					temp.Add (new NSString ("longitude"), new NSString (obj.longitude.ToString ()));
+					temp.Add (new NSString ("latitude"), new NSString (obj.latitude.ToString ()));
+
+					dataToWrite.Add(new NSString(obj.spot_id.ToString()), temp);
+				}
+
+				NSError error = null;
+				NSData plistData = NSPropertyListSerialization.DataWithPropertyList (dataToWrite, NSPropertyListFormat.Xml, NSPropertyListWriteOptions.MutableContainers, out error);
+
+				if (plistData != null) {
+
+					Console.WriteLine ("Checking file existence ...");
+					if (fileMgn.FileExists (path)) {
+						Console.WriteLine ("File exists and saving to local plist ...");
+						if (plistData.Save (path, true)) {
+							Console.WriteLine ("Updated!");
+						} else {
+							Console.WriteLine ("Error updating file!");
+						}
+					} else {
+						Console.WriteLine ("File to Update does not exist!");
+					}
+				} else {
+					Console.WriteLine ("Error!! NSData");
+				}
+			} else {
+				Console.WriteLine ("No connection to retrive update data.");
+			}
 		}
 
 		/// <summary>

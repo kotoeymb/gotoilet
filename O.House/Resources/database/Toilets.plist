@@ -4,77 +4,17 @@
 <dict>
 	<key>Toilet 01</key>
 	<dict>
-		<key>titleKey</key>
+		<key>title</key>
 		<string>Toilet 01</string>
-		<key>latitudeKey</key>
+		<key>latitude</key>
 		<string>16.777024</string>
-		<key>longitudeKey</key>
+		<key>longitude</key>
 		<string>96.164964</string>
-		<key>idKey</key>
+		<key>spot_id</key>
 		<string>1</string>
-		<key>subtitleKey</key>
+		<key>sub_title</key>
 		<string>subtitle</string>
-		<key>voteKey</key>
-		<string>0</string>
-	</dict>
-	<key>Toilet 02</key>
-	<dict>
-		<key>titleKey</key>
-		<string>Toilet 02</string>
-		<key>latitudeKey</key>
-		<string>16.776768</string>
-		<key>longitudeKey</key>
-		<string>96.162622</string>
-		<key>idKey</key>
-		<string>2</string>
-		<key>subtitleKey</key>
-		<string>subtitle</string>
-		<key>voteKey</key>
-		<string>0</string>
-	</dict>
-	<key>Toilet 03</key>
-	<dict>
-		<key>titleKey</key>
-		<string>Toilet 03</string>
-		<key>latitudeKey</key>
-		<string>16.777364</string>
-		<key>longitudeKey</key>
-		<string>96.160315</string>
-		<key>idKey</key>
-		<string>3</string>
-		<key>subtitleKey</key>
-		<string>subtitle</string>
-		<key>voteKey</key>
-		<string>0</string>
-	</dict>
-	<key>Toilet 04</key>
-	<dict>
-		<key>titleKey</key>
-		<string>Toilet 04</string>
-		<key>latitudeKey</key>
-		<string>16.777114</string>
-		<key>longitudeKey</key>
-		<string>96.162486</string>
-		<key>idKey</key>
-		<string>4</string>
-		<key>subtitleKey</key>
-		<string>subtitle</string>
-		<key>voteKey</key>
-		<string>0</string>
-	</dict>
-	<key>Toilet 05</key>
-	<dict>
-		<key>titleKey</key>
-		<string>Toilet 06</string>
-		<key>latitudeKey</key>
-		<string>16.782406</string>
-		<key>longitudeKey</key>
-		<string>96.178641</string>
-		<key>idKey</key>
-		<string>5</string>
-		<key>subtitleKey</key>
-		<string>subtitle</string>
-		<key>voteKey</key>
+		<key>vote_cnt</key>
 		<string>0</string>
 	</dict>
 </dict>

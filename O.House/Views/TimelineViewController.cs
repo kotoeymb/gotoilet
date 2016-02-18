@@ -1,7 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading;
 
 using Foundation;
 using UIKit;
@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Facebook.ShareKit;
+using OHouse.Connectivity;
 
 namespace OHouse
 {
@@ -24,6 +25,10 @@ namespace OHouse
 		Feed feed;
 		DataRequestManager drm;
 
+		List<ToiletsBase> newPost;
+		List<ToiletsBase> chunk;
+
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 
 		public TimelineViewController () : base ("TimelineViewController", null)
 		{
@@ -41,28 +46,62 @@ namespace OHouse
 
 		public override void ViewDidLoad ()
 		{
-
-
 			feed = new Feed ();
 			drm = new DataRequestManager ();
-			//posts = new List<Post> ();
 
-			//NSMutableArray newPost = feed.GetFeeds ();
-			List<ToiletsBase> newPost = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-			List<ToiletsBase> chunk = new List<ToiletsBase> ();
+			//////
+			/// update network status
+			UpdateStatus ();
 
-			for (var i = 0; i < 5; i++) {
-				chunk.Add (newPost [i]);
+			if (internetStatus == NetworkStatus.NotReachable) {
+				Console.WriteLine ("Network not available");
+				newPost = drm.GetToiletList ("database/Update");
+
+				//////
+				/// If local file is not updated yet and not available to update, fill dummy data
+				if (newPost.Count < 1) {
+					//////
+					/// setup spot_id 0 as error row
+					newPost.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
+				}
+			} else {
+				Console.WriteLine ("Connection available");
+				newPost = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+			}
+
+			chunk = new List<ToiletsBase> ();
+			if (newPost.Count < 5) {
+				for (var i = 0; i < newPost.Count; i++) {
+					chunk.Add (newPost [i]);
+				}
+			} else {
+				for (var i = 0; i < 5; i++) {
+					chunk.Add (newPost [i]);
+				}
 			}
 
 			// Perform any additional setup after loading the view, typically from a nib.
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
 
+			tbl.Bounces = false; ////// disable bounce to prevent multiple actions when reached to tableview bottom, see Scrolled()
 			tbl.Source = new TableSource (chunk, newPost);
 			tbl.RowHeight = 120f;
 			tbl.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
 			View = tbl;
+		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+		}
+
+		void UpdateStatus (object sender = null, EventArgs e = null)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
 	}
 
@@ -71,16 +110,18 @@ namespace OHouse
 		List<ToiletsBase> posts;
 		List<ToiletsBase> dataToLoad;
 		DataRequestManager drm;
-
+		UITableView tableViews;
+		
 		public TableSource (List<ToiletsBase> chunks, List<ToiletsBase> data)
 		{
 			posts = chunks;
 			dataToLoad = data;
 		}
-			
+
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			return posts.Count + 1;
+			this.tableViews = tableview;
+			return posts.Count;
 		}
 
 		public override nint NumberOfSections (UITableView tableView)
@@ -90,8 +131,8 @@ namespace OHouse
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			string postCellId = "postCell" + indexPath.Row.ToString ();
-			string moreCellId = "moreCell";
+			string postCellId = "postCell";
+			string errorCellId = "errorCell";
 
 			drm = new DataRequestManager ();
 
@@ -100,31 +141,30 @@ namespace OHouse
 			int row = indexPath.Row;
 			int count = posts.Count;
 
-			int totalRows = (int)tableView.NumberOfRowsInSection (0);
+			//////
+			/// error row
+			if (posts [0].spot_id == 0) {
 
-			if (row == totalRows - 1) {
-				cell = tableView.DequeueReusableCell (moreCellId);
-				if (cell == null) {
-					cell = new UITableViewCell (UITableViewCellStyle.Default, moreCellId);
-				}
+				cell = tableView.DequeueReusableCell (errorCellId);
+				cell = new UITableViewCell (UITableViewCellStyle.Subtitle, errorCellId);
+				cell.TextLabel.Text = "Connection error";
+				cell.DetailTextLabel.Text = "Please connect to the internet!";
+				tableView.RowHeight = 40f;
 
-				if (row == dataToLoad.Count - 1) {
-					cell.TextLabel.Text = "Nothing more to load ...";
-				} else {
-					cell.TextLabel.Text = "Load more items ...";
-				}
 			} else {
 				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
 
 				if (cell == null) {
 					cell = new TimelineCell ((NSString)postCellId);
 
+					//////
+					/// like
 					((TimelineCell)cell).LikeBtn.TouchUpInside += (object sender, EventArgs e) => {
 						
-						int vote_cnt = posts[indexPath.Row].vote_cnt;
+						int vote_cnt = posts [indexPath.Row].vote_cnt;
 						vote_cnt++;
-						posts[indexPath.Row].vote_cnt = vote_cnt;
-						drm.RegisterVote(posts[indexPath.Row].spot_id);
+						posts [indexPath.Row].vote_cnt = vote_cnt;
+						drm.RegisterVote (posts [indexPath.Row].spot_id);
 
 						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
 					};
@@ -136,43 +176,40 @@ namespace OHouse
 			return cell;
 		}
 
-		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+		public override void Scrolled (UIScrollView scrollView)
 		{
-			int row = indexPath.Row;
-			int count = (int)posts.Count;
-			int noOfRowsInSection = (int)tableView.NumberOfRowsInSection (0);
+			var numOfRows = (int)this.tableViews.NumberOfRowsInSection (0);
+			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
 			int rowsToLoad = 5;
 
-			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
-				
-			if (row == noOfRowsInSection - 1) {
+			//////
+			/// end of tableview, last row
+			if (this.tableViews.ContentOffset.Y >= (tableViews.ContentSize.Height - tableViews.Frame.Size.Height)) {
 
-				posts.RemoveAt (indexPath.Row - 1);
+				//////
+				/// spot_id 0 mean error row
+				if (posts [0].spot_id == 0) {
+					Console.WriteLine ("No connection or No rows");
+				} else {
+					//////
+					/// if rows are available
+					for (var i = numOfRows - 1; i <= (numOfRows - 1) + rowsToLoad; i++) {
 
-				if (row + rowsToLoad > dataToLoad.Count) {
-					rowsToLoad = (row + rowsToLoad) - dataToLoad.Count - 1;
-				}
+						if (i <= dataToLoad.Count) {
 
-//				Console.WriteLine ("Row and dataToLoad.count : " + row + ", " + dataToLoad.Count);
-
-				if (row == dataToLoad.Count - 1) {
-					rowsToLoad = 0;
-				}
-
-				for (var i = row; i < row + rowsToLoad; i++) {
-					posts.Add (dataToLoad [i]);
-					indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
-
-					for (var d = 0; d < posts.Count; d++) {
-//						Console.WriteLine ("spot_ids in chunk : " + posts [d].spot_id);
+							posts.Add (dataToLoad [i - 1]);
+							indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
+						}
 					}
 
-//					Console.WriteLine ("spot_ids : " + dataToLoad [i].spot_id);
+					//////
+					/// Add rows after 2 secs delay
+					NSTimer.CreateScheduledTimer (new TimeSpan (0, 0, 0, 2), delegate {
+						this.tableViews.BeginUpdates ();
+						this.tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
+						this.tableViews.EndUpdates ();
+					});
 				}
-				tableView.BeginUpdates ();
-				tableView.DeleteRows (new NSIndexPath[] { NSIndexPath.FromRowSection (indexPath.Row, 0) }, UITableViewRowAnimation.Fade);
-				tableView.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
-				tableView.EndUpdates ();
 			}
 		}
 	}
@@ -261,8 +298,6 @@ namespace OHouse
 				common.ColorStyle_1,
 				false
 			);
-
-			//UpdateCell (mapView, title, info, count);
 
 			Border = new UIView () {
 				BackgroundColor = UIColor.FromRGB (238, 238, 238)

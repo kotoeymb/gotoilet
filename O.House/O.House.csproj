@@ -214,6 +214,7 @@
     <BundleResource Include="Resources\database\Toilets.orig.plist" />
     <BundleResource Include="Resources\database\Toilets.plist" />
     <BundleResource Include="Resources\images\icons\icon-heart.png" />
+    <BundleResource Include="Resources\database\Update.plist" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

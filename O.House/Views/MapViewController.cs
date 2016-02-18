@@ -22,7 +22,6 @@ namespace OHouse
 		public static LocationUtil Manager { get; set; }
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
-		bool networkStatus;
 
 		UIButton addLocationButton;
 		UIButton myLocationButton;
@@ -32,6 +31,8 @@ namespace OHouse
 		Common common = new Common ();
 		FormViewController form;
 
+		private NSObject _didEnteredBackground;
+		private NSObject _didEnteredForeground;
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
 		/// </summary>
@@ -60,6 +61,8 @@ namespace OHouse
 			base.ViewDidLoad ();
 			CGRect screen = this.NavigationController.View.Bounds;
 
+
+
 			// Create MKMapView and set bounds to fit with the UIScreen
 			var mapV = new MKMapView (screen);
 			mapV.Delegate = new MapDelegate (this);
@@ -87,9 +90,9 @@ namespace OHouse
 			addLocationButton.BackgroundColor = common.ColorStyle_1;
 			addLocationButton.Frame = new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h);
 			addLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
-			addLocationButton.Layer.ShadowOffset = new CGSize (0,2);
+			addLocationButton.Layer.ShadowOffset = new CGSize (0,1);
 			addLocationButton.Layer.ShadowOpacity = 1f;
-			addLocationButton.Layer.ShadowRadius = 2;
+			addLocationButton.Layer.ShadowRadius = 0.3f;
 			addLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
 
 			// Action for MyLocation button
@@ -111,19 +114,51 @@ namespace OHouse
 					});
 				}
 			};
-
-
-
 				
 			mapV.AddSubview (addLocationButton);
 			mapV.AddSubview (myLocationButton);
 
 			View.AddSubview (mapV);
+
+			//NSUserDefaults defaults = NSUserDefaults.StandardUserDefaults;
+
+			//var key = defaults.ValueForKey (new NSString ("CONNECTION_AVAILABILITY"));
+
+			_didEnteredForeground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, didEnteredForeground);
+			_didEnteredBackground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, didEnteredBackground);
 		}
 
+		/// <summary>
+		/// Dids the entered background.
+		/// </summary>
+		/// <param name="notification">Notification.</param>
+		private void didEnteredBackground(NSNotification notification) {
+			Console.WriteLine ("App Entered Background from MapViewController");
+		}
+
+		/// <summary>
+		/// Dids the entered foreground.
+		/// </summary>
+		/// <param name="notification">Notification.</param>
+		private void didEnteredForeground(NSNotification notification) {
+			Console.WriteLine ("App Entered Foreground from MapViewController");
+		}
+
+		/// <summary>
+		/// Views the will appear.
+		/// </summary>
+		/// <param name="animated">If set to <c>true</c> animated.</param>
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
+
+			// Update network connection
+			UpdateStatus ();
+
+			// Check network connection
+			if (internetStatus == NetworkStatus.NotReachable) {
+
+			}
 		}
 
 		/// <summary>
@@ -132,7 +167,8 @@ namespace OHouse
 		public override void ViewDidUnload ()
 		{
 			base.ViewDidUnload ();
-
+			NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredBackground);
+			NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredForeground);
 			ReleaseDesignerOutlets ();
 		}
 
@@ -144,6 +180,13 @@ namespace OHouse
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation io)
 		{
 			return (io != UIInterfaceOrientation.PortraitUpsideDown);
+		}
+
+		void UpdateStatus (object sender = null, EventArgs e = null)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
 	}
 }

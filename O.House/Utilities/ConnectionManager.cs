@@ -143,6 +143,7 @@ namespace OHouse.Connectivity
 			internetStatus = ConnectionManager.InternetConnectionStatus ();
 			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
+			
 	}
 }
 

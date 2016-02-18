@@ -10,6 +10,8 @@ using System.Diagnostics;
 using CoreLocation;
 using Utils;
 using Commons;
+using OHouse.Connectivity;
+using OHouse.DRM;
 
 namespace OHouse
 {
@@ -24,12 +26,17 @@ namespace OHouse
 
 		UIWindow window;
 		UIBarButtonItem menuButton;
-		Common common = new Common ();
+		Common common;
+		DataRequestManager drm;
+
+		public static bool connectivity;
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 
 		public SlideoutNavigationController Menu { get; private set; }
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
+			common = new Common ();
 
 			Profile.EnableUpdatesOnAccessTokenChange (true);
 			Settings.AppID = appId;
@@ -43,7 +50,6 @@ namespace OHouse
 			UINavigationBar.Appearance.SetTitleTextAttributes (
 				new UITextAttributes { TextColor = UIColor.White, Font = common.Font16F }
 			);
-
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
@@ -61,6 +67,29 @@ namespace OHouse
 			// make the window visible
 			window.MakeKeyAndVisible ();
 
+			///// start
+			///// check internet connection status and availability
+			//UpdateStatus ();
+			UpdateStatus();
+
+			if (internetStatus == NetworkStatus.NotReachable) {
+				connectivity = false;
+			} else {
+
+				//////
+				/// Update local plist
+				drm = new DataRequestManager();
+				drm.UpdateList();
+
+				connectivity = true;
+			}
+			///// end
+
+//			dict.Add (new NSString("CONNECTION_AVAILABILITY"), new NSString("NO"));
+//
+//			defaults = NSUserDefaults.StandardUserDefaults;
+//			defaults.RegisterDefaults (dict);
+
 			return ApplicationDelegate.SharedInstance.FinishedLaunching (application, launchOptions);
 			//return true;
 		}
@@ -77,12 +106,40 @@ namespace OHouse
 		{
 			// Use this method to release shared resources, save user data, invalidate timers and store the application state.
 			// If your application supports background exection this method is called instead of WillTerminate when the user quits.
+			Console.WriteLine("App DidEnterBackground");
 		}
 
 		public override void WillEnterForeground (UIApplication application)
 		{
 			// Called as part of the transiton from background to active state.
 			// Here you can undo many of the changes made on entering the background.
+			Console.WriteLine("App WillEnterBackground");
+
+			// Update connection status first
+			UpdateStatus();
+
+			if (internetStatus == NetworkStatus.NotReachable) {
+				UIAlertView noConnectionAlert = new UIAlertView (
+					"Disconnected", 
+					"This application need constant internet connection to show up to date correct location",
+					null,
+					"Cancel",
+					new string[]{"Settings"}
+				);
+				noConnectionAlert.Show ();
+
+				// Given 2 options "Cancel" and "Setting", this event is for "Setting" redirection
+				noConnectionAlert.Clicked += (object sender, UIButtonEventArgs e) => {
+					if(e.ButtonIndex != noConnectionAlert.CancelButtonIndex) {
+						UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+					}
+				};
+
+				// Set connectivity to false
+				connectivity = false;
+			} else {
+				connectivity = true;
+			}
 		}
 
 		public override void OnActivated (UIApplication application)
@@ -100,5 +157,13 @@ namespace OHouse
 		{
 			return ApplicationDelegate.SharedInstance.OpenUrl (application, url, sourceApplication, annotation);
 		}
+			
+		void UpdateStatus (object sender = null, EventArgs e = null)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+		}
+			
 	}
 }

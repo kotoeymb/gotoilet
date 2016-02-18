@@ -24,10 +24,6 @@ namespace OHouse
 		MapViewController parent;
 		public static double latMeter = 1000;
 		public static double lonMeter = 1000;
-
-		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
-		bool networkStatus;
-
 		// *** modifying
 		// MKPointAnnotation[] pins;
 		static MKCircle circleOverlay;
@@ -38,6 +34,8 @@ namespace OHouse
 		//List<ToiletsBase> nearToiletList = new List<ToiletsBase> ();
 		public static List<ToiletsBase> nearToiletList = new List<ToiletsBase> ();
 
+		DataRequestManager drm;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MapUtils.MapDelegate"/> class.
 		/// </summary>
@@ -45,15 +43,11 @@ namespace OHouse
 		public MapDelegate (MapViewController parent)
 		{
 			this.parent = parent;
-			DataRequestManager drm = new DataRequestManager ();
+			drm = new DataRequestManager ();
 
-			/// Check network status
-			UpdateStatus ();
-			if (internetStatus == NetworkStatus.NotReachable) {
-				networkStatus = false;
-				toiletsList = drm.GetToiletList ("database/Toilets");
+			if (!AppDelegate.connectivity){
+				toiletsList = drm.GetToiletList ("database/Update");
 			} else {
-				networkStatus = true;
 				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
 			}
 		}
@@ -221,18 +215,6 @@ namespace OHouse
 		/// <param name="animated">If set to <c>true</c> animated.</param>
 		public override void RegionChanged (MKMapView mapView, bool animated)
 		{
-		}
-
-		/// <summary>
-		/// Updates connection status.
-		/// </summary>
-		/// <param name="sender">Sender.</param>
-		/// <param name="e">E.</param>
-		void UpdateStatus (object sender = null, EventArgs e = null)
-		{
-			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
-			internetStatus = ConnectionManager.InternetConnectionStatus ();
-			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
 	}
 
