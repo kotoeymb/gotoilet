@@ -28,7 +28,7 @@ namespace OHouse
 		float w = 50;
 		float h = 50;
 
-		Common common = new Common ();
+		//Common common = new Common ();
 		FormViewController form;
 
 		private NSObject _didEnteredBackground;
@@ -75,7 +75,7 @@ namespace OHouse
 			myLocationButton = new UIButton (UIButtonType.System);
 			myLocationButton.TintColor = UIColor.White;
 			myLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-pin"), UIControlState.Normal);
-			myLocationButton.BackgroundColor = common.ColorStyle_1;
+			myLocationButton.BackgroundColor = Common.ColorStyle_1;
 			myLocationButton.Frame = new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h);
 			myLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
 			myLocationButton.Layer.ShadowOffset = new CGSize (0,2);
@@ -87,7 +87,7 @@ namespace OHouse
 			addLocationButton = new UIButton (UIButtonType.System);
 			addLocationButton.TintColor = UIColor.White;
 			addLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-add"), UIControlState.Normal);
-			addLocationButton.BackgroundColor = common.ColorStyle_1;
+			addLocationButton.BackgroundColor = Common.ColorStyle_1;
 			addLocationButton.Frame = new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h);
 			addLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
 			addLocationButton.Layer.ShadowOffset = new CGSize (0,1);

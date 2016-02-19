@@ -22,7 +22,6 @@ namespace OHouse
 {
 	public partial class FormViewController : UIViewController
 	{
-		Common common = new Common ();
 		TextField tf;
 		TextField stf;
 		UIImagePickerController imagePicker;
@@ -110,18 +109,18 @@ namespace OHouse
 			CGRect tfRec = new CGRect (items.X, items.Y, items.Width, items.Height);
 			tf = new TextField (
 				tfRec,
-				common.Black, 
+				Common.Black, 
 				"Title", 
-				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
+				UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1)
 			);
 
 			// Subtitle
 			CGRect stfRec = new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height);
 			stf = new TextField (
 				stfRec,
-				common.Black, 
+				Common.Black, 
 				"Description", 
-				UtilImage.GetColoredImage ("images/icons/icon-notes", common.ColorStyle_1)
+				UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1)
 			);
 
 			imageURL = new UILabel ();
@@ -136,12 +135,12 @@ namespace OHouse
 			CGRect cameraIconRec = new CGRect (camera.Frame.Width - 16 - 10, camera.Frame.Height / 2 - 8, 16, 16);
 			UIImageView cameraIcon = new UIImageView (cameraIconRec) {
 				// Change image color overlay
-				Image = UtilImage.GetColoredImage ("images/icons/icon-camera", common.White)
+				Image = UtilImage.GetColoredImage ("images/icons/icon-camera", Common.White)
 			};
 
 			camera.SetTitle ("Upload photo", UIControlState.Normal);
-			camera.Font = common.Font16F;
-			camera.BackgroundColor = common.ColorStyle_1;
+			camera.Font = Common.Font16F;
+			camera.BackgroundColor = Common.ColorStyle_1;
 			camera.AddSubview (cameraIcon);
 
 

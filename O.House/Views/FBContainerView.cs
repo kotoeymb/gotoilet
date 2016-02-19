@@ -23,7 +23,7 @@ namespace OHouse
 		LoginButton loginButton;
 		ProfilePictureView profileView;
 		UILabel nameLabel;
-		Common common = new Common ();
+		Common Common = new Common ();
 		float menuWidth = 290;
 		DataRequestManager drm;
 
@@ -61,9 +61,9 @@ namespace OHouse
 			//nameLabel = new UILabel (new RectangleF (110, -10, (float)this.Frame.Width, 100)) {
 			nameLabel = new UILabel (new RectangleF (menuWidth / 2 - menuWidth / 2, (float)this.Frame.Height / 2 + 30, menuWidth, 30)) {
 				TextAlignment = UITextAlignment.Center,
-				TextColor = common.White,
-				BackgroundColor = common.Clear,
-				Font = common.Font16F
+				TextColor = Common.White,
+				BackgroundColor = Common.Clear,
+				Font = Common.Font16F
 			};
 					
 			loginButton.SetBackgroundImage (UIImage.FromBundle ("images/background/bg-0"), UIControlState.Normal);

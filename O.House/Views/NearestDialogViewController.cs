@@ -24,7 +24,7 @@ namespace OHouse
 		List<ToiletsBase> tBaseList = new List<ToiletsBase> ();
 		List<ToiletsBase> tBaseListOrdered = new List<ToiletsBase> ();
 		Section section = new Section ();
-		Common common= new Common ();
+		Common Common= new Common ();
 		CustomHdrFtr customhf = new CustomHdrFtr();
 
 		public NearestDialogViewController () : base (UITableViewStyle.Grouped, null, true)
@@ -53,8 +53,8 @@ namespace OHouse
 							UIApplication.SharedApplication.OpenUrl (url);
 						}
 					) {
-						Font = common.Font13F,
-						TextColor = common.White
+						Font = Common.Font13F,
+						TextColor = Common.White
 					}
 				);
 			}

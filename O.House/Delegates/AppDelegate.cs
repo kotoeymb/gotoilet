@@ -36,7 +36,7 @@ namespace OHouse
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			common = new Common ();
+			//common = new Common ();
 
 			Profile.EnableUpdatesOnAccessTokenChange (true);
 			Settings.AppID = appId;
@@ -45,10 +45,10 @@ namespace OHouse
 			UIApplication.SharedApplication.SetStatusBarStyle (UIStatusBarStyle.LightContent, false);
 
 			// Setting up navigation
-			UINavigationBar.Appearance.BarTintColor = common.ColorStyle_1;
+			UINavigationBar.Appearance.BarTintColor = Common.ColorStyle_1;
 			UINavigationBar.Appearance.TintColor = UIColor.White;
 			UINavigationBar.Appearance.SetTitleTextAttributes (
-				new UITextAttributes { TextColor = UIColor.White, Font = common.Font16F }
+				new UITextAttributes { TextColor = UIColor.White, Font = Common.Font16F }
 			);
 
 			// create a new window instance based on the screen size

@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 
 using Foundation;
 using UIKit;
@@ -91,7 +92,9 @@ namespace OHouse.DRM
 				t.Add (ba);
 			}
 
-			return t;
+			List<ToiletsBase> orderedList = t.OrderByDescending(o => o.spot_id).ToList();
+
+			return orderedList;
 		}
 
 		/// <summary>

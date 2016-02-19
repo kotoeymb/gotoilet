@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 
 using Facebook.ShareKit;
 using OHouse.Connectivity;
+using O.House;
 
 namespace OHouse
 {
@@ -70,23 +71,24 @@ namespace OHouse
 			}
 
 			chunk = new List<ToiletsBase> ();
-			if (newPost.Count < 5) {
-				for (var i = 0; i < newPost.Count; i++) {
+//			if (newPost.Count < 10) {
+//				for (var i = 0; i < newPost.Count; i++) {
+//					chunk.Add (newPost [i]);
+//				}
+//			} else {
+				for (var i = 0; i < 10; i++) {
 					chunk.Add (newPost [i]);
 				}
-			} else {
-				for (var i = 0; i < 5; i++) {
-					chunk.Add (newPost [i]);
-				}
-			}
+//			}
 
 			// Perform any additional setup after loading the view, typically from a nib.
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
 
 			tbl.Bounces = false; ////// disable bounce to prevent multiple actions when reached to tableview bottom, see Scrolled()
 			tbl.Source = new TableSource (chunk, newPost);
-			tbl.RowHeight = 120f;
-			tbl.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+			//tbl.RowHeight = 120f;
+			tbl.RowHeight = UITableView.AutomaticDimension;
+			tbl.EstimatedRowHeight = 160.0f;
 
 			View = tbl;
 		}
@@ -111,7 +113,7 @@ namespace OHouse
 		List<ToiletsBase> dataToLoad;
 		DataRequestManager drm;
 		UITableView tableViews;
-		
+
 		public TableSource (List<ToiletsBase> chunks, List<ToiletsBase> data)
 		{
 			posts = chunks;
@@ -131,7 +133,6 @@ namespace OHouse
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			string postCellId = "postCell";
 			string errorCellId = "errorCell";
 
 			drm = new DataRequestManager ();
@@ -152,25 +153,35 @@ namespace OHouse
 				tableView.RowHeight = 40f;
 
 			} else {
-				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
+//				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
+//				
+//
+//				if (cell == null) {
+//					cell = new TimelineCell ((NSString)postCellId);
+//					
+//
+//					//////
+//					/// like
+//					((TimelineCell)cell).LikeBtn.TouchUpInside += (object sender, EventArgs e) => {
+//						
+//						int vote_cnt = posts [indexPath.Row].vote_cnt;
+//						vote_cnt++;
+//						posts [indexPath.Row].vote_cnt = vote_cnt;
+//						drm.RegisterVote (posts [indexPath.Row].spot_id);
+//
+//						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
+//					};
+//				}
+//
+//				((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
+				cell = (TimelineCellDesign)tableView.DequeueReusableCell(TimelineCellDesign.Key);
 
 				if (cell == null) {
-					cell = new TimelineCell ((NSString)postCellId);
 
-					//////
-					/// like
-					((TimelineCell)cell).LikeBtn.TouchUpInside += (object sender, EventArgs e) => {
-						
-						int vote_cnt = posts [indexPath.Row].vote_cnt;
-						vote_cnt++;
-						posts [indexPath.Row].vote_cnt = vote_cnt;
-						drm.RegisterVote (posts [indexPath.Row].spot_id);
-
-						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
-					};
+					cell = TimelineCellDesign.Create();
 				}
 
-				((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
+				((TimelineCellDesign)cell).Model = posts [indexPath.Row];
 			}
 
 			return cell;
@@ -185,7 +196,7 @@ namespace OHouse
 			//////
 			/// end of tableview, last row
 			if (this.tableViews.ContentOffset.Y >= (tableViews.ContentSize.Height - tableViews.Frame.Size.Height)) {
-
+				Console.WriteLine ("End of TableView");
 				//////
 				/// spot_id 0 mean error row
 				if (posts [0].spot_id == 0) {
@@ -204,18 +215,25 @@ namespace OHouse
 
 					//////
 					/// Add rows after 2 secs delay
-					NSTimer.CreateScheduledTimer (new TimeSpan (0, 0, 0, 2), delegate {
-						this.tableViews.BeginUpdates ();
-						this.tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
-						this.tableViews.EndUpdates ();
-					});
+//					NSTimer.CreateScheduledTimer (new TimeSpan (0, 0, 0, 0), delegate {
+//						this.tableViews.BeginUpdates ();
+//						this.tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
+//						this.tableViews.EndUpdates ();
+//					});
+
+					this.tableViews.BeginUpdates ();
+					this.tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.Fade);
+					this.tableViews.EndUpdates ();
 				}
+
+
 			}
 		}
 	}
 
 	public class TimelineCell : UITableViewCell
 	{
+
 		private UIButton ShareBtn;
 		private UIButton Title;
 		private UILabel Info;
@@ -233,8 +251,6 @@ namespace OHouse
 		private ToiletsBase toiletBase;
 		private ShareLinkContent slc;
 
-		Common common = new Common ();
-
 		public TimelineCell (NSString cellId) : base (UITableViewCellStyle.Default, cellId)
 		{
 			BackgroundColor = UIColor.White;
@@ -243,20 +259,20 @@ namespace OHouse
 			SelectedBackgroundView = customColorView;
 
 			shareButton = new ShareButton (new CGRect (0, 0, 34, 34)) {
-				BackgroundColor = common.ColorStyle_1
+				BackgroundColor = Common.ColorStyle_1
 			};
 
 			Title = new UIButton () {
-				Font = common.Font16F,
+				Font = Common.Font16F,
 				HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
-				TintColor = common.ColorStyle_1,
+				TintColor = Common.ColorStyle_1,
 				BackgroundColor = UIColor.Clear
 			};
 
 
 			Info = new UILabel () {
-				Font = common.Font13F,
-				TextColor = common.Blackish,
+				Font = Common.Font13F,
+				TextColor = Common.Blackish,
 				TextAlignment = UITextAlignment.Left,
 				Lines = 0,
 				AdjustsFontSizeToFitWidth = false,
@@ -265,8 +281,8 @@ namespace OHouse
 			};
 
 			Count = new UILabel () {
-				Font = common.Font13F,
-				TextColor = common.Blackish,
+				Font = Common.Font13F,
+				TextColor = Common.Blackish,
 				TextAlignment = UITextAlignment.Center,
 				BackgroundColor = UIColor.Clear
 			};
@@ -275,27 +291,27 @@ namespace OHouse
 				UtilImage.ResizeImageKeepAspect (
 					UtilImage.GetColoredImage (
 						"images/icons/icon-share", 
-						common.White
+						Common.White
 					), 
 					24, 
 					24
 				), 
 				new RectangleF (0, 0, 35, 35), 
-				common.ColorStyle_1, 
+				Common.ColorStyle_1, 
 				true
 			);
 
-			ShareBtn.BackgroundColor = common.ColorStyle_1;
+			ShareBtn.BackgroundColor = Common.ColorStyle_1;
 			LikeBtn = UtilImage.RoundButton (
 				UtilImage.ResizeImageKeepAspect (
 					UtilImage.GetColoredImage (
 						"images/icons/icon-heart", 
-						common.White), 
+						Common.White), 
 					24, 
 					24
 				),
 				new RectangleF (0, 0, 35, 35),
-				common.ColorStyle_1,
+				Common.ColorStyle_1,
 				false
 			);
 
@@ -327,8 +343,8 @@ namespace OHouse
 		{
 			base.SetSelected (selected, animated);
 			Border.BackgroundColor = UIColor.FromRGB (238, 238, 238);
-			ShareBtn.BackgroundColor = common.ColorStyle_1;
-			LikeBtn.BackgroundColor = common.ColorStyle_1;
+			ShareBtn.BackgroundColor = Common.ColorStyle_1;
+			LikeBtn.BackgroundColor = Common.ColorStyle_1;
 		}
 
 		public override void LayoutSubviews ()
@@ -344,7 +360,7 @@ namespace OHouse
 			Title.Frame = new CGRect (65, 12, full.Width - 65 + 15, 24);
 
 			// UILabe info
-			CGSize size = UIStringDrawing.StringSize (Info.Text, common.Font13F, new CGSize (full.Width, 60), UILineBreakMode.WordWrap);
+			CGSize size = UIStringDrawing.StringSize (Info.Text, Common.Font13F, new CGSize (full.Width, 60), UILineBreakMode.WordWrap);
 			Info.Frame = new CGRect (Title.Frame.X, Title.Frame.Y + Title.Frame.Height, Title.Frame.Width, size.Height);
 
 			// UIImage likeBtn

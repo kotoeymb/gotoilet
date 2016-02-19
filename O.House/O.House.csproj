@@ -70,9 +70,6 @@
     <Reference Include="Facebook">
       <HintPath>..\Library\Facebook\ios-unified\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.Slideout">
-      <HintPath>..\..\..\..\Downloads\ToiletApp 2\MonoTouch.SlideoutNavigation\obj\Debug\MonoTouch.Slideout.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
@@ -112,6 +109,7 @@
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\TestListVC.xib" />
+    <InterfaceDefinition Include="Views\TimelineCellDesign.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -165,6 +163,10 @@
     </Compile>
     <Compile Include="Views\Post.cs" />
     <Compile Include="Views\Feed.cs" />
+    <Compile Include="Views\TimelineCellDesign.cs" />
+    <Compile Include="Views\TimelineCellDesign.designer.cs">
+      <DependentUpon>TimelineCellDesign.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -218,5 +220,11 @@
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\MonoTouch.SlideoutNavigation\MonoTouch.SlideoutNavigation.csproj">
+      <Project>{6D7B9B53-CFEF-46BE-A608-14A4A1381CF6}</Project>
+      <Name>MonoTouch.SlideoutNavigation</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="186" id="cxk-wN-pdQ" customClass="TimelineCellDesign">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="186"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cxk-wN-pdQ" id="YTl-1W-gDM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="185.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ri4-7o-Glx">
+                        <rect key="frame" x="286" y="151.5" width="24" height="24"/>
+                        <animations/>
+                        <state key="normal" title="Share"/>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJa-Js-wsY">
+                        <rect key="frame" x="10" y="151.5" width="24" height="24"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="br5-C0-grN"/>
+                            <constraint firstAttribute="height" constant="24" id="goV-bx-W5z"/>
+                        </constraints>
+                        <state key="normal" title="Like"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5G-sz-rDV">
+                        <rect key="frame" x="10" y="10" width="300" height="20"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hK-bm-ldj">
+                        <rect key="frame" x="10" y="30" width="300" height="111.5"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ri4-7o-Glx" secondAttribute="bottom" constant="10" id="3XA-Yo-fDh"/>
+                    <constraint firstItem="A5G-sz-rDV" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="10" id="4q6-LN-eCA"/>
+                    <constraint firstItem="ri4-7o-Glx" firstAttribute="height" secondItem="mJa-Js-wsY" secondAttribute="height" id="4rR-hk-pQe"/>
+                    <constraint firstAttribute="bottom" secondItem="mJa-Js-wsY" secondAttribute="bottom" constant="10" id="NoU-WZ-Mmk"/>
+                    <constraint firstItem="mJa-Js-wsY" firstAttribute="top" secondItem="3hK-bm-ldj" secondAttribute="bottom" constant="10" id="O0n-hA-Xya"/>
+                    <constraint firstAttribute="trailing" secondItem="ri4-7o-Glx" secondAttribute="trailing" constant="10" id="XF0-HE-twO"/>
+                    <constraint firstItem="3hK-bm-ldj" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="XTC-qF-ZPe"/>
+                    <constraint firstItem="ri4-7o-Glx" firstAttribute="width" secondItem="mJa-Js-wsY" secondAttribute="width" id="bvP-b7-xiJ"/>
+                    <constraint firstAttribute="trailing" secondItem="A5G-sz-rDV" secondAttribute="trailing" constant="10" id="cOD-Ef-74d"/>
+                    <constraint firstItem="A5G-sz-rDV" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="ruP-iU-UwS"/>
+                    <constraint firstItem="mJa-Js-wsY" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="uiy-yx-7h5"/>
+                    <constraint firstAttribute="trailing" secondItem="3hK-bm-ldj" secondAttribute="trailing" constant="10" id="uqZ-Nq-rBe"/>
+                    <constraint firstItem="3hK-bm-ldj" firstAttribute="top" secondItem="A5G-sz-rDV" secondAttribute="bottom" id="y2v-AW-JTZ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="cellLikeBtn" destination="mJa-Js-wsY" id="cfj-XD-fWX"/>
+                <outlet property="cellShareBtn" destination="ri4-7o-Glx" id="WVz-bE-jj4"/>
+                <outlet property="cellSubtitle" destination="3hK-bm-ldj" id="AJR-wB-8MS"/>
+                <outlet property="cellTitle" destination="A5G-sz-rDV" id="99H-db-ld6"/>
+            </connections>
+            <point key="canvasLocation" x="340" y="352"/>
+        </tableViewCell>
+    </objects>
+</document>

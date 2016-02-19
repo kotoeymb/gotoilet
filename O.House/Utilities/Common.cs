@@ -9,87 +9,87 @@ namespace Commons
 		//		private UIFont _font10f, _font13f, _font16f, _font19f;
 		//		private UIColor _white, _blue, _black, _clear;
 
-		private string _fontName = "Helvetica Light";
+		private static string _fontName = "Helvetica Light";
 
 		public Common ()
 		{
 		}
 
-		public float PopUpDistance {
+		public static float PopUpDistance {
 			get { return 200f; }
 			set { ; }
 		}
 
-		public UIFont Font13F {
+		public static UIFont Font13F {
 			get { return UIFont.FromName (_fontName, 13f); }
 			set { ; }
 		}
 
-		public UIFont Font16F {
+		public static UIFont Font16F {
 			get { return UIFont.FromName (_fontName, 16f); }
 			set { ; }
 		}
 
-		public UIFont Font19F {
+		public static UIFont Font19F {
 			get { return UIFont.FromName (_fontName, 19f); }
 			set { ; }
 		}
 
-		public UIFont Font10F {
+		public static UIFont Font10F {
 			get { return UIFont.FromName (_fontName, 10f); }
 			set { ; }
 		}
 
-		public UIColor White {
+		public static UIColor White {
 			get { return UIColor.White; }
 			set { ; }
 		}
 
-		public UIColor Blue {
+		public static UIColor Blue {
 			get { return UIColor.Blue; }
 			set { ; }
 		}
 
-		public UIColor Black {
+		public static UIColor Black {
 			get { return UIColor.Black; }
 			set { ; }
 		}
 
-		public UIColor Blackish {
+		public static UIColor Blackish {
 			get { return UIColor.FromRGB (52, 52, 52); }
 			set { ; }
 		}
 
-		public UIColor BlackishWithAlpha {
+		public static UIColor BlackishWithAlpha {
 			get { return UIColor.FromRGBA (52, 52, 52, 230); }
 			set { ; }
 		}
 
-		public UIColor WhitishWithAlpha {
+		public static UIColor WhitishWithAlpha {
 			get { return UIColor.FromRGBA (255, 255, 255, 230); }
 			set { ; }
 		}
 
-		public UIColor Clear {
+		public static UIColor Clear {
 			get { return UIColor.Clear; }
 			set { ; }
 		}
 
-		public UIColor ColorStyle_1 {
+		public static UIColor ColorStyle_1 {
 			get { return UIColor.FromRGB (255, 162, 69); }
 			set { ; }
 		}
 
-		public UIColor Custom (byte R, byte G, byte B, byte A = 255)
+		public static UIColor Custom (byte R, byte G, byte B, byte A = 255)
 		{
 			return UIColor.FromRGBA (R, G, B, A);
 		}
 
-		public UITextAttributes commonStyle {
+		public static UITextAttributes commonStyle {
 			get {
 				UITextAttributes attri = new UITextAttributes () {
-					Font = this.Font16F,
-					TextColor = this.White
+					Font = Font16F,
+					TextColor = White
 				};
 
 				return attri;
@@ -101,7 +101,7 @@ namespace Commons
 
 	public class CustomHdrFtr
 	{
-		Common font = new Common ();
+		//Common font = new Common ();
 
 		public CustomHdrFtr ()
 		{
@@ -123,7 +123,7 @@ namespace Commons
 			};
 
 			if (fontcolor == null) {
-				fontcolor = font.White;
+				fontcolor = Common.White;
 			}
 
 			UILabel text = new UILabel (new CGRect (15, 0, (float)width - 30, height)) {
@@ -131,8 +131,8 @@ namespace Commons
 				TextAlignment = UITextAlignment.Left,
 				//TextColor = font.White,
 				TextColor = fontcolor,
-				Font = font.Font13F,
-				BackgroundColor = font.Clear,
+				Font = Common.Font13F,
+				BackgroundColor = Common.Clear,
 				AdjustsFontSizeToFitWidth = false,
 				Lines = 2
 			};

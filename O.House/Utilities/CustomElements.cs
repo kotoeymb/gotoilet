@@ -246,7 +246,7 @@ namespace CustomElements
 		UILabel sublabel;
 		UIImageView imageView;
 		UIView customColorView = new UIView ();
-		Common common = new Common ();
+		
 
 		public CustomCell (UITableViewCellStyle style, NSString id, string caption, string subtitle, UIImage img) : base (style, id)
 		{
@@ -259,17 +259,17 @@ namespace CustomElements
 
 			label = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = common.Clear,
-				TextColor = common.ColorStyle_1,
-				Font = common.Font16F,
+				BackgroundColor = Common.Clear,
+				TextColor = Common.ColorStyle_1,
+				Font = Common.Font16F,
 				Lines = 0
 			};
 
 			sublabel = new UILabel () {
 				TextAlignment = UITextAlignment.Left,
-				BackgroundColor = common.Clear,
-				TextColor = common.White,
-				Font = common.Font13F,
+				BackgroundColor = Common.Clear,
+				TextColor = Common.White,
+				Font = Common.Font13F,
 				AdjustsFontSizeToFitWidth = false,
 				Lines = 2,
 			};
@@ -295,8 +295,8 @@ namespace CustomElements
 			base.LayoutSubviews ();
 			var full = ContentView.Bounds;
 
-			CGSize size = UIStringDrawing.StringSize (label.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
-			CGSize size0 = UIStringDrawing.StringSize (sublabel.Text, common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
+			CGSize size = UIStringDrawing.StringSize (label.Text, Common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
+			CGSize size0 = UIStringDrawing.StringSize (sublabel.Text, Common.Font16F, new CGSize (full.Width, 40), UILineBreakMode.WordWrap);
 
 			nfloat x = 15 + 32 + 15;
 			imageView.Frame = new CGRect (15, 15, 32, 32);
@@ -364,7 +364,6 @@ namespace CustomElements
 	/// </summary>
 	public class TextField : UIView
 	{
-		Common common = new Common ();
 		UITextField tf;
 		UILabel lbl;
 		float padding;
@@ -374,7 +373,7 @@ namespace CustomElements
 		public TextField (CGRect bounds, UIColor bordercolor, string caption, UIImage icon = null, bool transparent = true)
 		{
 			this.Frame = bounds;
-			BackgroundColor = common.Clear;
+			BackgroundColor = Common.Clear;
 
 			box = new UIView (bounds);
 
@@ -393,15 +392,15 @@ namespace CustomElements
 			// Label
 			lbl = new UILabel (new CGRect (0, 0, bounds.Width, 16)) {
 				Text = caption,
-				Font = common.Font16F,
-				TextColor = common.ColorStyle_1
+				Font = Common.Font16F,
+				TextColor = Common.ColorStyle_1
 			};
 
 			box.Frame = new CGRect (0, lbl.Frame.Y + lbl.Frame.Height + 8, bounds.Width, bounds.Height);
 
 			// Textfield
 			tf = new UITextField (new CGRect (padding, padding, bounds.Width - padding * 2 - 16, bounds.Height - padding * 2));
-			tf.Font = common.Font13F;
+			tf.Font = Common.Font13F;
 			tf.TextColor = bordercolor;
 			tf.Placeholder = caption;
 

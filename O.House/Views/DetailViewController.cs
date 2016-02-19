@@ -24,7 +24,7 @@ namespace OHouse
 	{
 		DataRequestManager drm;
 		List<ToiletsBase> tb;
-		Common common;
+		Common Common;
 		ConnectionManager connMgr;
 		UIView DView;
 		UILabel label1;
@@ -36,7 +36,6 @@ namespace OHouse
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
 			drm = new DataRequestManager ();
-			common = new Common ();
 			connMgr = new ConnectionManager ();
 			connMgr.UpdateStatus ();
 
@@ -54,7 +53,7 @@ namespace OHouse
 					UIApplication.SharedApplication.OpenUrl (url);
 				});
 
-			rightBarBtnItem.SetTitleTextAttributes (common.commonStyle, UIControlState.Normal);
+			rightBarBtnItem.SetTitleTextAttributes (Common.commonStyle, UIControlState.Normal);
 
 			this.NavigationItem.SetRightBarButtonItem (
 				rightBarBtnItem,
@@ -115,7 +114,7 @@ namespace OHouse
 
 				label1 = new UILabel () {
 					TextColor = UIColor.Black,
-					Font = common.Font16F,
+					Font = Common.Font16F,
 				};
 				label1.Text = tb [0].title;
 				label1.Frame = new CGRect (10, 210, View.Frame.Width, 30);
@@ -123,7 +122,7 @@ namespace OHouse
 
 				label2 = new UILabel () {
 					TextColor = UIColor.Black,
-					Font = common.Font16F,
+					Font = Common.Font16F,
 				};
 				label2.Text = tb [0].latitude + ", " + tb [0].longitude;
 				label2.Frame = new CGRect (10, 250, View.Frame.Width, 30);
