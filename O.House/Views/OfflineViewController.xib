@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OfflineViewController">
+            <connections>
+                <outlet property="closeBtn" destination="duO-K1-yYd" id="HKu-3z-PXq"/>
+                <outlet property="downloadBtn" destination="Xbk-Zw-NdW" id="foj-NM-SMJ"/>
+                <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z81-xp-PD5">
+                    <rect key="frame" x="20" y="210" width="280" height="148"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="In order to use in offline mode, you need to download data from server. It won't be much and it won't take long!" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1X-Ya-fWD">
+                            <rect key="frame" x="10" y="36" width="260" height="51.5"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                            <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbk-Zw-NdW">
+                            <rect key="frame" x="10" y="98" width="260" height="40"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="3iV-vl-n8I"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="sd0-eH-etN"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                            <state key="normal" title="Download">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="3iV-vl-n8I"/>
+                                </mask>
+                            </variation>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download necessary data ..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTn-zI-XRG">
+                            <rect key="frame" x="10" y="10" width="260" height="21.5"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="C1X-Ya-fWD" firstAttribute="leading" secondItem="Z81-xp-PD5" secondAttribute="leading" constant="10" id="5kQ-aW-GSF"/>
+                        <constraint firstItem="Xbk-Zw-NdW" firstAttribute="top" secondItem="C1X-Ya-fWD" secondAttribute="bottom" constant="10" id="8dH-1j-reO"/>
+                        <constraint firstItem="C1X-Ya-fWD" firstAttribute="bottom" secondItem="NTn-zI-XRG" secondAttribute="bottom" id="BbF-JB-Pyp"/>
+                        <constraint firstItem="C1X-Ya-fWD" firstAttribute="top" secondItem="Z81-xp-PD5" secondAttribute="top" constant="5" id="TXX-XP-W7P"/>
+                        <constraint firstAttribute="bottom" secondItem="Xbk-Zw-NdW" secondAttribute="bottom" constant="10" id="cwb-jG-pv4"/>
+                        <constraint firstItem="NTn-zI-XRG" firstAttribute="top" secondItem="Z81-xp-PD5" secondAttribute="top" constant="10" id="g2b-nP-tkR"/>
+                        <constraint firstAttribute="trailing" secondItem="NTn-zI-XRG" secondAttribute="trailing" constant="10" id="kb6-6z-1w9"/>
+                        <constraint firstAttribute="bottom" secondItem="Xbk-Zw-NdW" secondAttribute="bottom" constant="10" id="lzR-TV-bvK"/>
+                        <constraint firstItem="Xbk-Zw-NdW" firstAttribute="top" secondItem="Z81-xp-PD5" secondAttribute="top" constant="10" id="ojf-Ie-mtQ"/>
+                        <constraint firstItem="NTn-zI-XRG" firstAttribute="leading" secondItem="Z81-xp-PD5" secondAttribute="leading" constant="10" id="r0I-ON-G19"/>
+                        <constraint firstItem="C1X-Ya-fWD" firstAttribute="top" secondItem="NTn-zI-XRG" secondAttribute="bottom" constant="5" id="sXo-f6-5xF"/>
+                        <constraint firstAttribute="trailing" secondItem="Xbk-Zw-NdW" secondAttribute="trailing" constant="10" id="tAN-ES-aHC"/>
+                        <constraint firstItem="Xbk-Zw-NdW" firstAttribute="leading" secondItem="Z81-xp-PD5" secondAttribute="leading" constant="10" id="wWf-hT-kiu"/>
+                        <constraint firstAttribute="trailing" secondItem="C1X-Ya-fWD" secondAttribute="trailing" constant="10" id="za8-QC-vlr"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="BbF-JB-Pyp"/>
+                            <exclude reference="TXX-XP-W7P"/>
+                            <exclude reference="cwb-jG-pv4"/>
+                            <exclude reference="ojf-Ie-mtQ"/>
+                        </mask>
+                    </variation>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="duO-K1-yYd">
+                    <rect key="frame" x="268" y="20" width="32" height="32"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="8pK-9e-5Ca"/>
+                        <constraint firstAttribute="height" constant="32" id="Geq-L0-nvg"/>
+                    </constraints>
+                    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <state key="normal" title="Button" image="images/icons/icon-cross.png"/>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Z81-xp-PD5" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="L13-EV-Nlk"/>
+                <constraint firstItem="Z81-xp-PD5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="210" id="Q0j-Tk-I0E"/>
+                <constraint firstAttribute="bottom" secondItem="Z81-xp-PD5" secondAttribute="bottom" constant="210" id="RkN-gV-3gs"/>
+                <constraint firstAttribute="trailing" secondItem="Z81-xp-PD5" secondAttribute="trailing" constant="20" id="bnv-1K-kbc"/>
+                <constraint firstItem="duO-K1-yYd" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="xDg-tI-EGd"/>
+                <constraint firstAttribute="trailing" secondItem="duO-K1-yYd" secondAttribute="trailing" constant="20" id="xjH-hS-aUi"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="images/icons/icon-cross.png" width="32" height="32"/>
+    </resources>
+</document>

@@ -46,7 +46,8 @@ namespace OHouse
 			drm = new DataRequestManager ();
 
 			if (!AppDelegate.connectivity){
-				toiletsList = drm.GetToiletList ("database/Update");
+				Console.WriteLine ("Connection not available, showing from local list...");
+				toiletsList = drm.GetToiletList ("Update.plist");
 			} else {
 				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
 			}

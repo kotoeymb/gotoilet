@@ -17,5 +17,155 @@
 		<key>vote_cnt</key>
 		<string>0</string>
 	</dict>
+	<key>Toilet 02</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 02</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 03</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 03</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 04</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 04</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 05</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 05</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 06</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 06</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 07</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 07</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 08</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 08</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 09</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 09</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 10</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 10</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
+	<key>Toilet 11</key>
+	<dict>
+		<key>title</key>
+		<string>Toilet 11</string>
+		<key>latitude</key>
+		<string>16.777024</string>
+		<key>longitude</key>
+		<string>96.164964</string>
+		<key>spot_id</key>
+		<string>1</string>
+		<key>sub_title</key>
+		<string>subtitle</string>
+		<key>vote_cnt</key>
+		<string>0</string>
+	</dict>
 </dict>
 </plist>

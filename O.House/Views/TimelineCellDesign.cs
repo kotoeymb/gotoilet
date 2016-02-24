@@ -15,17 +15,19 @@ namespace O.House
 	{
 		public ToiletsBase Model { get; set; }
 
-//		Common common;
+		//		Common common;
 
-		public static readonly UINib Nib = UINib.FromName("TimelineCellDesign", NSBundle.MainBundle);
-		public static readonly NSString Key = new NSString("MyCustomCell");
+		public static readonly UINib Nib = UINib.FromName ("TimelineCellDesign", NSBundle.MainBundle);
+		public static readonly NSString Key = new NSString ("MyCustomCell");
 
-		public TimelineCellDesign (IntPtr handle) : base(handle) {
+		public TimelineCellDesign (IntPtr handle) : base (handle)
+		{
 
 		}
 
-		public static TimelineCellDesign Create() {
-			return (TimelineCellDesign)Nib.Instantiate(null, null) [0];
+		public static TimelineCellDesign Create ()
+		{
+			return (TimelineCellDesign)Nib.Instantiate (null, null) [0];
 		}
 
 		public override void LayoutSubviews ()
@@ -34,20 +36,20 @@ namespace O.House
 
 			this.cellTitle.Text = Model.title;
 			this.cellSubtitle.Text = Model.sub_title;
+			this.cellSubtitle.Lines = 0;
+			this.cellSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
+	
+			cellShareBtn.SetTitle ("Share", UIControlState.Normal);
+			cellShareBtn.SetImage(UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
+			cellShareBtn.ImageEdgeInsets = new UIEdgeInsets (0, 0, 0, 5);
+			cellShareBtn.TintColor = UIColor.LightGray;
 
-			cellShareBtn.SetTitle("S", UIControlState.Normal);
-			//cellShareBtn.SetBackgroundImage(UIImage.FromBundle("images/icons/icon-share"), UIControlState.Normal);
-			cellShareBtn.Layer.CornerRadius = cellShareBtn.Frame.Size.Width/2;
-			cellShareBtn.Layer.BorderWidth = 1;
-			cellShareBtn.Layer.BorderColor = UIColor.LightGray.CGColor;
-			cellShareBtn.ClipsToBounds = true;
 
-			cellLikeBtn.SetTitle ("L", UIControlState.Normal);
-			//cellLikeBtn.SetBackgroundImage (UIImage.FromBundle ("images/icons/icon-heart"), UIControlState.Normal);
-			cellLikeBtn.Layer.CornerRadius = cellLikeBtn.Frame.Size.Width/2;
-			cellLikeBtn.Layer.BorderWidth = 1;
-			cellLikeBtn.Layer.BorderColor = UIColor.LightGray.CGColor;
-			cellLikeBtn.ClipsToBounds = true;
+			cellLikeBtn.SetTitle ("Approve", UIControlState.Normal);
+			cellLikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 16, 16), UIControlState.Normal);
+			cellLikeBtn.TitleEdgeInsets = new UIEdgeInsets (0, 5, 0, 0);
+			cellLikeBtn.TintColor = UIColor.LightGray;
+
 		}
 	}
 }

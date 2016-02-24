@@ -110,6 +110,7 @@
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\TestListVC.xib" />
     <InterfaceDefinition Include="Views\TimelineCellDesign.xib" />
+    <InterfaceDefinition Include="Views\OfflineViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -167,6 +168,10 @@
     <Compile Include="Views\TimelineCellDesign.designer.cs">
       <DependentUpon>TimelineCellDesign.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\OfflineViewController.cs" />
+    <Compile Include="Views\OfflineViewController.designer.cs">
+      <DependentUpon>OfflineViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -217,6 +222,8 @@
     <BundleResource Include="Resources\database\Toilets.plist" />
     <BundleResource Include="Resources\images\icons\icon-heart.png" />
     <BundleResource Include="Resources\database\Update.plist" />
+    <BundleResource Include="Resources\images\icons\icon-reload.png" />
+    <BundleResource Include="Resources\images\icons\icon-offline.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

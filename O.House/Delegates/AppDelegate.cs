@@ -6,6 +6,7 @@ using OHouse;
 using Facebook;
 using Facebook.CoreKit;
 using System;
+using System.IO;
 using System.Diagnostics;
 using CoreLocation;
 using Utils;
@@ -26,7 +27,6 @@ namespace OHouse
 
 		UIWindow window;
 		UIBarButtonItem menuButton;
-		Common common;
 		DataRequestManager drm;
 
 		public static bool connectivity;
@@ -36,7 +36,18 @@ namespace OHouse
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			//common = new Common ();
+			/////
+			/// Check Update.plist existence
+			NSFileManager fileMgn = NSFileManager.DefaultManager;
+			NSUrl[] paths = fileMgn.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
+			string documentsDirectory = paths [0].Path;
+			string fileName = Path.Combine (documentsDirectory, "Update.plist");
+			NSError error = null;
+
+			if (!fileMgn.FileExists (fileName)) {
+				var bundle = NSBundle.MainBundle.PathForResource ("database/Update", "plist");
+				fileMgn.Copy (bundle, fileName, out error);
+			}
 
 			Profile.EnableUpdatesOnAccessTokenChange (true);
 			Settings.AppID = appId;
@@ -66,24 +77,6 @@ namespace OHouse
 
 			// make the window visible
 			window.MakeKeyAndVisible ();
-
-			///// start
-			///// check internet connection status and availability
-			//UpdateStatus ();
-			UpdateStatus();
-
-			if (internetStatus == NetworkStatus.NotReachable) {
-				connectivity = false;
-			} else {
-
-				//////
-				/// Update local plist
-				drm = new DataRequestManager();
-				drm.UpdateList();
-
-				connectivity = true;
-			}
-			///// end
 
 //			dict.Add (new NSString("CONNECTION_AVAILABILITY"), new NSString("NO"));
 //

@@ -13,6 +13,7 @@ using CoreGraphics;
 
 using CustomElements;
 using Commons;
+using O.House;
 
 namespace OHouse
 {
@@ -56,9 +57,9 @@ namespace OHouse
 		public MenuDialogViewController () : base (UITableViewStyle.Plain, new RootElement (""))
 		{
 			FBContainerView fbContainer = new FBContainerView (new RectangleF (0, 0, (float)View.Frame.Width, 200));
-			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (0, 235, 255));
+			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (255, 255, 255));
 			UIImage iconTL = UIImage.FromBundle ("images/icons/icon-timeline");
-			//UIImage iconMan = UIImage.FromBundle ("images/icons/icon-manual");
+			UIImage iconOL = UtilImage.GetColoredImage ("images/icons/icon-offline", UIColor.FromRGB (255, 255, 255));
 
 
 			Root = new RootElement ("Menu") {
@@ -71,10 +72,10 @@ namespace OHouse
 						Image = iconFind,
 						SubTitle = "Find nearest toilets within 500 m from your location!"
 					},
-//					new CustomElement ("Guide", () => NavigationController.PushViewController (new TestListVC (), true)) {
-//						Image = iconMan,
-//						SubTitle = "Lost? Go back to presentation slide to re-read the user manual!"
-//					}
+					new CustomElement ("Offline", () => NavigationController.PresentViewController(new OfflineViewController(), true, null)) {
+						Image = iconOL,
+						SubTitle = "Use Ohouse application in offline mode!"
+					}
 //					new CustomElement ("Credit", () => NavigationController.PushViewController (new ScrollViewController (), true)) {
 //						Image = iconCdt,
 //						SubTitle = "Development teams and their members. Thank you!"
