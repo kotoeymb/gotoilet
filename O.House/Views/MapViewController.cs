@@ -22,7 +22,7 @@ namespace OHouse
 		public static LocationUtil Manager { get; set; }
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
-
+		DetailViewController Detail;
 		UIButton addLocationButton;
 		UIButton myLocationButton;
 		float w = 50;
@@ -78,9 +78,9 @@ namespace OHouse
 			myLocationButton.BackgroundColor = Common.ColorStyle_1;
 			myLocationButton.Frame = new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h);
 			myLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
-			myLocationButton.Layer.ShadowOffset = new CGSize (0,2);
+			myLocationButton.Layer.ShadowOffset = new CGSize (0,1);
 			myLocationButton.Layer.ShadowOpacity = 1f;
-			myLocationButton.Layer.ShadowRadius = 2;
+			myLocationButton.Layer.ShadowRadius = 0.3f;
 			myLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
 
 			// Create button for Add location
@@ -102,6 +102,8 @@ namespace OHouse
 					mapV.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
 				}
 			};
+
+
 				
 			addLocationButton.TouchUpInside += (sender, e) => {
 				if (mapV.UserLocation != null) {

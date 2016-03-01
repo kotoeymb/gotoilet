@@ -24,13 +24,17 @@ namespace OHouse
 	{
 		DataRequestManager drm;
 		List<ToiletsBase> tb;
-		Common Common;
+	//	Common Common;
 		ConnectionManager connMgr;
-		UIView DView;
+		UIView view;
 		UILabel label1;
 		UILabel label2;
-		UIButton buttonRect;
+		UILabel label3;
+		UILabel label4;
+		UILabel label5;
+		UIButton OKButton;
 		UIImageView ImageView;
+		UIImageView Image;
 
 		public DetailViewController (int datas) : base ("DetailViewController", null)
 		{
@@ -38,27 +42,14 @@ namespace OHouse
 			drm = new DataRequestManager ();
 			connMgr = new ConnectionManager ();
 			connMgr.UpdateStatus ();
-
+//
 			if (connMgr.internetStatus == NetworkStatus.NotReachable) {
 				tb = drm.GetSpotInfoFromLocal ("database/Toilets", datas);
 			} else {
 				tb = drm.GetSpotInfo (datas);
 			}
 
-			UIBarButtonItem rightBarBtnItem = new UIBarButtonItem (
-				                                  "Direction", 
-				                                  UIBarButtonItemStyle.Plain, 
-				                                  (s, e) => {
-					var url = new NSUrl ("comgooglemaps://?q=" + tb [0].latitude + "," + tb [0].longitude + "&zoom=14");
-					UIApplication.SharedApplication.OpenUrl (url);
-				});
 
-			rightBarBtnItem.SetTitleTextAttributes (Common.commonStyle, UIControlState.Normal);
-
-			this.NavigationItem.SetRightBarButtonItem (
-				rightBarBtnItem,
-				true
-			);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -72,75 +63,104 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			View.BackgroundColor = UIColor.White;
-			View.Frame = this.NavigationController.View.Bounds;
-			CGRect screen = this.NavigationController.View.Bounds;
+			CGRect screen = UIScreen.MainScreen.Bounds;
 
-			DView = new UIView ();
-			// left 20, right 20
-			nfloat dViewWidth = screen.Width - 40 * 2;
-			// top 20, bot 20
-			nfloat dViewHeight = screen.Height - 80 * 2;
-			nfloat centerY = screen.Height / 2 - dViewHeight / 2;
+			view = new UIView ();
+			view.Frame =  new CGRect (screen.Width/12, 6 * screen.Height/12 -10,10 * screen.Width/12, 4 * screen.Height/12);
+			view.BackgroundColor = UIColor.Clear;
 
-			DView.Frame = new CGRect (40, centerY, dViewWidth, dViewHeight);
+			var blur = UIBlurEffect.FromStyle (UIBlurEffectStyle.Light);
 
+			var blurView = new UIVisualEffectView (blur) {
+				Frame = screen,
+			};
 
-			DView.BackgroundColor = UIColor.White;
-			DView.Layer.BorderWidth = 1f;
-			DView.Layer.BorderColor = new CGColor (112, 128, 144);
-			DView.Layer.CornerRadius = 10f;
+			OKButton = UIButton.FromType (UIButtonType.RoundedRect);
+			OKButton.SetTitle ("Click", UIControlState.Normal);
+			OKButton.BackgroundColor = UIColor.Clear;
+			OKButton.Frame =  new CGRect (screen.Width / 12, 10 * screen.Height / 12 -5 , 10 * screen.Width / 12, screen.Height / 12);
+			OKButton.TintColor = UIColor.White;
+			OKButton.Layer.CornerRadius = 5f;
+			OKButton.Layer.BorderColor= new CGColor (255, 255,255);
+			OKButton.Layer.BorderWidth = 1f;
+			OKButton.TouchUpInside += CloseButtonClicked;
 
-			DView.Layer.ShadowOffset = new CGSize (2, 2);
-			DView.Layer.ShadowOpacity = 1f;
-			DView.Layer.ShadowRadius = 1;
-			DView.Layer.ShadowColor = new CGColor (0, 0, 0);
+			label2 = new UILabel () {
+				TextColor = UIColor.White,
+				Font = UIFont.FromName("Helvetica-Bold",15f),
+			};
+			label2.Text = "Toilet:";
+			label2.Frame = new CGRect(15,0,view.Frame.Width,view.Frame.Height/4);
+			label2.TextAlignment = UITextAlignment.Left;
 
-			buttonRect = UIButton.FromType (UIButtonType.RoundedRect);
-			buttonRect.SetTitle ("", UIControlState.Normal);
-			buttonRect.Frame = new RectangleF (0, 0, (float)View.Frame.Width, (float)View.Frame.Height);
-			buttonRect.BackgroundColor = UIColor.Clear;
-			buttonRect.TouchUpInside += CloseButtonClicked;
+			label4 = new UILabel () {
+				TextColor = UIColor.White,
+				Font = UIFont.FromName("Helvetica-Bold",15f),
+			};
+			label4.Text = "Position:";
+			label4.Frame = new CGRect (15, 2 *view.Frame.Height/4 ,view.Frame.Width, view.Frame.Height/4 );
+			label4.TextAlignment = UITextAlignment.Left;
 
+			view.Add (label2);
+			view.Add (label4);
 
-			ImageView = new UIImageView ();
 			if (tb [0].picture != null && tb [0].picture != "") {
-				ImageView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (tb [0].picture), (float)View.Frame.Width, 100);
-				ImageView.Frame = new CGRect (0, 0, 270, 200);
-				ImageView.Layer.CornerRadius = ImageView.Frame.Size.Width / 35;
+				ImageView = UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (tb [0].picture),(float) screen.Width,(float)screen.Height);
+				//ImageView =  new UIImageView(UIImage.FromBundle ("images/background/Toilet2"));
+				ImageView.Frame = new CGRect  (screen.Width/12, 2 * screen.Height/12 -15,  10 *screen.Width/12,   4 *screen.Height/ 12 );
+				ImageView.Layer.CornerRadius = 10f;
 				ImageView.Layer.BorderWidth = 1f;
 				ImageView.Layer.BorderColor = new CGColor (52, 52, 52);
 				ImageView.ClipsToBounds = true;
 
+				//Image =  new UIImageView(UIImage.FromBundle ("images/background/Toilet2"));
+				Image =  UtilImage.ResizeImageViewKeepAspect (UtilImage.FromURL (tb [0].picture), (float)screen.Width,(float)screen.Height);
+				Image.Frame = new CGRect(0,0,screen.Width,screen.Height);
+
+
 				label1 = new UILabel () {
-					TextColor = UIColor.Black,
-					Font = Common.Font16F,
-				};
-				label1.Text = tb [0].title;
-				label1.Frame = new CGRect (10, 210, View.Frame.Width, 30);
-				label1.TextAlignment = UITextAlignment.Left;
+					TextColor = UIColor.White,
+					Font = UIFont.FromName("Helvetica-Bold",18f),
 
-				label2 = new UILabel () {
-					TextColor = UIColor.Black,
-					Font = Common.Font16F,
 				};
-				label2.Text = tb [0].latitude + ", " + tb [0].longitude;
-				label2.Frame = new CGRect (10, 250, View.Frame.Width, 30);
-				label2.TextAlignment = UITextAlignment.Left;
+				label1.Text =tb [0].title;
+				label1.Frame = new CGRect ( screen.Width/12,screen.Height/12  - 20,10 * screen.Width/12, screen.Height/12);
+				label1.TextAlignment = UITextAlignment.Center;
+				label1.BackgroundColor = UIColor.Clear;
 
-				View.Add (buttonRect);
-				DView.Add (ImageView);
-				DView.Add (label1);
-				DView.Add (label2);
-				View.AddSubview (DView);
+				label3 = new UILabel () {
+					TextColor = UIColor.White,
+					Font = UIFont.FromName ("Helvetica", 15f),
+				};
+				label3.Text =  tb [0].title;
+				label3.Frame = new CGRect (15,view.Frame.Height/4 ,view.Frame.Width, view.Frame.Height/4 );
+				label3.TextAlignment = UITextAlignment.Left;
+
+				label5 = new UILabel () {
+					TextColor = UIColor.White,
+					Font = UIFont.FromName ("Helvetica", 15f),
+				};
+				label5.Text =  tb [0].latitude + ", " + tb [0].longitude;
+				label5.Frame = new CGRect (15, 3 *view.Frame.Height/4 ,view.Frame.Width, view.Frame.Height/4);
+				label5.TextAlignment = UITextAlignment.Left;
+
+				View.Add (Image);
+				View.Add (blurView);
+				View.Add (label1);
+				View.Add (ImageView);
+
+				view.Add (label3);
+				view.Add (label5);
+				View.Add (view);
 			};
-		}
+			View.Add (OKButton);
+
+			}
 
 		void CloseButtonClicked (object sender, EventArgs e)
 		{
 
-			this.View.RemoveFromSuperview ();
-			this.RemoveFromParentViewController ();
+			this.DismissModalViewController (true);
 		}
 
 
