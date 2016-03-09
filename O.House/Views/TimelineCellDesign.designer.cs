@@ -6,6 +6,7 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
+using Facebook.ShareKit;
 
 namespace O.House
 {
@@ -23,7 +24,7 @@ namespace O.House
 
 		[Outlet]
 		UIKit.UILabel cellTitle { get; set; }
-		
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (cellTitle != null) {

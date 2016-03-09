@@ -14,7 +14,7 @@ using CoreGraphics;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Facebook;
 using Facebook.ShareKit;
 using OHouse.Connectivity;
 using O.House;
@@ -52,21 +52,21 @@ namespace OHouse
 			/// update network status
 			UpdateStatus ();
 
-			if (internetStatus == NetworkStatus.NotReachable) {
-				Console.WriteLine ("Network not available loading from local plist");
-				posts = drm.GetToiletList ("Update.plist", 0, 10, false);
-
-				//////
-				/// If local file is not updated yet and not available to update, fill dummy data
-				if (posts.Count < 1) {
-					//////
-					/// setup spot_id 0 as error row
-					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
-				}
-			} else {
+//			if (internetStatus == NetworkStatus.NotReachable) {
+//				Console.WriteLine ("Network not available loading from local plist");
+//				posts = drm.GetToiletList ("Update.plist", 0, 10, false);
+//
+//				//////
+//				/// If local file is not updated yet and not available to update, fill dummy data
+//				if (posts.Count < 1) {
+//					//////
+//					/// setup spot_id 0 as error row
+//					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
+//				}
+//			} else {
 				Console.WriteLine ("Network available");
 				posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
-			}
+			//}
 
 			// Perform any additional setup after loading the view, typically from a nib.
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
@@ -78,6 +78,7 @@ namespace OHouse
 			tbl.EstimatedRowHeight = 160.0f;
 
 			View.AddSubview (tbl);
+
 		}
 
 		public override void ViewWillAppear (bool animated)
@@ -92,6 +93,7 @@ namespace OHouse
 			internetStatus = ConnectionManager.InternetConnectionStatus ();
 			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
+
 	}
 
 	public class TableSource : UITableViewSource
@@ -111,7 +113,7 @@ namespace OHouse
 			hasConnection = true;
 			//////
 			/// check connectivity
-			UpdateStatus();
+			UpdateStatus ();
 
 			if (internetStatus == NetworkStatus.NotReachable) {
 				hasConnection = false;
@@ -127,9 +129,9 @@ namespace OHouse
 			loadMoreButton = UtilImage.RoundButton (coloredImage, new RectangleF (pWidth - 48, pHeight, 32, 32), UIColor.Black, false);
 			parentView.AddSubview (loadMoreButton);
 
-			loadMoreButton.TouchUpInside += (object sender, EventArgs e) => loadMore(sender, e, hasConnection);
+			loadMoreButton.TouchUpInside += (object sender, EventArgs e) => loadMore (sender, e, hasConnection);
 		}
-			
+
 		/// <summary>
 		/// Loads more data from online.
 		/// </summary>
@@ -208,11 +210,13 @@ namespace OHouse
 
 			int row = indexPath.Row;
 			int count = datas.Count;
+			//string postCellId = "postCell" + indexPath.Row.ToString ();
 
-			//////
+
+
 			/// error row
 			if (datas [0].spot_id == 0) {
-
+				
 				cell = tableView.DequeueReusableCell (errorCellId);
 				cell = new UITableViewCell (UITableViewCellStyle.Subtitle, errorCellId);
 				cell.TextLabel.Text = "Connection error";
@@ -222,39 +226,48 @@ namespace OHouse
 				loadMoreButton.RemoveFromSuperview ();
 
 			} else {
-//				cell = (TimelineCell)tableView.DequeueReusableCell (postCellId);
-//				
-//
-//				if (cell == null) {
-//					cell = new TimelineCell ((NSString)postCellId);
-//					
-//
-//					//////
-//					/// like
-//					((TimelineCell)cell).LikeBtn.TouchUpInside += (object sender, EventArgs e) => {
-//						
-//						int vote_cnt = posts [indexPath.Row].vote_cnt;
-//						vote_cnt++;
-//						posts [indexPath.Row].vote_cnt = vote_cnt;
-//						drm.RegisterVote (posts [indexPath.Row].spot_id);
-//
-//						((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
-//					};
-//				}
-//
-//				((TimelineCell)cell).UpdateCell (posts [indexPath.Row]);
 				cell = (TimelineCellDesign)tableView.DequeueReusableCell (TimelineCellDesign.Key);
 
 				if (cell == null) {
-
+					//Console.WriteLine("true");
 					cell = TimelineCellDesign.Create ();
+
+					((TimelineCellDesign)cell).likeButton.TouchUpInside += (object sender, EventArgs e) => {
+
+						int vote_cnt = datas [indexPath.Row].vote_cnt;
+						vote_cnt++;
+						datas [indexPath.Row].vote_cnt = vote_cnt;
+						drm.RegisterVote (datas [indexPath.Row].spot_id);
+
+						((TimelineCellDesign)cell).Model = datas [indexPath.Row];
+					};
+					((TimelineCellDesign)cell).shareButton.TouchUpInside += (object sender, EventArgs e) => ShareClick (sender, e, datas [indexPath.Row]);
+
 				}
 
+
+
 				((TimelineCellDesign)cell).Model = datas [indexPath.Row];
+
 			}
 
 			return cell;
+
 		}
+
+		public void ShareClick (object sender, EventArgs e, ToiletsBase info)
+		{
+			Console.WriteLine (info.distance);
+			ShareLinkContent slc = new ShareLinkContent ();
+			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" +info.latitude+ "," + info.longitude + ",15z"));
+			slc.ContentTitle = info.title;
+			ShareDialog.Show (new TimelineViewController (), slc, null);
+
+
+		}
+
+
+
 
 		/// <summary>
 		/// Scrolled the specified scrollView.
