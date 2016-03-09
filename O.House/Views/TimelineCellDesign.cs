@@ -8,14 +8,35 @@ using UIKit;
 using OHouse;
 using Utils;
 using Commons;
+using Facebook;
+using Facebook.ShareKit;
+using OHouse.DRM;
+
+
 
 namespace O.House
 {
+	
 	public partial class TimelineCellDesign : UITableViewCell
 	{
+		
 		public ToiletsBase Model { get; set; }
-
+		DataRequestManager drm;
 		//		Common common;
+		public UIButton likeButton {
+			get {
+				return cellLikeBtn;
+			}
+			set {;}
+		}
+		public UIButton shareButton {
+			get {
+				return cellShareBtn;
+			}
+			set {;}
+		}
+		public ShareButton ShareBtn;
+		public ShareLinkContent slc;
 
 		public static readonly UINib Nib = UINib.FromName ("TimelineCellDesign", NSBundle.MainBundle);
 		public static readonly NSString Key = new NSString ("MyCustomCell");
@@ -27,6 +48,7 @@ namespace O.House
 
 		public static TimelineCellDesign Create ()
 		{
+			
 			return (TimelineCellDesign)Nib.Instantiate (null, null) [0];
 		}
 
@@ -34,11 +56,12 @@ namespace O.House
 		{
 			base.LayoutSubviews ();
 
+
 			this.cellTitle.Text = Model.title;
 			this.cellSubtitle.Text = Model.sub_title;
-			this.cellSubtitle.Lines = 0;
-			this.cellSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
-	
+//			this.cellSubtitle.Lines = 0;
+//			this.cellSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
+			ShareBtn = new ShareButton();
 			cellShareBtn.SetTitle ("Share", UIControlState.Normal);
 			cellShareBtn.SetImage(UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
 			cellShareBtn.ImageEdgeInsets = new UIEdgeInsets (0, 0, 0, 5);
@@ -50,6 +73,30 @@ namespace O.House
 			cellLikeBtn.TitleEdgeInsets = new UIEdgeInsets (0, 5, 0, 0);
 			cellLikeBtn.TintColor = UIColor.LightGray;
 
+//			cellLikeBtn.TouchUpInside += (s, e) => {
+//				UIAlertView alert = new UIAlertView (Model.title,Model.vote_cnt.ToString(),null,"ok");
+//				alert.Show();
+//		
+//			};
+//			cellShareBtn.TouchUpInside += (s, e) => {
+//				UIAlertView alert = new UIAlertView (Model.title, Model.vote_cnt.ToString (), null, "ok");
+////				UIAlertView alert = new UIAlertView ();
+////				alert.AddButton (ShareBtn);
+////				ShareBtn = new ShareButton();
+//			alert.AddButton("Share");
+//				alert.Show ();
+//
+//			};
+		
+
+
+//			UIAlertView alert = new UIAlertView (Model.title,Model.vote_cnt.ToString(),null,"ok");
+//			alert.Show();
+					
+		 
 		}
-	}
+
+		
+	
+}
 }

@@ -65,7 +65,9 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <returns>The data list.</returns>
 		/// <param name="link">Link.</param>
+	    //to release data from server..posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
 		public List<ToiletsBase> GetDataList (string link, int startIndex = 0, int length = 10, bool loadAll = true)
+
 		{
 			List<ToiletsBase> t = new List<ToiletsBase> ();
 			List<ToiletsBase> orderedList = new List<ToiletsBase> ();
@@ -232,53 +234,6 @@ namespace OHouse.DRM
 			string fileName = Path.Combine(documentsDirectory, "Update.plist");
 			//Console.WriteLine (fileMgn.FileExists (fileName));
 
-			//////
-			/// Check internet connection and update the local list if available 
-//			if (AppDelegate.connectivity) {
-//				Console.WriteLine ("Connectivity available ...");
-//				//////
-//				/// retrieve data from server
-//				dataFromServer = this.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 0);
-//				foreach (var obj in dataFromServer) {
-//
-//					Console.WriteLine ("Retriving data from server ...");
-//
-//					//////
-//					/// add object to dataToWrite (NSMutableDictionary)
-//					NSMutableDictionary temp = new NSMutableDictionary();
-//					temp.Add (new NSString ("spot_id"), new NSString (obj.spot_id.ToString ()));
-//					temp.Add (new NSString ("vote_cnt"), new NSString (obj.vote_cnt.ToString ()));
-//					temp.Add (new NSString ("title"), new NSString (obj.title.ToString ()));
-//					temp.Add (new NSString ("sub_title"), new NSString (obj.sub_title.ToString ()));
-//					temp.Add (new NSString ("picture"), obj.picture == null? new NSString("null"): new NSString(obj.picture.ToString()));
-//					temp.Add (new NSString ("longitude"), new NSString (obj.longitude.ToString ()));
-//					temp.Add (new NSString ("latitude"), new NSString (obj.latitude.ToString ()));
-//
-//					dataToWrite.Add(new NSString(obj.spot_id.ToString()), temp);
-//				}
-//
-//				NSError error = null;
-//				NSData plistData = NSPropertyListSerialization.DataWithPropertyList (dataToWrite, NSPropertyListFormat.Xml, NSPropertyListWriteOptions.MutableContainers, out error);
-//
-//				if (plistData != null) {
-//
-//					Console.WriteLine ("Checking file existence ...");
-//					if (fileMgn.FileExists (path)) {
-//						Console.WriteLine ("File exists and saving to local plist ...");
-//						if (plistData.Save (path, true)) {
-//							Console.WriteLine ("Updated!");
-//						} else {
-//							Console.WriteLine ("Error updating file!");
-//						}
-//					} else {
-//						Console.WriteLine ("File to Update does not exist!");
-//					}
-//				} else {
-//					Console.WriteLine ("Error!! NSData");
-//				}
-//			} else {
-//				Console.WriteLine ("No connection to retrive update data.");
-//			}
 		}
 
 		/// <summary>
@@ -390,8 +345,9 @@ namespace OHouse.DRM
 				var json = JObject.Parse (result);
 				bool responseStatus = (bool)json ["status"];
 		
-				Console.WriteLine (info.picture + ":" + responseStatus.ToString ());
-		
+//				Console.WriteLine (info.picture + ":" + responseStatus.ToString ());
+				Console.WriteLine(info.title);
+//				Console.WriteLine(info.sub_title);
 				if (responseStatus) {
 					UIAlertView av = new UIAlertView (
 						                 "Thank you!",
