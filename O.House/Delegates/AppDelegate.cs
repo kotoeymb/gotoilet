@@ -13,6 +13,7 @@ using Utils;
 using Commons;
 using OHouse.Connectivity;
 using OHouse.DRM;
+using O.House;
 
 namespace OHouse
 {
@@ -36,6 +37,10 @@ namespace OHouse
 
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
+			Profile.EnableUpdatesOnAccessTokenChange (true);
+			Settings.AppID = appId;
+			Settings.DisplayName = appName;
+
 			/////
 			/// Check Update.plist existence
 			NSFileManager fileMgn = NSFileManager.DefaultManager;
@@ -48,10 +53,6 @@ namespace OHouse
 				var bundle = NSBundle.MainBundle.PathForResource ("database/Update", "plist");
 				fileMgn.Copy (bundle, fileName, out error);
 			}
-
-			Profile.EnableUpdatesOnAccessTokenChange (true);
-			Settings.AppID = appId;
-			Settings.DisplayName = appName;
 
 			UIApplication.SharedApplication.SetStatusBarStyle (UIStatusBarStyle.LightContent, false);
 
@@ -70,7 +71,8 @@ namespace OHouse
 			Menu = new SlideoutNavigationController ();
 
 			Menu.MainViewController = new MainNavigationController (new MapViewController (), Menu, menuButton);
-			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
+			Menu.MenuViewController = new MenuNavigationController (new MenuSBViewController (), Menu) { NavigationBarHidden = true };
+//			Menu.MenuViewController = new MenuNavigationController (new MenuViewController (), Menu) { NavigationBarHidden = true };
 
 			// If you have defined a root view controller, set it here:
 			window.RootViewController = Menu;
@@ -99,32 +101,32 @@ namespace OHouse
 		{
 			// Use this method to release shared resources, save user data, invalidate timers and store the application state.
 			// If your application supports background exection this method is called instead of WillTerminate when the user quits.
-			Console.WriteLine("App DidEnterBackground");
+			Console.WriteLine ("App DidEnterBackground");
 		}
 
 		public override void WillEnterForeground (UIApplication application)
 		{
 			// Called as part of the transiton from background to active state.
 			// Here you can undo many of the changes made on entering the background.
-			Console.WriteLine("App WillEnterBackground");
+			Console.WriteLine ("App WillEnterBackground");
 
 			// Update connection status first
-			UpdateStatus();
+			UpdateStatus ();
 
 			if (internetStatus == NetworkStatus.NotReachable) {
 				UIAlertView noConnectionAlert = new UIAlertView (
-					"Disconnected", 
-					"This application need constant internet connection to show up to date correct location",
-					null,
-					"Cancel",
-					new string[]{"Settings"}
-				);
+					                                "Disconnected", 
+					                                "This application need constant internet connection to show up to date correct location",
+					                                null,
+					                                "Cancel",
+					                                new string[]{ "Settings" }
+				                                );
 				noConnectionAlert.Show ();
 
 				// Given 2 options "Cancel" and "Setting", this event is for "Setting" redirection
 				noConnectionAlert.Clicked += (object sender, UIButtonEventArgs e) => {
-					if(e.ButtonIndex != noConnectionAlert.CancelButtonIndex) {
-						UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+					if (e.ButtonIndex != noConnectionAlert.CancelButtonIndex) {
+						UIApplication.SharedApplication.OpenUrl (new NSUrl (UIApplication.OpenSettingsUrlString));
 					}
 				};
 
@@ -150,7 +152,7 @@ namespace OHouse
 		{
 			return ApplicationDelegate.SharedInstance.OpenUrl (application, url, sourceApplication, annotation);
 		}
-			
+
 		void UpdateStatus (object sender = null, EventArgs e = null)
 		{
 			remoteHostStatus = ConnectionManager.RemoteHostStatus ();

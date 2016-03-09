@@ -111,13 +111,13 @@
     <InterfaceDefinition Include="Views\TestListVC.xib" />
     <InterfaceDefinition Include="Views\TimelineCellDesign.xib" />
     <InterfaceDefinition Include="Views\OfflineViewController.xib" />
+    <InterfaceDefinition Include="Views\Test.xib" />
+    <InterfaceDefinition Include="Views\MenuSBViewController.xib" />
+    <InterfaceDefinition Include="Views\MenuCellDesign.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
-    <None Include="Views.exclude\MenuDialogViewController.cs" />
-    <None Include="Views.exclude\InfoDialogViewController.cs" />
-    <None Include="Views.exclude\List.cs" />
     <None Include="Views\TestListVC.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +135,6 @@
     </Compile>
     <Compile Include="Views\NearestDialogViewController.cs" />
     <Compile Include="Utilities\Common.cs" />
-    <Compile Include="Views\MenuViewController.cs" />
     <Compile Include="Views\MenuViewController.designer.cs">
       <DependentUpon>MenuViewController.cs</DependentUpon>
     </Compile>
@@ -172,6 +171,19 @@
     <Compile Include="Views\OfflineViewController.designer.cs">
       <DependentUpon>OfflineViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Test.cs" />
+    <Compile Include="Views\Test.designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuViewController.cs" />
+    <Compile Include="Views\MenuSBViewController.cs" />
+    <Compile Include="Views\MenuSBViewController.designer.cs">
+      <DependentUpon>MenuSBViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuCellDesign.cs" />
+    <Compile Include="Views\MenuCellDesign.designer.cs">
+      <DependentUpon>MenuCellDesign.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -181,7 +193,7 @@
     <Folder Include="Views\" />
     <Folder Include="Resources\images\" />
     <Folder Include="Resources\database\" />
-    <Folder Include="Views.exclude\" />
+    <Folder Include="xibs\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\images\background\10x10.png" />
@@ -224,12 +236,14 @@
     <BundleResource Include="Resources\database\Update.plist" />
     <BundleResource Include="Resources\images\icons\icon-reload.png" />
     <BundleResource Include="Resources\images\icons\icon-offline.png" />
+    <BundleResource Include="Resources\images\icons\icon-login.png" />
+    <BundleResource Include="Resources\images\icons\icon-logout.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Desktop\O.House 2\Library\MonoTouch.SlideoutNavigation\MonoTouch.SlideoutNavigation.csproj">
+    <ProjectReference Include="..\Library\MonoTouch.SlideoutNavigation\MonoTouch.SlideoutNavigation.csproj">
       <Project>{6D7B9B53-CFEF-46BE-A608-14A4A1381CF6}</Project>
       <Name>MonoTouch.SlideoutNavigation</Name>
     </ProjectReference>

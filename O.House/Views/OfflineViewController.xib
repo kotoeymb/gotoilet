@@ -47,7 +47,7 @@
                             <rect key="frame" x="10" y="10" width="260" height="21.5"/>
                             <animations/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -85,7 +85,7 @@
                         <constraint firstAttribute="width" constant="32" id="8pK-9e-5Ca"/>
                         <constraint firstAttribute="height" constant="32" id="Geq-L0-nvg"/>
                     </constraints>
-                    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Button" image="images/icons/icon-cross.png"/>
                 </button>
             </subviews>
