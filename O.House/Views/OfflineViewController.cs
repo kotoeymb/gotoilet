@@ -75,7 +75,7 @@ namespace O.House
 					temp.Add (new NSString ("spot_id"), new NSString (obj.spot_id.ToString ()));
 					temp.Add (new NSString ("vote_cnt"), new NSString (obj.vote_cnt.ToString ()));
 					temp.Add (new NSString ("title"), new NSString (obj.title.ToString ()));
-					temp.Add (new NSString ("sub_title"), new NSString (obj.sub_title.ToString ()));
+					temp.Add (new NSString ("sub_title"), obj.sub_title == null ? new NSString ("Sub title not available.") : new NSString(obj.sub_title.ToString()));
 					temp.Add (new NSString ("picture"), obj.picture == null ? new NSString ("null") : new NSString (obj.picture.ToString ()));
 					temp.Add (new NSString ("longitude"), new NSString (obj.longitude.ToString ()));
 					temp.Add (new NSString ("latitude"), new NSString (obj.latitude.ToString ()));

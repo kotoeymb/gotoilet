@@ -16,17 +16,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z81-xp-PD5">
-                    <rect key="frame" x="20" y="210" width="280" height="148"/>
+                    <rect key="frame" x="20" y="209" width="280" height="150"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="In order to use in offline mode, you need to download data from server. It won't be much and it won't take long!" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1X-Ya-fWD">
-                            <rect key="frame" x="10" y="36" width="260" height="51.5"/>
+                            <rect key="frame" x="10" y="37" width="260" height="52"/>
                             <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52" id="TQY-bs-JwE"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                             <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xbk-Zw-NdW">
-                            <rect key="frame" x="10" y="98" width="260" height="40"/>
+                            <rect key="frame" x="10" y="99" width="260" height="41"/>
                             <animations/>
                             <color key="backgroundColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -44,8 +47,12 @@
                             </variation>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download necessary data ..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTn-zI-XRG">
-                            <rect key="frame" x="10" y="10" width="260" height="21.5"/>
+                            <rect key="frame" x="10" y="10" width="260" height="22"/>
                             <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="2Q0-Kh-gx2"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="org-mx-Lgw"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -66,6 +73,7 @@
                         <constraint firstItem="NTn-zI-XRG" firstAttribute="leading" secondItem="Z81-xp-PD5" secondAttribute="leading" constant="10" id="r0I-ON-G19"/>
                         <constraint firstItem="C1X-Ya-fWD" firstAttribute="top" secondItem="NTn-zI-XRG" secondAttribute="bottom" constant="5" id="sXo-f6-5xF"/>
                         <constraint firstAttribute="trailing" secondItem="Xbk-Zw-NdW" secondAttribute="trailing" constant="10" id="tAN-ES-aHC"/>
+                        <constraint firstAttribute="height" constant="150" id="tli-tp-E2t"/>
                         <constraint firstItem="Xbk-Zw-NdW" firstAttribute="leading" secondItem="Z81-xp-PD5" secondAttribute="leading" constant="10" id="wWf-hT-kiu"/>
                         <constraint firstAttribute="trailing" secondItem="C1X-Ya-fWD" secondAttribute="trailing" constant="10" id="za8-QC-vlr"/>
                     </constraints>
@@ -95,11 +103,21 @@
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="L13-EV-Nlk"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="210" id="Q0j-Tk-I0E"/>
                 <constraint firstAttribute="bottom" secondItem="Z81-xp-PD5" secondAttribute="bottom" constant="210" id="RkN-gV-3gs"/>
+                <constraint firstItem="Z81-xp-PD5" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="Ug0-nm-FgI"/>
                 <constraint firstAttribute="trailing" secondItem="Z81-xp-PD5" secondAttribute="trailing" constant="20" id="bnv-1K-kbc"/>
+                <constraint firstItem="Z81-xp-PD5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="210" id="gw9-Oc-U9e"/>
                 <constraint firstItem="duO-K1-yYd" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="xDg-tI-EGd"/>
                 <constraint firstAttribute="trailing" secondItem="duO-K1-yYd" secondAttribute="trailing" constant="20" id="xjH-hS-aUi"/>
+                <constraint firstItem="Z81-xp-PD5" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="yZE-BI-yGh"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Q0j-Tk-I0E"/>
+                    <exclude reference="RkN-gV-3gs"/>
+                    <exclude reference="gw9-Oc-U9e"/>
+                </mask>
+            </variation>
         </view>
     </objects>
     <resources>

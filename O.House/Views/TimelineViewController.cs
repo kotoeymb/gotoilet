@@ -228,9 +228,11 @@ namespace OHouse
 			} else {
 				cell = (TimelineCellDesign)tableView.DequeueReusableCell (TimelineCellDesign.Key);
 
+
 				if (cell == null) {
 					//Console.WriteLine("true");
 					cell = TimelineCellDesign.Create ();
+					((TimelineCellDesign)cell).Model = datas [indexPath.Row];
 
 					((TimelineCellDesign)cell).likeButton.TouchUpInside += (object sender, EventArgs e) => {
 
@@ -244,10 +246,6 @@ namespace OHouse
 					((TimelineCellDesign)cell).shareButton.TouchUpInside += (object sender, EventArgs e) => ShareClick (sender, e, datas [indexPath.Row]);
 
 				}
-
-
-
-				((TimelineCellDesign)cell).Model = datas [indexPath.Row];
 
 			}
 

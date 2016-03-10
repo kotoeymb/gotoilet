@@ -10,6 +10,7 @@ using Facebook.CoreKit;
 using Facebook.LoginKit;
 using System.Collections.Generic;
 using OHouse.DRM;
+using Commons;
 
 namespace O.House
 {
@@ -20,13 +21,7 @@ namespace O.House
 		DataRequestManager drm;
 		LoginManager lm;
 
-		public MenuSBViewController () : base ("MenuSBViewController", null)
-		{
-
-
-		}
-
-		private NSObject _profileDidChangeEventArgs;
+		public MenuSBViewController () : base ("MenuSBViewController", null) {}
 
 		public override void ViewDidLoad ()
 		{
@@ -37,17 +32,13 @@ namespace O.House
 			Profile.Notifications.ObserveDidChange ((sender, e) => {
 				if (e.NewProfile == null)
 					return;
-				
 
 				fbProfileName.Text = e.NewProfile.Name;
+
 				// register user
 				drm.RegisterUser (e.NewProfile.UserID);
 				new UIAlertView ("Login", "Welcome back! " + fbProfileName.Text.ToString (), null, "OK", null).Show ();
 			});
-
-//			if (AccessToken.CurrentAccessToken.) {
-//				Console.WriteLine ("current access token is available");
-//			}
 
 			// setup table
 
@@ -59,26 +50,6 @@ namespace O.House
 			profileView = new ProfilePictureView (new CGRect (0, 0, 70, 70));
 			fbProfilePicture.AddSubview (profileView);
 
-//			AccessToken.Notifications.ObserveDidChange ((sender, e) => {
-//				if (e.NewToken == null)
-//					return;
-//
-//				if (Profile.CurrentProfile != null) {
-//					Profile p = Profile.CurrentProfile;
-//					fbProfileName.Text = p.Name;
-//
-//					drm.RegisterUser (p.UserID);
-//
-//					fbLoginButton.SetBackgroundImage (UtilImage.GetColoredImage ("images/icons/icon-logout", UIColor.White), UIControlState.Normal);
-////					fbLoginButton.TouchUpInside -= LoginClick;
-////					fbLoginButton.TouchUpInside += LogoutClick;
-//
-//					new UIAlertView ("Login", "Welcome back! " + fbProfileName.Text.ToString (), null, "OK", null).Show ();
-//
-//				}
-
-//			});
-
 			if (AccessToken.CurrentAccessToken != null) {
 				fbLoginButton.SetTitle ("Logout", UIControlState.Normal);
 				fbProfileName.Text = Profile.CurrentProfile.Name;
@@ -87,21 +58,10 @@ namespace O.House
 				fbProfileName.Text = "Welcome";
 			}
 
-//			Profile.Notifications.ObserveDidChange ((sender, e) => {
-//				if (e.NewProfile == null)
-//					return;
-//
-//				fbProfileName.Text = e.NewProfile.Name;
-//
-//
-//				// register user
-//				drm.RegisterUser (e.NewProfile.UserID);
-//
-//
-//				new UIAlertView ("Login", "Welcome back! " + fbProfileName.Text.ToString (), null, "OK", null).Show ();
-//			});
-
-
+			fbLoginButton.Layer.BorderWidth = 1f;
+			fbLoginButton.Layer.BorderColor = Common.ColorStyle_1.CGColor;
+			fbLoginButton.Layer.CornerRadius = 3f;
+			fbLoginButton.SetTitleColor (Common.ColorStyle_1, UIControlState.Normal);
 
 			fbProfilePicture.Layer.CornerRadius = fbProfilePicture.Frame.Width / 2;
 			fbProfilePicture.Layer.BorderWidth = 1f;
@@ -126,6 +86,7 @@ namespace O.House
 				
 				lm.LogOut ();
 				fbProfileName.Text = "Welcome";
+				fbLoginButton.SetTitle ("Login", UIControlState.Normal);
 			} else {
 
 				lm.LoginBehavior = LoginBehavior.Native;
@@ -139,21 +100,9 @@ namespace O.House
 						Console.WriteLine ("Good job!");
 					}
 				});
+
+				fbLoginButton.SetTitle ("Logout", UIControlState.Normal);
 			}
-		}
-
-		private void profileDidChangeEventArgs (NSNotification notification)
-		{
-			Profile.Notifications.ObserveDidChange ((sender, e) => {
-				if (e.NewProfile == null)
-					return;
-			
-				fbProfileName.Text = e.NewProfile.Name;
-
-				// register user
-				drm.RegisterUser (e.NewProfile.UserID);
-				new UIAlertView ("Login", "Welcome back! " + fbProfileName.Text.ToString (), null, "OK", null).Show ();
-			});
 		}
 	}
 
