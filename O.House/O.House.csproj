@@ -90,9 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <InterfaceDefinition Include="Views\MapViewController.xib">
-      <DependentUpon>MapViewController.cs</DependentUpon>
-    </InterfaceDefinition>
     <InterfaceDefinition Include="Views\MenuViewController.xib">
       <DependentUpon>MenuViewController.cs</DependentUpon>
     </InterfaceDefinition>
@@ -101,9 +98,6 @@
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\SubmitViewController.xib">
       <DependentUpon>SubmitViewController.cs</DependentUpon>
-    </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\DetailViewController.xib">
-      <DependentUpon>DetailViewController.cs</DependentUpon>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\TimelineViewController.xib">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
@@ -114,6 +108,12 @@
     <InterfaceDefinition Include="Views\Test.xib" />
     <InterfaceDefinition Include="Views\MenuSBViewController.xib" />
     <InterfaceDefinition Include="Views\MenuCellDesign.xib" />
+    <InterfaceDefinition Include="Views\MapViewController.xib">
+      <DependentUpon>MapViewController.cs</DependentUpon>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\DetailViewController.xib">
+      <DependentUpon>DetailViewController.cs</DependentUpon>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -196,7 +196,6 @@
     <Folder Include="xibs\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\images\background\10x10.png" />
     <BundleResource Include="Resources\images\background\galaxy.png" />
     <BundleResource Include="Resources\images\button\icon-profile.png" />
     <BundleResource Include="Resources\images\button\menu_button_pink.png" />

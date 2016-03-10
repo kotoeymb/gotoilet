@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailViewController">
             <connections>
+
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -13,8 +18,53 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <animations/>
+
+            <subviews>
+                <visualEffectView opaque="NO" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4HZ-OF-Pf1">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="WVW-uP-8Ii">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLd-If-jC0">
+                                <rect key="frame" x="8" y="22" width="0.0" height="40"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="pjR-Is-Gpt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jkZ-Vd-DJp">
+                                <rect key="frame" x="20" y="94" width="280" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="BLc-j0-O9y"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="280" id="Sbq-gb-TTK"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="nLd-If-jC0" firstAttribute="top" secondItem="WVW-uP-8Ii" secondAttribute="top" constant="22" id="66D-F9-za2"/>
+                            <constraint firstItem="nLd-If-jC0" firstAttribute="trailing" secondItem="WVW-uP-8Ii" secondAttribute="trailingMargin" id="UDq-X1-mV7"/>
+                            <constraint firstItem="nLd-If-jC0" firstAttribute="leading" secondItem="WVW-uP-8Ii" secondAttribute="leadingMargin" id="YUJ-4q-MWx"/>
+                            <constraint firstItem="jkZ-Vd-DJp" firstAttribute="top" secondItem="WVW-uP-8Ii" secondAttribute="top" constant="99" id="eis-Xj-P4v"/>
+                            <constraint firstItem="jkZ-Vd-DJp" firstAttribute="centerX" secondItem="WVW-uP-8Ii" secondAttribute="centerX" id="wBx-TV-eMQ"/>
+                        </constraints>
+                    </view>
+                    <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                    <blurEffect style="extraLight"/>
+                </visualEffectView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="4HZ-OF-Pf1" secondAttribute="bottom" id="5bF-59-hbr"/>
+                <constraint firstItem="4HZ-OF-Pf1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FE7-8O-brx"/>
+                <constraint firstItem="4HZ-OF-Pf1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ODe-U9-paI"/>
+                <constraint firstAttribute="trailing" secondItem="4HZ-OF-Pf1" secondAttribute="trailing" id="gSq-zS-Hek"/>
+            </constraints>
+            <point key="canvasLocation" x="380" y="326"/>
+
         </view>
     </objects>
 </document>

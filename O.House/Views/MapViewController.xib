@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController">
             <connections>
+                <outlet property="AddBtn" destination="f01-uz-LH1" id="LyW-KR-R63"/>
+                <outlet property="Map" destination="zRH-GJ-LdV" id="Ejz-t8-bi7"/>
+                <outlet property="MyLocation" destination="iEG-FR-Afw" id="JW8-Ps-Mru"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -13,8 +17,54 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <animations/>
+            <subviews>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zRH-GJ-LdV">
+                    <rect key="frame" x="0.0" y="-132" width="320" height="700"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="700" id="HgR-QC-kuT"/>
+                    </constraints>
+                    <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                </mapView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f01-uz-LH1">
+                    <rect key="frame" x="10" y="498" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="J0c-Fz-e8N"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Prh-1D-1aO"/>
+                        <constraint firstAttribute="width" constant="50" id="ZR7-64-t1F"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="dGd-le-uty"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal" image="images/icons/icon-add"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEG-FR-Afw">
+                    <rect key="frame" x="260" y="498" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Mwa-XW-9fJ"/>
+                        <constraint firstAttribute="width" constant="50" id="Oqv-ig-0nx"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="PDJ-YY-Cm2"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="eUP-5d-KT9"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <state key="normal" image="images/icons/icon-pin"/>
+                </button>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="iEG-FR-Afw" secondAttribute="bottom" constant="20" id="4R7-2p-okw"/>
+                <constraint firstAttribute="trailing" secondItem="zRH-GJ-LdV" secondAttribute="trailing" id="IUQ-P0-JSZ"/>
+                <constraint firstAttribute="trailing" secondItem="iEG-FR-Afw" secondAttribute="trailing" constant="10" id="KzY-pl-LAT"/>
+                <constraint firstItem="f01-uz-LH1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="U2o-WT-2p7"/>
+                <constraint firstItem="zRH-GJ-LdV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aKe-r8-Mxb"/>
+                <constraint firstAttribute="bottom" secondItem="iEG-FR-Afw" secondAttribute="bottom" constant="20" id="qQ8-Xh-Uwn"/>
+                <constraint firstAttribute="trailing" secondItem="iEG-FR-Afw" secondAttribute="trailing" constant="10" id="t6K-57-vIM"/>
+                <constraint firstAttribute="bottom" secondItem="f01-uz-LH1" secondAttribute="bottom" constant="20" id="xuI-If-9CR"/>
+                <constraint firstAttribute="bottom" secondItem="zRH-GJ-LdV" secondAttribute="bottom" id="yqp-A7-c1d"/>
+            </constraints>
+            <point key="canvasLocation" x="411" y="250"/>
         </view>
     </objects>
+    <resources>
+        <image name="images/icons/icon-add" width="32" height="32"/>
+        <image name="images/icons/icon-pin" width="32" height="32"/>
+    </resources>
 </document>

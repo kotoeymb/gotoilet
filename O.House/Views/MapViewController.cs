@@ -22,17 +22,10 @@ namespace OHouse
 		public static LocationUtil Manager { get; set; }
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
-		DetailViewController Detail;
-		UIButton addLocationButton;
-		UIButton myLocationButton;
-		float w = 50;
-		float h = 50;
-
-		//Common common = new Common ();
 		FormViewController form;
-
-		private NSObject _didEnteredBackground;
-		private NSObject _didEnteredForeground;
+		//DetailViewController Detail;
+		//private NSObject _didEnteredBackground;
+		//private NSObject _didEnteredForeground;
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
 		/// </summary>
@@ -59,76 +52,49 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+
+
 			CGRect screen = this.NavigationController.View.Bounds;
 
 
 
-			// Create MKMapView and set bounds to fit with the UIScreen
-			var mapV = new MKMapView (screen);
-			mapV.Delegate = new MapDelegate (this);
+			AddBtn.BackgroundColor= Common.ColorStyle_1;
+			AddBtn.Layer.CornerRadius = AddBtn.Frame.Size.Width/2;
+			AddBtn.Layer.ShadowOffset = new CGSize (0,1);
+			AddBtn.Layer.ShadowOpacity = 1f;
+			AddBtn.Layer.ShadowRadius = 0.3f;
+			AddBtn.Layer.ShadowColor = new CGColor (0, 0, 0);
 
-			mapV.ShowsUserLocation = true;
-			mapV.ZoomEnabled = true;
-			mapV.ScrollEnabled = true;
+			MyLocation.BackgroundColor= Common.ColorStyle_1;
+			MyLocation.Layer.CornerRadius = MyLocation.Frame.Size.Width/2;
+			MyLocation.Layer.ShadowOffset = new CGSize (0,1);
+			MyLocation.Layer.ShadowOpacity = 1f;
+			MyLocation.Layer.ShadowRadius = 0.3f;
+			MyLocation.Layer.ShadowColor = new CGColor (0, 0, 0);
 
-			// Create button for MyLocation
-			myLocationButton = new UIButton (UIButtonType.System);
-			myLocationButton.TintColor = UIColor.White;
-			myLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-pin"), UIControlState.Normal);
-			myLocationButton.BackgroundColor = Common.ColorStyle_1;
-			myLocationButton.Frame = new RectangleF ((float)screen.Width - w - 10, (float)screen.Height - h - 10, w, h);
-			myLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
-			myLocationButton.Layer.ShadowOffset = new CGSize (0,1);
-			myLocationButton.Layer.ShadowOpacity = 1f;
-			myLocationButton.Layer.ShadowRadius = 0.3f;
-			myLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
-
-			// Create button for Add location
-			addLocationButton = new UIButton (UIButtonType.System);
-			addLocationButton.TintColor = UIColor.White;
-			addLocationButton.SetImage (UIImage.FromFile ("images/icons/icon-add"), UIControlState.Normal);
-			addLocationButton.BackgroundColor = Common.ColorStyle_1;
-			addLocationButton.Frame = new RectangleF (0 + 10, (float)screen.Height - h - 10, w, h);
-			addLocationButton.Layer.CornerRadius = myLocationButton.Frame.Size.Width / 2;
-			addLocationButton.Layer.ShadowOffset = new CGSize (0,1);
-			addLocationButton.Layer.ShadowOpacity = 1f;
-			addLocationButton.Layer.ShadowRadius = 0.3f;
-			addLocationButton.Layer.ShadowColor = new CGColor (0, 0, 0);
-
-			// Action for MyLocation button
-			myLocationButton.TouchUpInside += (sender, e) => {
-				if (mapV.UserLocation != null) {
-					CLLocationCoordinate2D coords = mapV.UserLocation.Coordinate;
-					mapV.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
-				}
-			};
+			MyLocation.TouchUpInside += (sender, e) => {
+				if (Map.UserLocation != null) {
+					CLLocationCoordinate2D coords = Map.UserLocation.Coordinate;
+					Map.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
+							}
+							};
 
 
-				
-			addLocationButton.TouchUpInside += (sender, e) => {
-				if (mapV.UserLocation != null) {
+			AddBtn.TouchUpInside += (sender, e) => {
+				if (Map.UserLocation != null) {
 
-					CLLocationCoordinate2D userloc = mapV.UserLocation.Coordinate;
-					form = new FormViewController (userloc);
-
-					UINavigationController nav = new UINavigationController (form);
-					this.PresentViewController (nav, true, () => {
-					});
-				}
-			};
-				
-			mapV.AddSubview (addLocationButton);
-			mapV.AddSubview (myLocationButton);
-
-			View.AddSubview (mapV);
-
-			//NSUserDefaults defaults = NSUserDefaults.StandardUserDefaults;
-
-			//var key = defaults.ValueForKey (new NSString ("CONNECTION_AVAILABILITY"));
-
-			_didEnteredForeground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, didEnteredForeground);
-			_didEnteredBackground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, didEnteredBackground);
+					CLLocationCoordinate2D userloc = Map.UserLocation.Coordinate;
+									form = new FormViewController (userloc);
+			
+									UINavigationController nav = new UINavigationController (form);
+								this.PresentViewController (nav, true, () => {
+									});
+								}
+							};
 		}
+
+
 
 		/// <summary>
 		/// Dids the entered background.
@@ -169,8 +135,8 @@ namespace OHouse
 		public override void ViewDidUnload ()
 		{
 			base.ViewDidUnload ();
-			NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredBackground);
-			NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredForeground);
+			//NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredBackground);
+			//NSNotificationCenter.DefaultCenter.RemoveObserver (_didEnteredForeground);
 			ReleaseDesignerOutlets ();
 		}
 
