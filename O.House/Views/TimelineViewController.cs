@@ -52,21 +52,21 @@ namespace OHouse
 			/// update network status
 			UpdateStatus ();
 
-//			if (internetStatus == NetworkStatus.NotReachable) {
-//				Console.WriteLine ("Network not available loading from local plist");
-//				posts = drm.GetToiletList ("Update.plist", 0, 10, false);
-//
-//				//////
-//				/// If local file is not updated yet and not available to update, fill dummy data
-//				if (posts.Count < 1) {
-//					//////
-//					/// setup spot_id 0 as error row
-//					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
-//				}
-//			} else {
+			if (internetStatus == NetworkStatus.NotReachable) {
+				Console.WriteLine ("Network not available loading from local plist");
+				posts = drm.GetToiletList ("Update.plist", 0, 10, false);
+
+				//////
+				/// If local file is not updated yet and not available to update, fill dummy data
+				if (posts.Count < 1) {
+					//////
+					/// setup spot_id 0 as error row
+					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
+				}
+			} else {
 				Console.WriteLine ("Network available");
 				posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
-			//}
+			}
 
 			// Perform any additional setup after loading the view, typically from a nib.
 			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
@@ -78,7 +78,6 @@ namespace OHouse
 			tbl.EstimatedRowHeight = 160.0f;
 
 			View.AddSubview (tbl);
-
 		}
 
 		public override void ViewWillAppear (bool animated)
@@ -96,6 +95,9 @@ namespace OHouse
 
 	}
 
+	/// <summary>
+	/// Table source.
+	/// </summary>
 	public class TableSource : UITableViewSource
 	{
 		List<ToiletsBase> datas;
@@ -210,9 +212,6 @@ namespace OHouse
 
 			int row = indexPath.Row;
 			int count = datas.Count;
-			//string postCellId = "postCell" + indexPath.Row.ToString ();
-
-
 
 			/// error row
 			if (datas [0].spot_id == 0) {
@@ -255,18 +254,13 @@ namespace OHouse
 
 		public void ShareClick (object sender, EventArgs e, ToiletsBase info)
 		{
-			Console.WriteLine (info.distance);
+//			Console.WriteLine (info.distance);
 			ShareLinkContent slc = new ShareLinkContent ();
 			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" +info.latitude+ "," + info.longitude + ",15z"));
 			slc.ContentTitle = info.title;
 			ShareDialog.Show (new TimelineViewController (), slc, null);
-
-
 		}
-
-
-
-
+			
 		/// <summary>
 		/// Scrolled the specified scrollView.
 		/// </summary>
@@ -282,6 +276,11 @@ namespace OHouse
 					loadMoreButton.Frame = new CGRect (pWidth - 48, pHeight, 32, 32);
 				}, null);
 			}
+		}
+
+		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+		{
+			Console.WriteLine (datas [indexPath.Row].vote_cnt);
 		}
 
 		void UpdateStatus (object sender = null, EventArgs e = null)

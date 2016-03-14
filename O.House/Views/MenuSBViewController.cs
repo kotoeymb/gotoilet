@@ -9,6 +9,7 @@ using CoreGraphics;
 using Facebook.CoreKit;
 using Facebook.LoginKit;
 using System.Collections.Generic;
+using O.House;
 using OHouse.DRM;
 using Commons;
 
@@ -50,7 +51,7 @@ namespace O.House
 			profileView = new ProfilePictureView (new CGRect (0, 0, 70, 70));
 			fbProfilePicture.AddSubview (profileView);
 
-			if (AccessToken.CurrentAccessToken != null) {
+			if (AccessToken.CurrentAccessToken != null && Profile.CurrentProfile != null) {
 				fbLoginButton.SetTitle ("Logout", UIControlState.Normal);
 				fbProfileName.Text = Profile.CurrentProfile.Name;
 			} else {
@@ -182,7 +183,7 @@ namespace O.House
 				navi.PresentViewController (new OfflineViewController (), true, null);
 				break;
 			default:
-				Console.WriteLine ("DUEE");
+				navi.PushViewController (new TimelineViewController (), true);
 				break;
 			}
 		}

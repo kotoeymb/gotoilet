@@ -70,6 +70,8 @@
     <Reference Include="Facebook">
       <HintPath>..\Library\Facebook\ios-unified\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />

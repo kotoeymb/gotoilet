@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Foundation;
 using UIKit;
@@ -67,13 +69,56 @@ namespace OHouse.DRM
 		/// <param name="link">Link.</param>
 	    //to release data from server..posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
 		public List<ToiletsBase> GetDataList (string link, int startIndex = 0, int length = 10, bool loadAll = true)
-
 		{
 			List<ToiletsBase> t = new List<ToiletsBase> ();
 			List<ToiletsBase> orderedList = new List<ToiletsBase> ();
 			string json = "";
 
 			string jsonUn = GetJsonData (link);
+
+			if (jsonUn.IndexOf ("[") == 0 && jsonUn.IndexOf ("]") == jsonUn.Length - 1) {
+				json = jsonUn.Remove (0, 1);
+				json = json.Remove (json.Length - 1);
+				json = json.Replace ("},{", "}{");
+			} else {
+				json = jsonUn;
+			}
+
+			JsonTextReader reader = new JsonTextReader (new StringReader (json));
+			reader.SupportMultipleContent = true;
+			while (true) {
+				if (!reader.Read ())
+					break;
+
+				JsonSerializer s = new JsonSerializer ();
+				ToiletsBase ba = s.Deserialize<ToiletsBase> (reader);
+
+				t.Add (ba);
+			}
+
+			if (loadAll) {
+				orderedList = t.OrderByDescending(o => o.spot_id).ToList();
+			} else {
+				orderedList = t.OrderByDescending(o => o.spot_id).Skip(startIndex).Take(length).ToList();
+			}
+
+			return orderedList;
+		}
+
+		/// <summary>
+		/// Gets the data list.
+		/// </summary>
+		/// <returns>The data list.</returns>
+		/// <param name="json">Json.</param>
+		/// <param name="startIndex">Start index.</param>
+		/// <param name="length">Length.</param>
+		/// <param name="loadAll">If set to <c>true</c> load all.</param>
+		public List<ToiletsBase> GetDataListJSON (string json, int startIndex = 0, int length = 10, bool loadAll = true)
+		{
+			List<ToiletsBase> t = new List<ToiletsBase> ();
+			List<ToiletsBase> orderedList = new List<ToiletsBase> ();
+
+			string jsonUn = json;
 
 			if (jsonUn.IndexOf ("[") == 0 && jsonUn.IndexOf ("]") == jsonUn.Length - 1) {
 				json = jsonUn.Remove (0, 1);

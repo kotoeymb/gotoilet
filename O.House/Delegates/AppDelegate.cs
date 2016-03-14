@@ -41,6 +41,8 @@ namespace OHouse
 			Settings.AppID = appId;
 			Settings.DisplayName = appName;
 
+			
+
 			/////
 			/// Check Update.plist existence
 			NSFileManager fileMgn = NSFileManager.DefaultManager;
