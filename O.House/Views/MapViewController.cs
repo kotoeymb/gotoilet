@@ -10,7 +10,6 @@ using CoreLocation;
 using CoreGraphics;
 using CoreAnimation;
 using Utils;
-using MapUtils;
 using LocationUtils;
 using Commons;
 using OHouse.Connectivity;

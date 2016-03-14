@@ -22,8 +22,6 @@ namespace O.House
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 		bool connectivity;
 		DataRequestManager drm;
-		UIActivityIndicatorView loadingView;
-		UIProgressView progressView;
 		string jsonData;
 		int dataSize;
 
@@ -79,6 +77,8 @@ namespace O.House
 			}
 		}
 
+
+		bool willSyncData;
 		/// <summary>
 		/// Updates the local file.
 		/// </summary>
@@ -106,18 +106,21 @@ namespace O.House
 
 			//////
 			/// Check latest datas are available
-			//List<ToiletsBase> sync = drm.GetToiletList (fileName);
+			willSyncData = true;
 
-			bool willSynData = true;
+			List<ToiletsBase> sync = drm.GetToiletList (fileName);
+			dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
 
-			if (jsonData.Length <= 0) {
-				willSynData = false;
+			if (sync.Count > 0) {
+				if (sync [0].spot_id == dataFromServer [0].spot_id) {
+					willSyncData = false;
+				}
 			}
 
-			if (willSynData) {
+			if (willSyncData) {
 				//////
 				/// retrieve data from server
-				dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
+				//dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
 				foreach (var obj in dataFromServer) {
 
 					Console.WriteLine ("Retriving data from server ...");
@@ -168,6 +171,7 @@ namespace O.House
 		{
 			Task<int> sizeTask = downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
 			int intSize = await sizeTask;
+			Console.WriteLine (intSize);
 		}
 
 		UIView blinder;
@@ -201,14 +205,21 @@ namespace O.House
 
 				////// Remove loading view
 				/// datas are loaded
-				var alert = new UIAlertView ("Download", "Complete Updating/Downloading data \nDownloaded size : " + (dataSize / 1024).ToString () + "KB", null, "OK", null);
+				updateLocalFile ();
+				string msg = "";
+
+				if(willSyncData) {
+					msg = "Complete Updating/Downloading data\nDownloaded size : " + (dataSize / 1024).ToString () + "KB";
+				}else {
+					msg = "Data is up-to-date";
+				}
+
+				var alert = new UIAlertView ("Download", msg, null, "OK", null);
 				alert.Show ();
 
 				loading.StopAnimating();
 				blinder.RemoveFromSuperview ();
 				blinder.Dispose ();
-
-				updateLocalFile ();
 
 				return dataSize;
 

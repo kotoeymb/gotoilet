@@ -104,10 +104,8 @@
     <InterfaceDefinition Include="Views\TimelineViewController.xib">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
     </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\TestListVC.xib" />
     <InterfaceDefinition Include="Views\TimelineCellDesign.xib" />
     <InterfaceDefinition Include="Views\OfflineViewController.xib" />
-    <InterfaceDefinition Include="Views\Test.xib" />
     <InterfaceDefinition Include="Views\MenuSBViewController.xib" />
     <InterfaceDefinition Include="Views\MenuCellDesign.xib" />
     <InterfaceDefinition Include="Views\MapViewController.xib">
@@ -120,7 +118,6 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
-    <None Include="Views\TestListVC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -128,7 +125,6 @@
     <Compile Include="Delegates\AppDelegate.cs" />
     <Compile Include="Delegates\MapDelegate.cs" />
     <Compile Include="Utilities\LocationUtil.cs" />
-    <Compile Include="Utilities\MapUtil.cs" />
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Views\FBContainerView.cs" />
     <Compile Include="Views\MapViewController.cs" />
@@ -160,11 +156,6 @@
     </Compile>
     <Compile Include="Base\UserBase.cs" />
     <Compile Include="Utilities\ConnectionManager.cs" />
-    <Compile Include="Views\TestListVC.designer.cs">
-      <DependentUpon>TestListVC.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Post.cs" />
-    <Compile Include="Views\Feed.cs" />
     <Compile Include="Views\TimelineCellDesign.cs" />
     <Compile Include="Views\TimelineCellDesign.designer.cs">
       <DependentUpon>TimelineCellDesign.cs</DependentUpon>
@@ -172,10 +163,6 @@
     <Compile Include="Views\OfflineViewController.cs" />
     <Compile Include="Views\OfflineViewController.designer.cs">
       <DependentUpon>OfflineViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Test.cs" />
-    <Compile Include="Views\Test.designer.cs">
-      <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\MenuViewController.cs" />
     <Compile Include="Views\MenuSBViewController.cs" />
@@ -195,7 +182,6 @@
     <Folder Include="Views\" />
     <Folder Include="Resources\images\" />
     <Folder Include="Resources\database\" />
-    <Folder Include="xibs\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\images\background\galaxy.png" />

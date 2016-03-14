@@ -5,7 +5,7 @@ using UIKit;
 using CoreLocation;
 using MapKit;
 using Utils;
-using MapUtils;
+
 using OHouse.DRM;
 using OHouse.Connectivity;
 

@@ -23,7 +23,6 @@ namespace OHouse
 {
 	public partial class TimelineViewController : UIViewController
 	{
-		Feed feed;
 		DataRequestManager drm;
 		
 		List<ToiletsBase> posts;
@@ -45,7 +44,6 @@ namespace OHouse
 
 		public override void ViewDidLoad ()
 		{
-			feed = new Feed ();
 			drm = new DataRequestManager ();
 
 			//////
