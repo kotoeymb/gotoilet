@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController">
             <connections>
+                <outlet property="btnLoadMore" destination="fa8-0s-tel" id="dVA-TS-wi4"/>
+                <outlet property="loader" destination="nrG-Bs-s2m" id="zIn-HT-T0W"/>
                 <outlet property="timelineTable" destination="vE3-VJ-UZ3" id="nhk-Ie-Tb5"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
@@ -20,14 +22,35 @@
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nrG-Bs-s2m">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.7713827673410405" colorSpace="calibratedRGB"/>
+                    <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fa8-0s-tel">
+                    <rect key="frame" x="268" y="568" width="32" height="32"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="N8d-K7-fxr"/>
+                        <constraint firstAttribute="width" constant="32" id="rSO-dA-aed"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="nrG-Bs-s2m" secondAttribute="trailing" id="0G7-qd-0MO"/>
                 <constraint firstItem="vE3-VJ-UZ3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="189-FU-U2y"/>
                 <constraint firstItem="vE3-VJ-UZ3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7WR-KZ-Lec"/>
+                <constraint firstAttribute="bottom" secondItem="fa8-0s-tel" secondAttribute="bottom" constant="-32" id="I7v-pj-MkW"/>
+                <constraint firstItem="nrG-Bs-s2m" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Pnt-gz-wVV"/>
+                <constraint firstAttribute="trailing" secondItem="fa8-0s-tel" secondAttribute="trailing" constant="20" id="Sab-Yp-VTS"/>
                 <constraint firstAttribute="trailing" secondItem="vE3-VJ-UZ3" secondAttribute="trailing" id="awB-i9-mZW"/>
                 <constraint firstAttribute="bottom" secondItem="vE3-VJ-UZ3" secondAttribute="bottom" id="dkb-Zl-VCi"/>
+                <constraint firstItem="nrG-Bs-s2m" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="g0D-St-G2k"/>
+                <constraint firstAttribute="bottom" secondItem="nrG-Bs-s2m" secondAttribute="bottom" id="kJb-gH-rAS"/>
             </constraints>
         </view>
     </objects>

@@ -13,6 +13,12 @@ namespace OHouse
 	partial class TimelineViewController
 	{
 		[Outlet]
+		UIKit.UIButton btnLoadMore { get; set; }
+
+		[Outlet]
+		UIKit.UIActivityIndicatorView loader { get; set; }
+
+		[Outlet]
 		UIKit.UITableView timelineTable { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -20,6 +26,16 @@ namespace OHouse
 			if (timelineTable != null) {
 				timelineTable.Dispose ();
 				timelineTable = null;
+			}
+
+			if (loader != null) {
+				loader.Dispose ();
+				loader = null;
+			}
+
+			if (btnLoadMore != null) {
+				btnLoadMore.Dispose ();
+				btnLoadMore = null;
 			}
 		}
 	}

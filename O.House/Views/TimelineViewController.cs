@@ -25,8 +25,8 @@ namespace OHouse
 	public partial class TimelineViewController : UIViewController
 	{
 		DataRequestManager drm;
-		
 		List<ToiletsBase> posts;
+		bool connectivity;
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 
@@ -45,51 +45,143 @@ namespace OHouse
 
 		public override void ViewDidLoad ()
 		{
-			drm = new DataRequestManager ();
+			
+			base.ViewDidLoad ();
+
+			connectivity = true;
+
+			UpdateStatus (null, null);
 
 			//////
 			/// update network status
-			UpdateStatus ();
-
-			if (internetStatus == NetworkStatus.NotReachable) {
-				Console.WriteLine ("Network not available loading from local plist");
-				posts = drm.GetToiletList ("Update.plist", 0, 10, false);
-
-				//////
-				/// If local file is not updated yet and not available to update, fill dummy data
-				if (posts.Count < 1) {
-					//////
-					/// setup spot_id 0 as error row
-					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet or download the data for offline use.", "", 0, 0, 0, true));
-				}
-
-				timelineTable.Source = new TableSource (posts, this.NavigationController.View);
-			} else {
-				Console.WriteLine ("Network available");
-				//posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
-				//Task<int> data = downloadStringAsync("http://gstore.pcp.jp/api/get_spots.php");
-				downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
-			}
-
-			// Perform any additional setup after loading the view, typically from a nib.
-			timelineTable.Bounces = false;
-			//timelineTable.Source = new TableSource (posts, this.NavigationController.View);
-			timelineTable.RowHeight = UITableView.AutomaticDimension;
-			timelineTable.EstimatedRowHeight = 160.0f;
+			ConnectionManager.ReachabilityChanged += UpdateStatus;
 		}
 
-		UIView blinder;
-		UIActivityIndicatorView loading;
-
-		public async Task<string> downloadStringAsync (string urlToDownload)
+		async void initView ()
 		{
-			blinder = new UIView (this.NavigationController.View.Bounds);
-			blinder.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.8f);
+			try {
+				drm = new DataRequestManager ();
 
-			loading = new UIActivityIndicatorView (this.NavigationController.View.Bounds);
-			loading.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.White;
+				btnLoadMore.Layer.CornerRadius = btnLoadMore.Frame.Width/2;
+				btnLoadMore.SetTitle("", UIControlState.Normal);
+				btnLoadMore.SetBackgroundImage (UtilImage.GetColoredImage("images/icons/icon-reload", UIColor.White), UIControlState.Normal);
+				btnLoadMore.BackgroundColor = UIColor.Black;
+				btnLoadMore.TouchUpInside += (object sender, EventArgs e) => loadMore (sender, e, connectivity);
+				btnLoadMore.ClipsToBounds = true;
 
-			blinder.AddSubview (loading);
+				if (!connectivity) {
+					Console.WriteLine ("Network not available loading from local plist");
+					posts = drm.GetToiletList ("Update.plist", 0, 10, false);
+
+					//////
+					/// If local file is not updated yet and not available to update, fill dummy data
+					if (posts.Count < 1) {
+						//////
+						/// setup spot_id 0 as error row
+						posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet or download the data for offline use.", "", 0, 0, 0, true));
+					}
+
+				} else {
+					
+					Console.WriteLine ("Network available");
+
+					loader.StartAnimating ();
+					posts = await downloadStringAsync("http://gstore.pcp.jp/api/get_spots.php");
+					loader.StopAnimating ();
+				
+				}
+
+				// Perform any additional setup after loading the view, typically from a nib.
+				timelineTable.Bounces = false;
+				timelineTable.DataSource = new TableSource(posts);
+				timelineTable.RowHeight = UITableView.AutomaticDimension;
+				timelineTable.EstimatedRowHeight = 160.0f;
+
+				var pWidth = this.NavigationController.View.Frame.Width;
+				var pHeight = this.NavigationController.View.Frame.Height;
+
+				timelineTable.Scrolled += (object sender, EventArgs e) => {
+					if (this.timelineTable.ContentOffset.Y >= (timelineTable.ContentSize.Height - timelineTable.Frame.Size.Height)) {
+						UIView.Animate (0.3, 0, UIViewAnimationOptions.CurveEaseOut, () => {
+							btnLoadMore.Frame = new CGRect (pWidth - 48, pHeight - 48, 32, 32);
+						}, null);
+					} else {
+						UIView.Animate (0.3, 0, UIViewAnimationOptions.CurveEaseIn, () => {
+							btnLoadMore.Frame = new CGRect (pWidth - 48, pHeight, 32, 32);
+						}, null);
+					}
+				};
+
+			} catch (Exception e) {
+				Console.WriteLine (e.Message);
+			}
+		}
+
+		async void loadMore (object sender, EventArgs e, bool hasConnection)
+		{
+			int noOfRowsInSection = (int)timelineTable.NumberOfRowsInSection (0);
+			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
+			int loadRows = 5;
+
+			btnLoadMore.UserInteractionEnabled = false;
+		
+			List<ToiletsBase> loadData = new List<ToiletsBase> ();
+		
+			//////
+			/// load from plist or from server
+			if (hasConnection) {
+				loadData = await loadMoreData (noOfRowsInSection);
+				btnLoadMore.UserInteractionEnabled = true;
+			} else {
+				Console.WriteLine ("Connection not available, loading from local list...");
+				loadData = drm.GetToiletList ("Update.plist", noOfRowsInSection, 5, false);
+			}
+		
+			Console.WriteLine (loadData.Count);
+		
+			posts.AddRange (loadData);
+		
+			if (loadData.Count < 5) {
+				loadRows = loadData.Count;
+			}
+		
+			for (var i = noOfRowsInSection - 1; i < (noOfRowsInSection - 1) + loadRows; i++) {
+				indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
+			}
+		
+			timelineTable.BeginUpdates ();
+			timelineTable.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.None);
+			timelineTable.EndUpdates ();
+		}
+
+		async Task<List<ToiletsBase>> loadMoreData (int numOfRows)
+		{
+			List<ToiletsBase> d;
+		
+			try {
+				var httpClient = new HttpClient ();
+				Task<string> contentsTask = httpClient.GetStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
+		
+				//////
+				/// Waiting for data to load fully
+				string contents = await contentsTask;
+		
+				//////
+				/// After fully loaded
+				d = drm.GetDataListJSON (contents, numOfRows, 5, false);
+		
+				return d;
+		
+			} catch (Exception e) {
+				Console.WriteLine (e.Message);
+				return null;
+			}
+		
+		}
+
+		public async Task<List<ToiletsBase>> downloadStringAsync (string urlToDownload)
+		{
+			List<ToiletsBase> data;
 
 			try {
 				var httpClient = new HttpClient ();
@@ -99,26 +191,18 @@ namespace OHouse
 				////// Show loading view
 				/// start animating it
 				/// contents are loading
-				loading.StartAnimating ();
-				this.View.AddSubview (blinder);
 
 				string contents = await contentsTask;
 
-				posts = drm.GetDataListJSON (contents, 0, 10, false);
-				timelineTable.Source = new TableSource (posts, this.NavigationController.View);
-				timelineTable.ReloadData ();
-
 				////// Remove loading view
 				/// datas are loaded
-				loading.StopAnimating ();
-				blinder.RemoveFromSuperview ();
-				blinder.Dispose ();
+				data = drm.GetDataListJSON (contents, 0, 10, false);
 
-				return contents;
+				return data;
 
 			} catch (Exception e) {
 				Console.WriteLine ("Error : " + e.Message);
-				return "";
+				return null;
 			}
 		}
 
@@ -128,113 +212,80 @@ namespace OHouse
 
 		}
 
-		void UpdateStatus (object sender = null, EventArgs e = null)
+		void UpdateConnectivity ()
+		{
+			switch (remoteHostStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (localWifiStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			////// 
+			/// Reload view
+			initView ();
+		}
+
+		void UpdateStatus (object sender, EventArgs e)
 		{
 			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
 			internetStatus = ConnectionManager.InternetConnectionStatus ();
 			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+			//////
+			/// Update internet connectivity status
+			UpdateConnectivity ();
 		}
-
 	}
 
 	/// <summary>
 	/// Table source.
 	/// </summary>
-	public class TableSource : UITableViewSource
+	public class TableSource : UITableViewDataSource
 	{
 		List<ToiletsBase> datas;
 		DataRequestManager drm;
-		UITableView tableViews;
-		UIView parentView;
-		UIButton loadMoreButton;
-		float pHeight;
-		float pWidth;
-		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
-		bool hasConnection;
 
-		public TableSource (List<ToiletsBase> data, UIView parentView)
+		public TableSource (List<ToiletsBase> data)
 		{
-			hasConnection = true;
-			//////
-			/// check connectivity
-			UpdateStatus ();
-
-			if (internetStatus == NetworkStatus.NotReachable) {
-				hasConnection = false;
-			}
-
 			this.datas = data;
-			this.parentView = parentView;
-
-			pHeight = (float)this.parentView.Frame.Height;
-			pWidth = (float)this.parentView.Frame.Width;
-
-			UIImage coloredImage = UtilImage.GetColoredImage ("images/icons/icon-reload", UIColor.White);
-			loadMoreButton = UtilImage.RoundButton (coloredImage, new RectangleF (pWidth - 48, pHeight, 32, 32), UIColor.Black, false);
-			parentView.AddSubview (loadMoreButton);
-
-			loadMoreButton.TouchUpInside += (object sender, EventArgs e) => loadMore (sender, e, hasConnection);
-		}
-
-		async void loadMore (object sender, EventArgs e, bool hasConnection)
-		{
-			int noOfRowsInSection = (int)tableViews.NumberOfRowsInSection (0);
-			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
-			int loadRows = 5;
-
-			List<ToiletsBase> loadData = new List<ToiletsBase> ();
-
-			//////
-			/// load from plist or from server
-			if (hasConnection) {
-
-				loadData = await loadMoreData(noOfRowsInSection);
-
-			} else {
-				Console.WriteLine ("Connection not available, loading from local list...");
-				loadData = drm.GetToiletList ("Update.plist", noOfRowsInSection, 5, false);
-			}
-
-			Console.WriteLine (loadData.Count);
-
-			datas.AddRange (loadData);
-
-			if (loadData.Count < 5) {
-				loadRows = loadData.Count;
-			}
-
-			for (var i = noOfRowsInSection - 1; i < (noOfRowsInSection - 1) + loadRows; i++) {
-				indexPathSet.Add (NSIndexPath.FromRowSection (i, 0));
-			}
-
-			tableViews.BeginUpdates ();
-			tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.None);
-			tableViews.EndUpdates ();
-		}
-
-		async Task<List<ToiletsBase>> loadMoreData (int numOfRows)
-		{
-			List<ToiletsBase> d;
-
-			try {
-				var httpClient = new HttpClient ();
-				Task<string> contentsTask = httpClient.GetStringAsync("http://gstore.pcp.jp/api/get_spots.php");
-
-				//////
-				/// Waiting for data to load fully
-				string contents = await contentsTask;
-
-				//////
-				/// After fully loaded
-				d = drm.GetDataListJSON (contents, numOfRows, 5, false);
-
-				return d;
-
-			} catch (Exception e) {
-				Console.WriteLine (e.Message);
-				return null;
-			}
-
 		}
 
 		/// <summary>
@@ -245,7 +296,6 @@ namespace OHouse
 		/// <param name="section">Section.</param>
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			this.tableViews = tableview;
 			return datas.Count;
 		}
 
@@ -284,8 +334,7 @@ namespace OHouse
 				cell.TextLabel.Text = "Connection error";
 				cell.DetailTextLabel.Text = "Please connect to the internet!";
 				tableView.RowHeight = 40f;
-
-				loadMoreButton.RemoveFromSuperview ();
+			
 
 			} else {
 				cell = (TimelineCellDesign)tableView.DequeueReusableCell (TimelineCellDesign.Key);
@@ -321,35 +370,6 @@ namespace OHouse
 			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" + info.latitude + "," + info.longitude + ",15z"));
 			slc.ContentTitle = info.title;
 			ShareDialog.Show (new TimelineViewController (), slc, null);
-		}
-
-		/// <summary>
-		/// Scrolled the specified scrollView.
-		/// </summary>
-		/// <param name="scrollView">Scroll view.</param>
-		public override void Scrolled (UIScrollView scrollView)
-		{
-			if (this.tableViews.ContentOffset.Y >= (tableViews.ContentSize.Height - tableViews.Frame.Size.Height)) {
-				UIView.Animate (0.3, 0, UIViewAnimationOptions.CurveEaseOut, () => {
-					loadMoreButton.Frame = new CGRect (pWidth - 48, pHeight - 48, 32, 32);
-				}, null);
-			} else {
-				UIView.Animate (0.3, 0, UIViewAnimationOptions.CurveEaseIn, () => {
-					loadMoreButton.Frame = new CGRect (pWidth - 48, pHeight, 32, 32);
-				}, null);
-			}
-		}
-
-		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
-		{
-			Console.WriteLine (datas [indexPath.Row].vote_cnt);
-		}
-
-		void UpdateStatus (object sender = null, EventArgs e = null)
-		{
-			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
-			internetStatus = ConnectionManager.InternetConnectionStatus ();
-			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
 		}
 	}
 }
