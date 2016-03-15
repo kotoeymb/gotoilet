@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController">
             <connections>
                 <outlet property="AddBtn" destination="f01-uz-LH1" id="LyW-KR-R63"/>
-                <outlet property="Map" destination="UFC-Re-lfd" id="fG4-kX-wu9"/>
                 <outlet property="MyLocation" destination="iEG-FR-Afw" id="JW8-Ps-Mru"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
@@ -18,9 +17,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UFC-Re-lfd">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="700"/>
-                </mapView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f01-uz-LH1">
                     <rect key="frame" x="10" y="498" width="50" height="50"/>
                     <constraints>
@@ -48,13 +44,9 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="iEG-FR-Afw" secondAttribute="bottom" constant="20" id="4R7-2p-okw"/>
                 <constraint firstAttribute="trailing" secondItem="iEG-FR-Afw" secondAttribute="trailing" constant="10" id="KzY-pl-LAT"/>
-                <constraint firstAttribute="trailing" secondItem="UFC-Re-lfd" secondAttribute="trailing" id="LIs-0w-55X"/>
-                <constraint firstAttribute="bottom" secondItem="UFC-Re-lfd" secondAttribute="bottom" id="SaZ-ic-Ifo"/>
-                <constraint firstItem="UFC-Re-lfd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="TxC-nn-LKm"/>
                 <constraint firstItem="f01-uz-LH1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="U2o-WT-2p7"/>
                 <constraint firstAttribute="bottom" secondItem="iEG-FR-Afw" secondAttribute="bottom" constant="20" id="qQ8-Xh-Uwn"/>
                 <constraint firstAttribute="trailing" secondItem="iEG-FR-Afw" secondAttribute="trailing" constant="10" id="t6K-57-vIM"/>
-                <constraint firstItem="UFC-Re-lfd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xXt-qE-xhN"/>
                 <constraint firstAttribute="bottom" secondItem="f01-uz-LH1" secondAttribute="bottom" constant="20" id="xuI-If-9CR"/>
             </constraints>
             <point key="canvasLocation" x="411" y="250"/>

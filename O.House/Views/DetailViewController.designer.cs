@@ -13,29 +13,37 @@ namespace OHouse
 	partial class DetailViewController
 	{
 		[Outlet]
-		UIKit.UIImageView BGImage { get; set; }
+		UIKit.UIButton OKButton { get; set; }
 
 		[Outlet]
-		UIKit.UIImageView ImageV { get; set; }
+		UIKit.UILabel PositionLabel { get; set; }
 
 		[Outlet]
-		UIKit.UILabel Title { get; set; }
+		UIKit.UILabel TitleLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel ToiletName { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (BGImage != null) {
-				BGImage.Dispose ();
-				BGImage = null;
+			if (OKButton != null) {
+				OKButton.Dispose ();
+				OKButton = null;
 			}
 
-			if (ImageV != null) {
-				ImageV.Dispose ();
-				ImageV = null;
+			if (PositionLabel != null) {
+				PositionLabel.Dispose ();
+				PositionLabel = null;
 			}
 
-			if (Title != null) {
-				Title.Dispose ();
-				Title = null;
+			if (TitleLabel != null) {
+				TitleLabel.Dispose ();
+				TitleLabel = null;
+			}
+
+			if (ToiletName != null) {
+				ToiletName.Dispose ();
+				ToiletName = null;
 			}
 		}
 	}
