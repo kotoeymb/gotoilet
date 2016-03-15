@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 using Foundation;
 using UIKit;
@@ -59,18 +60,66 @@ namespace OHouse
 				if (posts.Count < 1) {
 					//////
 					/// setup spot_id 0 as error row
-					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet ...", "", 0, 0, 0, true));
+					posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet or download the data for offline use.", "", 0, 0, 0, true));
 				}
+
+				timelineTable.Source = new TableSource (posts, this.NavigationController.View);
 			} else {
 				Console.WriteLine ("Network available");
-				posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
+				//posts = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", 0, 10, false);
+				//Task<int> data = downloadStringAsync("http://gstore.pcp.jp/api/get_spots.php");
+				downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
 			}
 
 			// Perform any additional setup after loading the view, typically from a nib.
 			timelineTable.Bounces = false;
-			timelineTable.Source = new TableSource (posts, this.NavigationController.View);
+			//timelineTable.Source = new TableSource (posts, this.NavigationController.View);
 			timelineTable.RowHeight = UITableView.AutomaticDimension;
 			timelineTable.EstimatedRowHeight = 160.0f;
+		}
+
+		UIView blinder;
+		UIActivityIndicatorView loading;
+
+		public async Task<string> downloadStringAsync (string urlToDownload)
+		{
+			blinder = new UIView (this.NavigationController.View.Bounds);
+			blinder.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.8f);
+
+			loading = new UIActivityIndicatorView (this.NavigationController.View.Bounds);
+			loading.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.White;
+
+			blinder.AddSubview (loading);
+
+			try {
+				var httpClient = new HttpClient ();
+
+				Task<string> contentsTask = httpClient.GetStringAsync (urlToDownload);
+
+				////// Show loading view
+				/// start animating it
+				/// contents are loading
+				loading.StartAnimating ();
+				this.View.AddSubview (blinder);
+
+				string contents = await contentsTask;
+
+				posts = drm.GetDataListJSON (contents, 0, 10, false);
+				timelineTable.Source = new TableSource (posts, this.NavigationController.View);
+				timelineTable.ReloadData ();
+
+				////// Remove loading view
+				/// datas are loaded
+				loading.StopAnimating ();
+				blinder.RemoveFromSuperview ();
+				blinder.Dispose ();
+
+				return contents;
+
+			} catch (Exception e) {
+				Console.WriteLine ("Error : " + e.Message);
+				return "";
+			}
 		}
 
 		public override void ViewWillAppear (bool animated)
@@ -127,12 +176,7 @@ namespace OHouse
 			loadMoreButton.TouchUpInside += (object sender, EventArgs e) => loadMore (sender, e, hasConnection);
 		}
 
-		/// <summary>
-		/// Loads more data from online.
-		/// </summary>
-		/// <param name="sender">Sender.</param>
-		/// <param name="e">E.</param>
-		public void loadMore (object sender, EventArgs e, bool hasConnection)
+		async void loadMore (object sender, EventArgs e, bool hasConnection)
 		{
 			int noOfRowsInSection = (int)tableViews.NumberOfRowsInSection (0);
 			List<NSIndexPath> indexPathSet = new List<NSIndexPath> ();
@@ -143,8 +187,9 @@ namespace OHouse
 			//////
 			/// load from plist or from server
 			if (hasConnection) {
-				
-				loadData = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php", noOfRowsInSection, 5, false);
+
+				loadData = await loadMoreData(noOfRowsInSection);
+
 			} else {
 				Console.WriteLine ("Connection not available, loading from local list...");
 				loadData = drm.GetToiletList ("Update.plist", noOfRowsInSection, 5, false);
@@ -165,6 +210,31 @@ namespace OHouse
 			tableViews.BeginUpdates ();
 			tableViews.InsertRows (indexPathSet.ToArray (), UITableViewRowAnimation.None);
 			tableViews.EndUpdates ();
+		}
+
+		async Task<List<ToiletsBase>> loadMoreData (int numOfRows)
+		{
+			List<ToiletsBase> d;
+
+			try {
+				var httpClient = new HttpClient ();
+				Task<string> contentsTask = httpClient.GetStringAsync("http://gstore.pcp.jp/api/get_spots.php");
+
+				//////
+				/// Waiting for data to load fully
+				string contents = await contentsTask;
+
+				//////
+				/// After fully loaded
+				d = drm.GetDataListJSON (contents, numOfRows, 5, false);
+
+				return d;
+
+			} catch (Exception e) {
+				Console.WriteLine (e.Message);
+				return null;
+			}
+
 		}
 
 		/// <summary>
@@ -247,13 +317,12 @@ namespace OHouse
 
 		public void ShareClick (object sender, EventArgs e, ToiletsBase info)
 		{
-//			Console.WriteLine (info.distance);
 			ShareLinkContent slc = new ShareLinkContent ();
-			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" +info.latitude+ "," + info.longitude + ",15z"));
+			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" + info.latitude + "," + info.longitude + ",15z"));
 			slc.ContentTitle = info.title;
 			ShareDialog.Show (new TimelineViewController (), slc, null);
 		}
-			
+
 		/// <summary>
 		/// Scrolled the specified scrollView.
 		/// </summary>
