@@ -67,15 +67,10 @@ namespace OHouse
 			}
 
 			// Perform any additional setup after loading the view, typically from a nib.
-			UITableView tbl = new UITableView (this.NavigationController.View.Bounds);
-
-			tbl.Bounces = false; ////// disable bounce to prevent multiple actions when reached to tableview bottom, see Scrolled()
-			tbl.Source = new TableSource (posts, this.NavigationController.View);
-			//tbl.RowHeight = 120f;
-			tbl.RowHeight = UITableView.AutomaticDimension;
-			tbl.EstimatedRowHeight = 160.0f;
-
-			View.AddSubview (tbl);
+			timelineTable.Bounces = false;
+			timelineTable.Source = new TableSource (posts, this.NavigationController.View);
+			timelineTable.RowHeight = UITableView.AutomaticDimension;
+			timelineTable.EstimatedRowHeight = 160.0f;
 		}
 
 		public override void ViewWillAppear (bool animated)
