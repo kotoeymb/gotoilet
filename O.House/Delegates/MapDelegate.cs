@@ -45,12 +45,13 @@ namespace OHouse
 			this.parent = parent;
 			drm = new DataRequestManager ();
 
-			if (!AppDelegate.connectivity){
-				Console.WriteLine ("Connection not available, showing from local list...");
-				toiletsList = drm.GetToiletList ("Update.plist");
-			} else {
-				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-			}
+			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+//			if (!AppDelegate.connectivity){
+//				Console.WriteLine ("Connection not available, showing from local list...");
+//				toiletsList = drm.GetToiletList ("Update.plist");
+//			} else {
+//				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
+//			}
 		}
 
 		/// <summary>
@@ -62,6 +63,8 @@ namespace OHouse
 		{
 			// Clear map first
 			clearMap (mapView);
+
+			Console.WriteLine ("DidUpdateUserLocation");
 
 			if (mapView.UserLocation != null) {
 				CLLocationCoordinate2D coords = mapView.UserLocation.Coordinate;
@@ -75,9 +78,9 @@ namespace OHouse
 					double dist = loc.DistanceFrom (userLC);
 
 					// Calculate minimal distance
-					if (dist > maxDistance) {
-						continue;
-					}
+//					if (dist > maxDistance) {
+//						continue;
+//					}
 						
 					// For near toilet list page
 					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, dist, true));

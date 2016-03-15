@@ -53,21 +53,21 @@ namespace OHouse
 			base.ViewDidLoad ();
 
 
+			Map.Delegate = new MapDelegate (this);
+			Map.ShowsUserLocation = true;
 
 			CGRect screen = this.NavigationController.View.Bounds;
 
-
-
-			AddBtn.BackgroundColor= Common.ColorStyle_1;
-			AddBtn.Layer.CornerRadius = AddBtn.Frame.Size.Width/2;
-			AddBtn.Layer.ShadowOffset = new CGSize (0,1);
+			AddBtn.BackgroundColor = Common.ColorStyle_1;
+			AddBtn.Layer.CornerRadius = AddBtn.Frame.Size.Width / 2;
+			AddBtn.Layer.ShadowOffset = new CGSize (0, 1);
 			AddBtn.Layer.ShadowOpacity = 1f;
 			AddBtn.Layer.ShadowRadius = 0.3f;
 			AddBtn.Layer.ShadowColor = new CGColor (0, 0, 0);
 
-			MyLocation.BackgroundColor= Common.ColorStyle_1;
-			MyLocation.Layer.CornerRadius = MyLocation.Frame.Size.Width/2;
-			MyLocation.Layer.ShadowOffset = new CGSize (0,1);
+			MyLocation.BackgroundColor = Common.ColorStyle_1;
+			MyLocation.Layer.CornerRadius = MyLocation.Frame.Size.Width / 2;
+			MyLocation.Layer.ShadowOffset = new CGSize (0, 1);
 			MyLocation.Layer.ShadowOpacity = 1f;
 			MyLocation.Layer.ShadowRadius = 0.3f;
 			MyLocation.Layer.ShadowColor = new CGColor (0, 0, 0);
@@ -76,30 +76,28 @@ namespace OHouse
 				if (Map.UserLocation != null) {
 					CLLocationCoordinate2D coords = Map.UserLocation.Coordinate;
 					Map.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
-							}
-							};
-
-
+				}
+			};
+				
 			AddBtn.TouchUpInside += (sender, e) => {
 				if (Map.UserLocation != null) {
 
 					CLLocationCoordinate2D userloc = Map.UserLocation.Coordinate;
-									form = new FormViewController (userloc);
+					form = new FormViewController (userloc);
 			
-									UINavigationController nav = new UINavigationController (form);
-								this.PresentViewController (nav, true, () => {
-									});
-								}
-							};
+					UINavigationController nav = new UINavigationController (form);
+					this.PresentViewController (nav, true, () => {
+					});
+				}
+			};
 		}
-
-
 
 		/// <summary>
 		/// Dids the entered background.
 		/// </summary>
 		/// <param name="notification">Notification.</param>
-		private void didEnteredBackground(NSNotification notification) {
+		private void didEnteredBackground (NSNotification notification)
+		{
 			Console.WriteLine ("App Entered Background from MapViewController");
 		}
 
@@ -107,7 +105,8 @@ namespace OHouse
 		/// Dids the entered foreground.
 		/// </summary>
 		/// <param name="notification">Notification.</param>
-		private void didEnteredForeground(NSNotification notification) {
+		private void didEnteredForeground (NSNotification notification)
+		{
 			Console.WriteLine ("App Entered Foreground from MapViewController");
 		}
 
