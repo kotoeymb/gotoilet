@@ -174,19 +174,8 @@ namespace O.House
 			Console.WriteLine (intSize);
 		}
 
-		UIView blinder;
-		UIActivityIndicatorView loading;
-
 		public async Task<int> downloadStringAsync (string urlToDownload)
 		{
-			blinder = new UIView (View.Bounds);
-			blinder.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.8f);
-
-			loading = new UIActivityIndicatorView (View.Bounds);
-			loading.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.White;
-
-			blinder.AddSubview (loading);
-
 			try {
 				var httpClient = new HttpClient ();
 
@@ -195,10 +184,9 @@ namespace O.House
 				////// Show loading view
 				/// start animating it
 				/// contents are loading
-				loading.StartAnimating ();
-				this.View.AddSubview (blinder);
-
+				loader.StartAnimating();
 				string contents = await contentsTask;
+				loader.StopAnimating();
 
 				jsonData = contents;
 				dataSize = contents.Length;
@@ -216,10 +204,6 @@ namespace O.House
 
 				var alert = new UIAlertView ("Download", msg, null, "OK", null);
 				alert.Show ();
-
-				loading.StopAnimating();
-				blinder.RemoveFromSuperview ();
-				blinder.Dispose ();
 
 				return dataSize;
 

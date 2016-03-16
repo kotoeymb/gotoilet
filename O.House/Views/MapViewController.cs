@@ -22,9 +22,12 @@ namespace OHouse
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 		FormViewController form;
-		//DetailViewController Detail;
-		//private NSObject _didEnteredBackground;
-		//private NSObject _didEnteredForeground;
+
+		public UIActivityIndicatorView Loader {
+			get { return loader; }
+			set { ; }
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GoToilet.MapViewController"/> class.
 		/// </summary>

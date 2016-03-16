@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net.Http;
 using Foundation;
 using UIKit;
 using CoreLocation;
@@ -20,6 +22,8 @@ namespace OHouse
 		/// <summary>
 		/// Declaration
 		/// </summary>
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
+		bool connectivity;
 		protected string annId = "Basic Annotation";
 		MapViewController parent;
 		public static double latMeter = 1000;
@@ -44,15 +48,42 @@ namespace OHouse
 		public MapDelegate (MapViewController parent)
 		{
 			this.parent = parent;
+			connectivity = true;
 			drm = new DataRequestManager ();
 			this.Navigationcontroller = parent.NavigationController;
-			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-//			if (!AppDelegate.connectivity){
-//				Console.WriteLine ("Connection not available, showing from local list...");
-//				toiletsList = drm.GetToiletList ("Update.plist");
-//			} else {
-//				toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
-//			}
+
+			UpdateStatus (null, null);
+		}
+
+		async void initDataReset() {
+			if (!connectivity) {
+				toiletsList = drm.GetToiletList ("Update.plist", 0, 10, false);
+
+			} else {
+				parent.Loader.StartAnimating ();
+				toiletsList = await downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
+				parent.Loader.StopAnimating ();
+			}
+		}
+
+		async Task<List<ToiletsBase>> downloadStringAsync (string url)
+		{
+			List<ToiletsBase> t;
+
+			try {
+				HttpClient client = new HttpClient ();
+				Task<string> json = client.GetStringAsync (url);
+
+				string data = await json;
+
+				t = drm.GetDataListJSON (data);
+
+				return t;
+
+			} catch (Exception e) {
+				Console.WriteLine (e.Message);
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -62,6 +93,7 @@ namespace OHouse
 		/// <param name="userLocation">User location.</param>
 		public override void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation)
 		{
+
 			// Clear map first
 			clearMap (mapView);
 
@@ -101,7 +133,6 @@ namespace OHouse
 				mapView.SetRegion (MKCoordinateRegion.FromDistance (coords, latMeter, lonMeter), true);
 			}
 		}
-
 
 		/// <summary>
 		/// Detects the current location.
@@ -186,7 +217,7 @@ namespace OHouse
 			int datas = id.GetLocationID ();
 			DetailViewController infoView = new DetailViewController (datas);
 				
-			parent.PresentViewController (infoView, true, null);
+			Navigationcontroller.PresentViewController (infoView, true, null);
 
 		}
 
@@ -212,6 +243,69 @@ namespace OHouse
 		/// <param name="animated">If set to <c>true</c> animated.</param>
 		public override void RegionChanged (MKMapView mapView, bool animated)
 		{
+		}
+
+		void UpdateConnectivity ()
+		{
+			connectivity = true;
+
+			switch (remoteHostStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (localWifiStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			initDataReset ();
+		}
+
+		void UpdateStatus (object sender, EventArgs e)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+
+			//////
+			/// Update internet connectivity status
+			UpdateConnectivity ();
 		}
 	}
 

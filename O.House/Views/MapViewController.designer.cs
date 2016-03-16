@@ -16,6 +16,9 @@ namespace OHouse
 		UIKit.UIButton AddBtn { get; set; }
 
 		[Outlet]
+		UIKit.UIActivityIndicatorView loader { get; set; }
+
+		[Outlet]
 		MapKit.MKMapView Map { get; set; }
 
 		[Outlet]
@@ -36,6 +39,11 @@ namespace OHouse
 			if (MyLocation != null) {
 				MyLocation.Dispose ();
 				MyLocation = null;
+			}
+
+			if (loader != null) {
+				loader.Dispose ();
+				loader = null;
 			}
 		}
 	}

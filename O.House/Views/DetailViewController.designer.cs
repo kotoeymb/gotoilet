@@ -13,37 +13,77 @@ namespace OHouse
 	partial class DetailViewController
 	{
 		[Outlet]
-		UIKit.UIButton OKButton { get; set; }
+		UIKit.UIImageView bgToilet { get; set; }
 
 		[Outlet]
-		UIKit.UILabel PositionLabel { get; set; }
+		UIKit.UIButton btnClose { get; set; }
 
 		[Outlet]
-		UIKit.UILabel TitleLabel { get; set; }
+		UIKit.UIImageView iconLike { get; set; }
 
 		[Outlet]
-		UIKit.UILabel ToiletName { get; set; }
+		UIKit.UILabel lblApproveCount { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblDescription { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblLocation { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblTitle { get; set; }
+
+		[Outlet]
+		UIKit.UIActivityIndicatorView loader { get; set; }
+
+		[Outlet]
+		MapKit.MKMapView mapLocation { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (OKButton != null) {
-				OKButton.Dispose ();
-				OKButton = null;
+			if (btnClose != null) {
+				btnClose.Dispose ();
+				btnClose = null;
 			}
 
-			if (PositionLabel != null) {
-				PositionLabel.Dispose ();
-				PositionLabel = null;
+			if (iconLike != null) {
+				iconLike.Dispose ();
+				iconLike = null;
 			}
 
-			if (TitleLabel != null) {
-				TitleLabel.Dispose ();
-				TitleLabel = null;
+			if (lblApproveCount != null) {
+				lblApproveCount.Dispose ();
+				lblApproveCount = null;
 			}
 
-			if (ToiletName != null) {
-				ToiletName.Dispose ();
-				ToiletName = null;
+			if (lblDescription != null) {
+				lblDescription.Dispose ();
+				lblDescription = null;
+			}
+
+			if (lblLocation != null) {
+				lblLocation.Dispose ();
+				lblLocation = null;
+			}
+
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
+			}
+
+			if (mapLocation != null) {
+				mapLocation.Dispose ();
+				mapLocation = null;
+			}
+
+			if (loader != null) {
+				loader.Dispose ();
+				loader = null;
+			}
+
+			if (bgToilet != null) {
+				bgToilet.Dispose ();
+				bgToilet = null;
 			}
 		}
 	}

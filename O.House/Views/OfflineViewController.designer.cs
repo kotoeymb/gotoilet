@@ -17,6 +17,9 @@ namespace O.House
 
 		[Outlet]
 		UIKit.UIButton downloadBtn { get; set; }
+
+		[Outlet]
+		UIKit.UIActivityIndicatorView loader { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -28,6 +31,11 @@ namespace O.House
 			if (downloadBtn != null) {
 				downloadBtn.Dispose ();
 				downloadBtn = null;
+			}
+
+			if (loader != null) {
+				loader.Dispose ();
+				loader = null;
 			}
 		}
 	}

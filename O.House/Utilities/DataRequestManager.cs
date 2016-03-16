@@ -23,7 +23,7 @@ namespace OHouse.DRM
 	public class DataRequestManager
 	{
 
-		private static readonly Encoding encoding = Encoding.UTF8;
+		//private static readonly Encoding encoding = Encoding.UTF8;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OHouse.DRM.DataRequestManager"/> class.
@@ -189,6 +189,33 @@ namespace OHouse.DRM
 			string get = "http://gstore.pcp.jp/api/get_spots_info.php?spot_id=" + spot_id;
 
 			string json = GetJsonData (get);
+
+
+
+			if (json.IndexOf ("[") == 0 && json.IndexOf ("]") == json.Length - 1) {
+				json = json.Remove (0, 1);
+				json = json.Remove (json.Length - 1);
+				json = json.Replace ("},{", "}{");
+			}
+
+			JsonTextReader reader = new JsonTextReader (new StringReader (json));
+			reader.SupportMultipleContent = true;
+			while (true) {
+				if (!reader.Read ())
+					break;
+
+				JsonSerializer s = new JsonSerializer ();
+				ToiletsBase ba = s.Deserialize<ToiletsBase> (reader);
+
+				u.Add (ba);
+			}
+
+			return u;
+		}
+
+		public List<ToiletsBase> GetSpotInfoJSON (string json)
+		{
+			List<ToiletsBase> u = new List<ToiletsBase> ();
 
 			if (json.IndexOf ("[") == 0 && json.IndexOf ("]") == json.Length - 1) {
 				json = json.Remove (0, 1);

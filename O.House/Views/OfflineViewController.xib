@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="closeBtn" destination="duO-K1-yYd" id="HKu-3z-PXq"/>
                 <outlet property="downloadBtn" destination="Xbk-Zw-NdW" id="foj-NM-SMJ"/>
+                <outlet property="loader" destination="qZg-SB-YRg" id="MmG-ti-f2E"/>
                 <outlet property="view" destination="2" id="RRd-Eg-VrN"/>
             </connections>
         </placeholder>
@@ -96,16 +97,25 @@
                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Button" image="images/icons/icon-cross.png"/>
                 </button>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qZg-SB-YRg">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.65410494942196529" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="qZg-SB-YRg" secondAttribute="bottom" id="3WM-VU-eGh"/>
+                <constraint firstItem="qZg-SB-YRg" firstAttribute="top" secondItem="2" secondAttribute="top" id="G5f-sl-SHf"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="L13-EV-Nlk"/>
+                <constraint firstAttribute="trailing" secondItem="qZg-SB-YRg" secondAttribute="trailing" id="Nkq-K9-Du8"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="210" id="Q0j-Tk-I0E"/>
                 <constraint firstAttribute="bottom" secondItem="Z81-xp-PD5" secondAttribute="bottom" constant="210" id="RkN-gV-3gs"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="Ug0-nm-FgI"/>
                 <constraint firstAttribute="trailing" secondItem="Z81-xp-PD5" secondAttribute="trailing" constant="20" id="bnv-1K-kbc"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="210" id="gw9-Oc-U9e"/>
+                <constraint firstItem="qZg-SB-YRg" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="jd3-YB-63m"/>
                 <constraint firstItem="duO-K1-yYd" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="xDg-tI-EGd"/>
                 <constraint firstAttribute="trailing" secondItem="duO-K1-yYd" secondAttribute="trailing" constant="20" id="xjH-hS-aUi"/>
                 <constraint firstItem="Z81-xp-PD5" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="yZE-BI-yGh"/>
