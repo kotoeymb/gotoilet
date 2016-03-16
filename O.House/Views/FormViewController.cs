@@ -32,46 +32,46 @@ namespace OHouse
 		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
-			Title = "Location";
+			//Title = "Location";
 
 			drm = new DataRequestManager ();
 
-			this.NavigationItem.SetRightBarButtonItem (
-				new UIBarButtonItem (
-					UIImage.FromBundle ("images/icons/icon-mark"), 
-					UIBarButtonItemStyle.Plain, 
-					(ss, ee) => {
+//			this.NavigationItem.SetRightBarButtonItem (
+//				new UIBarButtonItem (
+//					UIImage.FromBundle ("images/icons/icon-mark"), 
+//					UIBarButtonItemStyle.Plain, 
+//					(ss, ee) => {
+//
+//						if
+//							
+//							(GetDataFromTextField (tf) !=""&& GetDataFromTextField (stf) != "") {
+//							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField(tf),GetDataFromTextField(stf),"", coords.Longitude, coords.Latitude, 0, true), this);
+//
+//						} 
+//						else {
+//							UIAlertView av = new UIAlertView (
+//								                 "Data Require",
+//								                 "Please insert at least title for the location.",
+//								                 null,
+//								                 "Alright!",
+//								                 null
+//							                 );
+//
+//							av.Show ();
+//						}
+//					}
+//				),
+//				true
+//			);//end of this.NavigationItem.SetRightBarButtonItem
 
-						if
-							
-							(GetDataFromTextField (tf) !=""&& GetDataFromTextField (stf) != "") {
-							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField(tf),GetDataFromTextField(stf),"", coords.Longitude, coords.Latitude, 0, true), this);
-
-						} 
-						else {
-							UIAlertView av = new UIAlertView (
-								                 "Data Require",
-								                 "Please insert at least title for the location.",
-								                 null,
-								                 "Alright!",
-								                 null
-							                 );
-
-							av.Show ();
-						}
-					}
-				),
-				true
-			);//end of this.NavigationItem.SetRightBarButtonItem
-
-			this.NavigationItem.SetLeftBarButtonItem (
-				new UIBarButtonItem (
-					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-					this.DismissModalViewController (true);
-				}
-				),
-				true
-			);
+//			this.NavigationItem.SetLeftBarButtonItem (
+//				new UIBarButtonItem (
+//					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
+//					this.DismissModalViewController (true);
+//				}
+//				),
+//				true
+//			);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -85,15 +85,16 @@ namespace OHouse
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			View.BackgroundColor = UIColor.FromPatternImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/background/bg-map"), (float)View.Frame.Width, 0));
-
-			SetupUI ();
-
-			TextField tex = new TextField (new CoreGraphics.CGRect (10, 180, 300, 60),Common.Blue, 
-			"Title", UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1));
-			tex.BackgroundColor = UIColor.Gray;
-			View.Add (tex);
+	  
+//			View.BackgroundColor = UIColor.FromPatternImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/background/bg-map"), (float)View.Frame.Width, 0));
+//
+//			SetupUI ();
+//
+//			TextField tex = new TextField (new CoreGraphics.CGRect (10, 180, 300, 60),Common.Blue, 
+//			"Title", UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1));
+//			tex.BackgroundColor = UIColor.Gray;
+//			View.Add (tex);
+			//SaveButton.Frame = new CGRect(0,(float) 13 *screen.Height/14 ,(float)screen.Width/2 , 48);
 		}
 
 	
