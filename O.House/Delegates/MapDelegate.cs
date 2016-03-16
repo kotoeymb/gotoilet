@@ -24,6 +24,7 @@ namespace OHouse
 		MapViewController parent;
 		public static double latMeter = 1000;
 		public static double lonMeter = 1000;
+		UINavigationController Navigationcontroller;
 		// *** modifying
 		// MKPointAnnotation[] pins;
 		static MKCircle circleOverlay;
@@ -44,7 +45,7 @@ namespace OHouse
 		{
 			this.parent = parent;
 			drm = new DataRequestManager ();
-
+			this.Navigationcontroller = parent.NavigationController;
 			toiletsList = drm.GetDataList ("http://gstore.pcp.jp/api/get_spots.php");
 //			if (!AppDelegate.connectivity){
 //				Console.WriteLine ("Connection not available, showing from local list...");
@@ -185,16 +186,8 @@ namespace OHouse
 			int datas = id.GetLocationID ();
 			DetailViewController infoView = new DetailViewController (datas);
 				
+			parent.PresentViewController (infoView, true, null);
 
-			parent.AddChildViewController (infoView);
-			parent.DidMoveToParentViewController (parent);
-			parent.View.AddSubview (infoView.View);
-			UIView.Animate (
-				0.1,
-				() => {
-					infoView.View.Alpha = 0.9f;
-					infoView.View.BackgroundColor = UIColor.Black;
-				}); 
 		}
 
 		/// <summary>
