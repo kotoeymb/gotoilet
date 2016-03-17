@@ -103,7 +103,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textField>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="Please provide some information about this location" translatesAutoresizingMaskIntoConstraints="NO" id="F8R-eX-GF7">
-                    <rect key="frame" x="20" y="312" width="280" height="79"/>
+                    <rect key="frame" x="20" y="304" width="280" height="87"/>
                     <animations/>
                     <color key="backgroundColor" red="0.96677941083908081" green="0.96694475412368774" blue="0.96676892042160034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -111,18 +111,18 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" secureTextEntry="YES"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ues-3W-Eeu">
-                    <rect key="frame" x="62" y="270" width="238" height="32"/>
+                    <rect key="frame" x="44" y="270" width="256" height="24"/>
                     <animations/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5wK-nl-1IU">
-                    <rect key="frame" x="20" y="270" width="32" height="32"/>
+                    <rect key="frame" x="20" y="270" width="24" height="24"/>
                     <animations/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="32" id="7Ry-ki-sZT"/>
-                        <constraint firstAttribute="width" constant="32" id="dKt-vV-G0W"/>
+                        <constraint firstAttribute="height" constant="24" id="7Ry-ki-sZT"/>
+                        <constraint firstAttribute="width" constant="24" id="dKt-vV-G0W"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -148,7 +148,7 @@
                 <constraint firstAttribute="bottom" secondItem="yhl-tm-NBT" secondAttribute="bottom" id="dhT-f1-3lc"/>
                 <constraint firstAttribute="trailing" secondItem="F8R-eX-GF7" secondAttribute="trailing" constant="20" id="e8S-Cz-SxA"/>
                 <constraint firstItem="5wK-nl-1IU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="g9X-hK-da5"/>
-                <constraint firstItem="ues-3W-Eeu" firstAttribute="leading" secondItem="5wK-nl-1IU" secondAttribute="trailing" constant="10" id="iN8-1I-5GN"/>
+                <constraint firstItem="ues-3W-Eeu" firstAttribute="leading" secondItem="5wK-nl-1IU" secondAttribute="trailing" id="iN8-1I-5GN"/>
                 <constraint firstItem="yhl-tm-NBT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="igv-E5-tgI"/>
                 <constraint firstItem="csO-HB-AmZ" firstAttribute="top" secondItem="O1T-0u-z08" secondAttribute="bottom" constant="20" id="lgE-nG-f4c"/>
                 <constraint firstItem="uY1-AF-FnH" firstAttribute="top" secondItem="gf7-WW-7h0" secondAttribute="bottom" constant="30" id="lkH-qh-8VK"/>

@@ -26,12 +26,8 @@ namespace OHouse
 	{
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 		bool connectivity;
-		bool connection;
-		TextField tf;
-		TextField stf;
 		DataRequestManager drm;
 		CLLocationCoordinate2D coords;
-
 
 		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
@@ -58,14 +54,24 @@ namespace OHouse
 		public override void ViewDidUnload ()
 		{
 			base.ViewDidUnload ();
-			ResignFirstResponder ();
+
 		}
 
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			ResignFirstResponder ();
 
+			if (coords.Latitude == 0 && coords.Longitude == 0) {
+				var noConnectionAlert = new UIAlertView ("Your location", "Please wait until your location appear on the map, OK to dismiss this form", null, "Dismiss", null);
+				noConnectionAlert.Show ();
 
+				noConnectionAlert.Clicked += (object sender, UIButtonEventArgs e) => {
+					if(e.ButtonIndex == noConnectionAlert.CancelButtonIndex) {
+						this.DismissModalViewController(true);
+					}
+				};
+			}
 
 			CancleButton.TouchUpInside += (s, e) => {
 				this.DismissModalViewController (true);
@@ -87,7 +93,7 @@ namespace OHouse
 
 			lblLocation.Text = coords.Latitude + ", " + coords.Longitude;
 
-			connection = true;
+			connectivity = true;
 			ConnectionManager.ReachabilityChanged += UpdateStatus;
 			initView ();
 
@@ -172,7 +178,7 @@ namespace OHouse
 
 		private void initView ()
 		{
-			if (!connection) {
+			if (!connectivity) {
 				
 					
 				UIAlertView av = new UIAlertView (
@@ -193,50 +199,50 @@ namespace OHouse
 		}
 		void UpdateConnectivity ()
 		{
-			connection = true;
+			connectivity = true;
 
 			switch (remoteHostStatus) {
 			case NetworkStatus.NotReachable:
-				connection = false;
+				connectivity = false;
 				break;
 			case NetworkStatus.ReachableViaCarrierDataNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			case NetworkStatus.ReachableViaWifiNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			default:
-				connection = true;
+				connectivity = true;
 				break;
 			}
 
 			switch (internetStatus) {
 			case NetworkStatus.NotReachable:
-				connection = false;
+				connectivity = false;
 				break;
 			case NetworkStatus.ReachableViaCarrierDataNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			case NetworkStatus.ReachableViaWifiNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			default:
-				connection = true;
+				connectivity = true;
 				break;
 			}
 
 			switch (localWifiStatus) {
 			case NetworkStatus.NotReachable:
-				connection = false;
+				connectivity = false;
 				break;
 			case NetworkStatus.ReachableViaCarrierDataNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			case NetworkStatus.ReachableViaWifiNetwork:
-				connection = true;
+				connectivity = true;
 				break;
 			default:
-				connection = true;
+				connectivity = true;
 
 				break;
 			}
