@@ -17,61 +17,37 @@ using MonoTouch.Dialog;
 using CustomElements;
 using OHouse.DRM;
 using AssetsLibrary;
+using System.Text.RegularExpressions;
+using OHouse.Connectivity;
 
 namespace OHouse
 {
 	public partial class FormViewController : UIViewController
 	{
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
+		bool connectivity;
+		bool connection;
 		TextField tf;
 		TextField stf;
-		UIImagePickerController imagePicker;
 		DataRequestManager drm;
-		UIImageView thumbnail;
-		UILabel imageURL;
+
 
 		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
-			//Title = "Location";
+			Title = "Location";
 
 			drm = new DataRequestManager ();
 
-//			this.NavigationItem.SetRightBarButtonItem (
-//				new UIBarButtonItem (
-//					UIImage.FromBundle ("images/icons/icon-mark"), 
-//					UIBarButtonItemStyle.Plain, 
-//					(ss, ee) => {
-//
-//						if
-//							
-//							(GetDataFromTextField (tf) !=""&& GetDataFromTextField (stf) != "") {
-//							drm.RegisterSpot (new ToiletsBase (0, 0, GetDataFromTextField(tf),GetDataFromTextField(stf),"", coords.Longitude, coords.Latitude, 0, true), this);
-//
-//						} 
-//						else {
-//							UIAlertView av = new UIAlertView (
-//								                 "Data Require",
-//								                 "Please insert at least title for the location.",
-//								                 null,
-//								                 "Alright!",
-//								                 null
-//							                 );
-//
-//							av.Show ();
-//						}
-//					}
-//				),
-//				true
-//			);//end of this.NavigationItem.SetRightBarButtonItem
 
-//			this.NavigationItem.SetLeftBarButtonItem (
-//				new UIBarButtonItem (
-//					UIImage.FromBundle ("images/icons/icon-cross"), UIBarButtonItemStyle.Plain, (ss, ee) => {
-//					this.DismissModalViewController (true);
-//				}
-//				),
-//				true
-//			);
+
+
+		}
+
+
+		static bool IsValid (string value)
+		{
+			return Regex.IsMatch (value, @"^[a-zA-Z0-9]*$");
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -81,75 +57,178 @@ namespace OHouse
 			
 			// Release any cached data, images, etc that aren't in use.
 		}
-
+		public override void ViewDidUnload(){
+			base.ViewDidUnload ();
+			ResignFirstResponder ();
+		}
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-	  
-//			View.BackgroundColor = UIColor.FromPatternImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/background/bg-map"), (float)View.Frame.Width, 0));
-//
-//			SetupUI ();
-//
-//			TextField tex = new TextField (new CoreGraphics.CGRect (10, 180, 300, 60),Common.Blue, 
-//			"Title", UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1));
-//			tex.BackgroundColor = UIColor.Gray;
-//			View.Add (tex);
-			//SaveButton.Frame = new CGRect(0,(float) 13 *screen.Height/14 ,(float)screen.Width/2 , 48);
+
+			CancleButton.TouchUpInside += (s, e) => {
+				this.DismissModalViewController (true);
+			};
+
+			saveCheckData();
+			connection = true;
+			ConnectionManager.ReachabilityChanged += UpdateStatus;
+			initView ();
+
 		}
+		private void saveCheckData()
+		{
+			SaveButton.TouchUpInside += (object sender, EventArgs e) => {
+				string title = NameTextField.Text;
+				string description = DesTextField.Text;
+				int tlength = title.Length;
+				int dlength = description.Length;
+
+				Console.WriteLine (title);
+				Console.WriteLine(description);
+
+				UpdateStatus ();
+
+
+		
+			if ((tlength >= 3 && tlength <= 15) && (dlength >= 3 && dlength <= 15)) {
+				if ((title != "" && IsValid (title)) && (description != "" && IsValid (description))) {
+					if (internetStatus == NetworkStatus.NotReachable) {
+						connectivity = false;
+						UIAlertView av = new UIAlertView (
+							"Need Internet Connection",
+							"Check Your Internet Connection",
+							null,
+							"Check",
+							null
+						);
+
+						av.Show ();
+					} else {
+						connectivity = true;
+						Console.WriteLine ("internet Connection Successful");
+						//drm.RegisterSpot (new ToiletsBase (0, 0, title, description, "", coords.Longitude, coords.Latitude, 0, true), this);	
+
+					}
+
+				} else {
+
+					UIAlertView av = new UIAlertView (
+						"Data Require",
+						"Please insert Only Character and number title & description for the location.",
+						null,
+						"Try Again!",
+						null
+					);
+
+					av.Show ();
+				}
+			} else {
+
+				UIAlertView av = new UIAlertView (
+					"Data Limitation",
+					"Please insert at least three char & max fifteen char for title and description.",
+					null,
+					"Try Again!",
+					null
+				);
+
+				av.Show ();
+			}
+			};
+		}
+				
+		void UpdateStatus (object sender = null, EventArgs e = null)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+			UpdateConnectivity ();
+		}
+
+
+
+		private void initView()
+		{
+			if (!connection) {
+				
+					
+					UIAlertView av = new UIAlertView (
+						                "Need Internet Connection first",
+						                "Check Your Internet Connection",
+						                null,
+						                "Ok",
+						                null
+					                );
+					av.Show ();
+				Console.WriteLine ("internet Connection timeout");
+				}
+	
+			else{
+
+				Console.WriteLine ("internet Connection successful");
+
+
+			}
+	
+		}
+	
+
 
 	
-		void SetupUI ()
+		void UpdateConnectivity ()
 		{
-			UIScrollView sv = new UIScrollView (this.NavigationController.View.Bounds);
+			connection = true;
 
-			CGRect screen = this.NavigationController.View.Bounds;
-			sv.BackgroundColor = UIColor.FromRGBA (255, 255, 255, 240);
-			float sw = (float)screen.Width;
-			float sh = (float)screen.Height;
-
-			CGRect ssize = new CGRect (0, sh, sw, sh - 100);
-			CGRect items = new CGRect (15, 15, sw - 30, 40);
-
-			View.Frame = ssize;
-			View.UserInteractionEnabled = true;
-
-			// Title
-			CGRect tfRec = new CGRect (items.X, items.Y, items.Width, items.Height);
-			tf = new TextField (
-				tfRec,
-				Common.Black, 
-				"Title", 
-				UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1)
-			);
-
-			// Subtitle
-			CGRect stfRec = new CGRect (items.X, tf.Frame.Y + tf.Frame.Height + 24, items.Width, items.Height);
-			stf = new TextField (
-				stfRec,
-				Common.Black, 
-				"Description", 
-				UtilImage.GetColoredImage ("images/icons/icon-notes", Common.ColorStyle_1)
-			);
-
-			sv.AddSubviews (tf, stf);
-
-			View.AddSubview (sv);
-		}
-			
-		private string GetDataFromTextField (TextField textfield)
-		{
-			foreach (var subview in textfield.Subviews) {
-				if (subview is UIView) {
-					foreach (var t in subview.Subviews) {
-						if (t is UITextField) {
-							var tf = t as UITextField;
-							return tf.Text.ToString ();
-						}
-					}
-				}
+			switch (remoteHostStatus) {
+			case NetworkStatus.NotReachable:
+				connection = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connection = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connection = true;
+				break;
+			default:
+				connection = true;
+				break;
 			}
 
-			return "";
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				connection = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connection = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connection = true;
+				break;
+			default:
+				connection = true;
+				break;
+			}
+
+			switch (localWifiStatus) {
+			case NetworkStatus.NotReachable:
+				connection = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connection = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connection = true;
+				break;
+			default:
+				connection = true;
+
+				break;
+			}
+
+
+			initView ();
 		}
+	
 	}
+
 }
