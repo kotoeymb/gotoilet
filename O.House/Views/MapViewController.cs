@@ -81,21 +81,10 @@ namespace OHouse
 					Map.SetRegion (MKCoordinateRegion.FromDistance (coords, MapDelegate.latMeter, MapDelegate.lonMeter), true);
 				}
 			};
-				
-//			AddBtn.TouchUpInside += (sender, e) => {
-//				if (Map.UserLocation != null) {
-//
-//					CLLocationCoordinate2D userloc = Map.UserLocation.Coordinate;
-//					form = new FormViewController (userloc);
-//			
-//					UINavigationController nav = new UINavigationController (form);
-//					this.PresentViewController (nav, true, () => {
-//					});
-//				}
-//			};
 
 			AddBtn.TouchUpInside += (object sender, EventArgs e) => {
-				NavigationController.PresentViewController(new DetailViewController(20), true, null);
+				CLLocationCoordinate2D userLoc = Map.UserLocation.Coordinate;
+				NavigationController.PresentViewController(new FormViewController(userLoc), true, null);
 			};
 		}
 
