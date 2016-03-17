@@ -13,6 +13,7 @@
                 <outlet property="bgToilet" destination="G61-Rb-duP" id="a8S-Oy-pQP"/>
                 <outlet property="iconLocation" destination="5wK-nl-1IU" id="eYr-gc-Hni"/>
                 <outlet property="lblLocation" destination="ues-3W-Eeu" id="Pmc-8D-Ebb"/>
+                <outlet property="mainView" destination="iN0-l3-epB" id="gkX-7A-yQr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -108,7 +109,7 @@
                     <color key="backgroundColor" red="0.96677941083908081" green="0.96694475412368774" blue="0.96676892042160034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" secureTextEntry="YES"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" secureTextEntry="YES"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ues-3W-Eeu">
                     <rect key="frame" x="44" y="270" width="256" height="24"/>

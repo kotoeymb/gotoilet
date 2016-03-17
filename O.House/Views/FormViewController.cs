@@ -28,6 +28,8 @@ namespace OHouse
 		bool connectivity;
 		DataRequestManager drm;
 		CLLocationCoordinate2D coords;
+		UITapGestureRecognizer tapGesture;
+		float keyboardOffset;
 
 		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
@@ -35,6 +37,7 @@ namespace OHouse
 			Title = "Location";
 			this.coords = coords;
 			drm = new DataRequestManager ();
+			keyboardOffset = 80f;
 		}
 
 
@@ -57,18 +60,75 @@ namespace OHouse
 
 		}
 
+		void dismissKeyboard ()
+		{
+			NameTextField.ResignFirstResponder ();
+			DesTextField.ResignFirstResponder ();
+		}
+
+		void moveViewUp (bool moveUp)
+		{
+			UIView.BeginAnimations (null);
+			UIView.SetAnimationDuration (0.5);
+			var mainViewFrame = mainView.Frame;
+
+			if (moveUp) {
+				mainViewFrame.Y -= keyboardOffset;
+				mainView.Frame = mainViewFrame;
+
+			} else {
+				mainViewFrame.Y += keyboardOffset;
+				mainView.Frame = mainViewFrame;
+			}
+
+			UIView.CommitAnimations ();
+		}
+
+		NSObject _keyboardWillShow;
+		NSObject _keyboardWillHide;
+
+		void KeyboardWillShow (NSNotification noti)
+		{
+			Console.WriteLine ("Keyboard shown");
+			if (mainView.Frame.Y >= 0) {
+				moveViewUp (true);
+			} else if (mainView.Frame.Y <= 0) {
+				moveViewUp (false);
+			}
+		}
+
+		void KeyboardWillHide (NSNotification noti)
+		{
+			Console.WriteLine ("Keyboard hide");
+			if (mainView.Frame.Y >= 0) {
+				moveViewUp (true);
+			} else if (mainView.Frame.Y <= 0) {
+				moveViewUp (false);
+			}
+		}
+
+
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			ResignFirstResponder ();
+
+			moveViewUp (true);
+
+			tapGesture = new UITapGestureRecognizer ();
+			tapGesture.AddTarget (dismissKeyboard);
+			View.AddGestureRecognizer (tapGesture);
+
+			NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillShowNotification, KeyboardWillShow);
+			NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillHideNotification, KeyboardWillHide);	
 
 			if (coords.Latitude == 0 && coords.Longitude == 0) {
 				var noConnectionAlert = new UIAlertView ("Your location", "Please wait until your location appear on the map, OK to dismiss this form", null, "Dismiss", null);
 				noConnectionAlert.Show ();
 
 				noConnectionAlert.Clicked += (object sender, UIButtonEventArgs e) => {
-					if(e.ButtonIndex == noConnectionAlert.CancelButtonIndex) {
-						this.DismissModalViewController(true);
+					if (e.ButtonIndex == noConnectionAlert.CancelButtonIndex) {
+						this.DismissModalViewController (true);
 					}
 				};
 			}
@@ -89,7 +149,7 @@ namespace OHouse
 
 			SaveButton.TouchUpInside += saveData;
 
-			iconLocation.Image = UtilImage.GetColoredImage("images/icons/icon-pin", UIColor.Black);
+			iconLocation.Image = UtilImage.GetColoredImage ("images/icons/icon-pin", UIColor.Black);
 
 			lblLocation.Text = coords.Latitude + ", " + coords.Longitude;
 
@@ -197,6 +257,7 @@ namespace OHouse
 			}
 	
 		}
+
 		void UpdateConnectivity ()
 		{
 			connectivity = true;

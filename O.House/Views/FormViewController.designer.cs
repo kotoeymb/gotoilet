@@ -28,6 +28,9 @@ namespace OHouse
 		UIKit.UILabel lblLocation { get; set; }
 
 		[Outlet]
+		UIKit.UIView mainView { get; set; }
+
+		[Outlet]
 		UIKit.UITextField NameTextField { get; set; }
 
 		[Outlet]
@@ -50,6 +53,16 @@ namespace OHouse
 				DesTextField = null;
 			}
 
+			if (iconLocation != null) {
+				iconLocation.Dispose ();
+				iconLocation = null;
+			}
+
+			if (lblLocation != null) {
+				lblLocation.Dispose ();
+				lblLocation = null;
+			}
+
 			if (NameTextField != null) {
 				NameTextField.Dispose ();
 				NameTextField = null;
@@ -60,14 +73,9 @@ namespace OHouse
 				SaveButton = null;
 			}
 
-			if (iconLocation != null) {
-				iconLocation.Dispose ();
-				iconLocation = null;
-			}
-
-			if (lblLocation != null) {
-				lblLocation.Dispose ();
-				lblLocation = null;
+			if (mainView != null) {
+				mainView.Dispose ();
+				mainView = null;
 			}
 		}
 	}
