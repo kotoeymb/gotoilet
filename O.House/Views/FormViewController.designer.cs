@@ -13,10 +13,19 @@ namespace OHouse
 	partial class FormViewController
 	{
 		[Outlet]
+		UIKit.UIImageView bgToilet { get; set; }
+
+		[Outlet]
 		UIKit.UIButton CancleButton { get; set; }
 
 		[Outlet]
-		UIKit.UITextField DesTextField { get; set; }
+		UIKit.UITextView DesTextField { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView iconLocation { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblLocation { get; set; }
 
 		[Outlet]
 		UIKit.UITextField NameTextField { get; set; }
@@ -26,14 +35,9 @@ namespace OHouse
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (NameTextField != null) {
-				NameTextField.Dispose ();
-				NameTextField = null;
-			}
-
-			if (SaveButton != null) {
-				SaveButton.Dispose ();
-				SaveButton = null;
+			if (bgToilet != null) {
+				bgToilet.Dispose ();
+				bgToilet = null;
 			}
 
 			if (CancleButton != null) {
@@ -44,6 +48,26 @@ namespace OHouse
 			if (DesTextField != null) {
 				DesTextField.Dispose ();
 				DesTextField = null;
+			}
+
+			if (NameTextField != null) {
+				NameTextField.Dispose ();
+				NameTextField = null;
+			}
+
+			if (SaveButton != null) {
+				SaveButton.Dispose ();
+				SaveButton = null;
+			}
+
+			if (iconLocation != null) {
+				iconLocation.Dispose ();
+				iconLocation = null;
+			}
+
+			if (lblLocation != null) {
+				lblLocation.Dispose ();
+				lblLocation = null;
 			}
 		}
 	}

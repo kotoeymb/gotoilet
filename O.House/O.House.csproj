@@ -226,6 +226,7 @@
     <BundleResource Include="Resources\images\icons\icon-login.png" />
     <BundleResource Include="Resources\images\icons\icon-logout.png" />
     <BundleResource Include="Resources\images\background\bg-toilet-big.png" />
+    <BundleResource Include="Resources\images\icons\icon-save.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />

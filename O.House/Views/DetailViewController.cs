@@ -193,6 +193,11 @@ namespace OHouse
 			/// Update internet connectivity status
 			UpdateConnectivity ();
 		}
+
+		public override bool ShouldAutorotate ()
+		{
+			return false;
+		}
 	}
 }
 

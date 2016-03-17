@@ -30,18 +30,15 @@ namespace OHouse
 		TextField tf;
 		TextField stf;
 		DataRequestManager drm;
+		CLLocationCoordinate2D coords;
 
 
 		public FormViewController (CLLocationCoordinate2D coords) : base ("FormViewController", null)
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
 			Title = "Location";
-
+			this.coords = coords;
 			drm = new DataRequestManager ();
-
-
-
-
 		}
 
 
@@ -57,86 +54,112 @@ namespace OHouse
 			
 			// Release any cached data, images, etc that aren't in use.
 		}
-		public override void ViewDidUnload(){
+
+		public override void ViewDidUnload ()
+		{
 			base.ViewDidUnload ();
 			ResignFirstResponder ();
 		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+
 
 			CancleButton.TouchUpInside += (s, e) => {
 				this.DismissModalViewController (true);
 			};
 
-			saveCheckData();
+			bgToilet.Image = UIImage.FromBundle ("images/background/bg-toilet-big");
+
+			SaveButton.SetImage (UIImage.FromBundle ("images/icons/icon-save"), UIControlState.Normal);
+			SaveButton.TitleEdgeInsets = new UIEdgeInsets (0, 12, 3, 0);
+			SaveButton.TintColor = UIColor.FromRGB (7, 204, 0);
+			SaveButton.Layer.BorderWidth = 1f;
+			SaveButton.Layer.BorderColor = UIColor.FromRGB (7, 204, 0).CGColor;
+			SaveButton.SetTitleColor (UIColor.FromRGB (7, 204, 0), UIControlState.Normal);
+			SaveButton.Layer.CornerRadius = 5f;
+
+			SaveButton.TouchUpInside += saveData;
+
+			iconLocation.Image = UtilImage.GetColoredImage("images/icons/icon-pin", UIColor.Black);
+
+			lblLocation.Text = coords.Latitude + ", " + coords.Longitude;
+
 			connection = true;
 			ConnectionManager.ReachabilityChanged += UpdateStatus;
 			initView ();
 
 		}
-		private void saveCheckData()
+
+		public override bool ShouldAutorotate ()
 		{
-			SaveButton.TouchUpInside += (object sender, EventArgs e) => {
-				string title = NameTextField.Text;
-				string description = DesTextField.Text;
-				int tlength = title.Length;
-				int dlength = description.Length;
+			//////
+			/// Disable auto rotation for this page
+			return false;
+		}
 
-				Console.WriteLine (title);
-				Console.WriteLine(description);
+		void saveData (object s, EventArgs e)
+		{
+			
+			string title = NameTextField.Text;
+			string description = DesTextField.Text;
+			int tlength = title.Length;
+			int dlength = description.Length;
 
-				UpdateStatus ();
+			Console.WriteLine (title);
+			Console.WriteLine (description);
 
+			UpdateStatus ();
+			Console.WriteLine (coords.Latitude);
 
-		
 			if ((tlength >= 3 && tlength <= 15) && (dlength >= 3 && dlength <= 15)) {
 				if ((title != "" && IsValid (title)) && (description != "" && IsValid (description))) {
 					if (internetStatus == NetworkStatus.NotReachable) {
 						connectivity = false;
 						UIAlertView av = new UIAlertView (
-							"Need Internet Connection",
-							"Check Your Internet Connection",
-							null,
-							"Check",
-							null
-						);
+							                 "Need Internet Connection",
+							                 "Check Your Internet Connection",
+							                 null,
+							                 "Check",
+							                 null
+						                 );
 
 						av.Show ();
 					} else {
 						connectivity = true;
-						Console.WriteLine ("internet Connection Successful");
-						//drm.RegisterSpot (new ToiletsBase (0, 0, title, description, "", coords.Longitude, coords.Latitude, 0, true), this);	
+
+						drm.RegisterSpot (new ToiletsBase (0, 0, title, description, "", coords.Longitude, coords.Latitude, 0, true), this);	
 
 					}
 
 				} else {
 
 					UIAlertView av = new UIAlertView (
-						"Data Require",
-						"Please insert Only Character and number title & description for the location.",
-						null,
-						"Try Again!",
-						null
-					);
+						                 "Data Require",
+						                 "Please insert Only Character and number title & description for the location.",
+						                 null,
+						                 "Try Again!",
+						                 null
+					                 );
 
 					av.Show ();
 				}
 			} else {
 
 				UIAlertView av = new UIAlertView (
-					"Data Limitation",
-					"Please insert at least three char & max fifteen char for title and description.",
-					null,
-					"Try Again!",
-					null
-				);
+					                 "Data Limitation",
+					                 "Please insert at least three char & max fifteen char for title and description.",
+					                 null,
+					                 "Try Again!",
+					                 null
+				                 );
 
 				av.Show ();
 			}
-			};
 		}
-				
+
 		void UpdateStatus (object sender = null, EventArgs e = null)
 		{
 			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
@@ -147,34 +170,27 @@ namespace OHouse
 
 
 
-		private void initView()
+		private void initView ()
 		{
 			if (!connection) {
 				
 					
-					UIAlertView av = new UIAlertView (
-						                "Need Internet Connection first",
-						                "Check Your Internet Connection",
-						                null,
-						                "Ok",
-						                null
-					                );
-					av.Show ();
+				UIAlertView av = new UIAlertView (
+					                 "Need Internet Connection first",
+					                 "Check Your Internet Connection",
+					                 null,
+					                 "Ok",
+					                 null
+				                 );
+				av.Show ();
 				Console.WriteLine ("internet Connection timeout");
-				}
-	
-			else{
+			} else {
 
 				Console.WriteLine ("internet Connection successful");
-
 
 			}
 	
 		}
-	
-
-
-	
 		void UpdateConnectivity ()
 		{
 			connection = true;

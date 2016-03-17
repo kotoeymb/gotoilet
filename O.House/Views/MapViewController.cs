@@ -55,7 +55,6 @@ namespace OHouse
 		{
 			base.ViewDidLoad ();
 
-
 			Map.Delegate = new MapDelegate (this);
 			Map.ShowsUserLocation = true;
 
@@ -84,7 +83,7 @@ namespace OHouse
 
 			AddBtn.TouchUpInside += (object sender, EventArgs e) => {
 				CLLocationCoordinate2D userLoc = Map.UserLocation.Coordinate;
-				NavigationController.PresentViewController(new FormViewController(userLoc), true, null);
+				NavigationController.PresentViewController (new FormViewController (userLoc), true, null);
 			};
 		}
 
