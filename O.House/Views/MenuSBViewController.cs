@@ -118,7 +118,7 @@ namespace O.House
 
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			return 3;
+			return 4;
 		}
 
 		public override nint NumberOfSections (UITableView tableView)
@@ -149,6 +149,7 @@ namespace O.House
 			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (255, 255, 255));
 			UIImage iconTL = UtilImage.GetColoredImage ("images/icons/icon-timeline", UIColor.FromRGB (255, 255, 255));
 			UIImage iconOL = UtilImage.GetColoredImage ("images/icons/icon-offline", UIColor.FromRGB (255, 255, 255));
+			UIImage iconAbt = UtilImage.GetColoredImage ("images/icons/icon-about", UIColor.FromRGB (255, 255, 255));
 
 			switch (index) {
 			case 0:
@@ -162,6 +163,10 @@ namespace O.House
 			case 2:
 				c.MenuLabel.Text = "Offline";
 				c.MenuIcon.Image = iconOL;
+				break;
+			case 3:
+				c.MenuLabel.Text = "About";
+				c.MenuIcon.Image = iconAbt;
 				break;
 			default:
 				break;
@@ -181,6 +186,9 @@ namespace O.House
 				break;
 			case 2:
 				navi.PresentViewController (new OfflineViewController (), true, null);
+				break;
+			case 3:
+				navi.PresentViewController (new AboutViewController (), true, null);
 				break;
 			default:
 				navi.PushViewController (new TimelineViewController (), true);

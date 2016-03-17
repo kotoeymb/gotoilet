@@ -114,6 +114,7 @@
     <InterfaceDefinition Include="Views\DetailViewController.xib">
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </InterfaceDefinition>
+    <InterfaceDefinition Include="Views\AboutViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -173,6 +174,8 @@
     <Compile Include="Views\MenuCellDesign.designer.cs">
       <DependentUpon>MenuCellDesign.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\AboutViewController.cs" />
+    <Compile Include="Views\AboutViewController.designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
