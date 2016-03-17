@@ -31,7 +31,6 @@ namespace OHouse
 		{
 			EdgesForExtendedLayout = UIRectEdge.None;
 			this.spot_id = datas;
-			Console.WriteLine (this.spot_id);
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -41,17 +40,19 @@ namespace OHouse
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		public override void ViewDidLoad ()
+		public async override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			connectivity = true;
 
+			//////
+			/// First time check for connectivity when view did loaded
 			UpdateStatus (null, null);
 
+			//////
+			/// Observe connectivity change to show warning
+			/// Not updating the UI or Data
 			ConnectionManager.ReachabilityChanged += UpdateStatus;
-		}
-
-		async void initView() {
 
 			drm = new DataRequestManager ();
 			mapLocation.UserInteractionEnabled = false;
@@ -60,34 +61,45 @@ namespace OHouse
 			bgToilet.Image = UIImage.FromBundle ("images/background/bg-toilet-big");
 
 			if (!connectivity) {
-				d = drm.GetSpotInfoFromLocal ("database/Update", spot_id);
+				////// Load from local
+				d = drm.GetSpotInfoFromLocal ("Update.plist", spot_id);
+				initView ();
 			} else {
+				////// Load from web server
 				loader.StartAnimating ();
 				d = await loadDetailInformation ("http://gstore.pcp.jp/api/get_spots_info.php?spot_id=" + spot_id);
 				loader.StopAnimating ();
+				initView ();
 			}
+		}
 
-			if (d.Count <= 0) {
-				new UIAlertView ("Download", "Please connect to Internet or download the data for offline use.", null, "OK", null).Show ();
-			} else {
+		/// <summary>
+		/// Inits the view.
+		/// </summary>
+		void initView ()
+		{
+			double lat = d [0].latitude;
+			double lon = d [0].longitude;
 
-				double lat = d [0].latitude;
-				double lon = d [0].longitude;
+			lblTitle.Text = d [0].title;
+			lblDescription.Text = d [0].sub_title;
+			lblApproveCount.Text = d [0].vote_cnt + " people approved this location is valid!";
+			lblLocation.Text = d [0].latitude + ", " + d [0].longitude;
 
-				lblTitle.Text = d [0].title;
-				lblDescription.Text = d [0].sub_title;
-				lblApproveCount.Text = d [0].vote_cnt + " people approved this location is valid!";
-				lblLocation.Text = d [0].latitude + ", " + d [0].longitude;
+			var annotation = new MKPointAnnotation () {
+				Title = d [0].title,
+				Coordinate = new CLLocationCoordinate2D (lat, lon)
+			};
 
-				var annotation = new MKPointAnnotation () {
-					Title = d [0].title,
-					Coordinate = new CLLocationCoordinate2D (lat, lon)
-				};
+			mapLocation.AddAnnotation (annotation);
+			mapLocation.CenterCoordinate = new CLLocationCoordinate2D (lat, lon);
+			mapLocation.SetRegion (MKCoordinateRegion.FromDistance (annotation.Coordinate, 500, 500), false);
+		}
 
-				mapLocation.AddAnnotation (annotation);
-				mapLocation.CenterCoordinate = new CLLocationCoordinate2D (lat, lon);
-				mapLocation.SetRegion (MKCoordinateRegion.FromDistance (annotation.Coordinate, 500, 500), false);
-			}
+		void noConnection ()
+		{
+			var alert = new UIAlertView ("Download", "Please connect to Internet or download the data for offline use.", null, "OK", null);
+			alert.Show ();
 		}
 
 		public async Task<List<ToiletsBase>> loadDetailInformation (string url)
@@ -164,9 +176,11 @@ namespace OHouse
 				break;
 			}
 
-			////// 
-			/// Reload view
-			initView ();
+			//////
+			/// Show alert
+			if (!connectivity) {
+				noConnection ();
+			}
 		}
 
 		void UpdateStatus (object sender, EventArgs e)

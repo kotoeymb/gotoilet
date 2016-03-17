@@ -82,16 +82,20 @@ namespace OHouse
 				}
 			};
 				
-			AddBtn.TouchUpInside += (sender, e) => {
-				if (Map.UserLocation != null) {
+//			AddBtn.TouchUpInside += (sender, e) => {
+//				if (Map.UserLocation != null) {
+//
+//					CLLocationCoordinate2D userloc = Map.UserLocation.Coordinate;
+//					form = new FormViewController (userloc);
+//			
+//					UINavigationController nav = new UINavigationController (form);
+//					this.PresentViewController (nav, true, () => {
+//					});
+//				}
+//			};
 
-					CLLocationCoordinate2D userloc = Map.UserLocation.Coordinate;
-					form = new FormViewController (userloc);
-			
-					UINavigationController nav = new UINavigationController (form);
-					this.PresentViewController (nav, true, () => {
-					});
-				}
+			AddBtn.TouchUpInside += (object sender, EventArgs e) => {
+				NavigationController.PresentViewController(new DetailViewController(20), true, null);
 			};
 		}
 

@@ -52,7 +52,7 @@ namespace OHouse
 			drm = new DataRequestManager ();
 			this.Navigationcontroller = parent.NavigationController;
 
-			UpdateStatus (null, null);
+			//UpdateStatus (null, null);
 		}
 
 		async void initDataReset() {
@@ -93,6 +93,7 @@ namespace OHouse
 		/// <param name="userLocation">User location.</param>
 		public override void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation)
 		{
+			UpdateStatus (null, null);
 
 			// Clear map first
 			clearMap (mapView);

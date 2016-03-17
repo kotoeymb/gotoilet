@@ -281,34 +281,6 @@ namespace OHouse.DRM
 		}
 
 		/// <summary>
-		/// Gets the sample list.
-		/// </summary>
-		/// <returns>The sample list.</returns>
-		/// <param name="plistFileName">Plist file name.</param>
-		public void UpdateList ()
-		{
-			Console.WriteLine ("Updating local list from server ...");
-			List<ToiletsBase> dataFromServer;
-
-			NSMutableDictionary dataToWrite = new NSMutableDictionary ();
-			string plistFilePath = "database/Toilets";
-
-			//string[] paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User, true); 
-			NSFileManager fileMgn = NSFileManager.DefaultManager;
-
-			NSUrl[] paths = fileMgn.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
-
-			string documentsDirectory = paths [0].Path;
-			//NSString path = documentsDirectory.AppendPathComponent (new NSString("Update.plist"));
-			//Console.WriteLine("Document directory" + documentsDirectory.ToString());
-
-			//var path = NSBundle.MainBundle.PathForResource (plistFilePath, "plist");
-			string fileName = Path.Combine(documentsDirectory, "Update.plist");
-			//Console.WriteLine (fileMgn.FileExists (fileName));
-
-		}
-
-		/// <summary>
 		/// Gets the spot info.
 		/// </summary>
 		/// <returns>The spot info.</returns>
@@ -317,25 +289,27 @@ namespace OHouse.DRM
 		{
 			List<ToiletsBase> toiletsList = new List<ToiletsBase> ();
 
-			var path = NSBundle.MainBundle.PathForResource (plistFileName, "plist");
-			var toilets = NSDictionary.FromFile (path);
+			NSFileManager fileMgn = NSFileManager.DefaultManager;
+			NSUrl[] paths = fileMgn.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
+			string documentsDirectory = paths [0].Path;
+			string fileName = Path.Combine (documentsDirectory, plistFileName);
+			var toilets = NSDictionary.FromFile(fileName);
 
 			foreach (var toilet in toilets) {
 
 				var obj = toilet.Value;
 
-				var idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
+				var idKey = obj.ValueForKey ((NSString)"spot_id").ToString ();
 
 				if (idKey != spot_id.ToString ()) {
 					continue;
 				}
 
-				idKey = obj.ValueForKey ((NSString)"idKey").ToString ();
-				var titleKey = obj.ValueForKey ((NSString)"titleKey").ToString ();
-				var subtitleKey = obj.ValueForKey ((NSString)"subtitleKey").ToString ();
-				var latitudeKey = obj.ValueForKey ((NSString)"latitudeKey").ToString ();
-				var longitudeKey = obj.ValueForKey ((NSString)"longitudeKey").ToString ();
-				var voteKey = obj.ValueForKey ((NSString)"voteKey").ToString ();
+				var titleKey = obj.ValueForKey ((NSString)"title").ToString ();
+				var subtitleKey = obj.ValueForKey ((NSString)"sub_title").ToString ();
+				var latitudeKey = obj.ValueForKey ((NSString)"latitude").ToString ();
+				var longitudeKey = obj.ValueForKey ((NSString)"longitude").ToString ();
+				var voteKey = obj.ValueForKey ((NSString)"vote_cnt").ToString ();
 				double distance = 0.0;
 
 				toiletsList.Add (
