@@ -21,20 +21,23 @@ namespace O.House
 	{
 		
 		public ToiletsBase Model { get; set; }
+
 		DataRequestManager drm;
 		//		Common common;
 		public UIButton likeButton {
 			get {
 				return cellLikeBtn;
 			}
-			set {;}
+			set { ; }
 		}
+
 		public UIButton shareButton {
 			get {
 				return cellShareBtn;
 			}
-			set {;}
+			set { ; }
 		}
+
 		public ShareButton ShareBtn;
 		public ShareLinkContent slc;
 
@@ -59,44 +62,16 @@ namespace O.House
 
 			this.cellTitle.Text = Model.title;
 			this.cellSubtitle.Text = Model.sub_title;
-//			this.cellSubtitle.Lines = 0;
-//			this.cellSubtitle.LineBreakMode = UILineBreakMode.WordWrap;
-			ShareBtn = new ShareButton();
+			ShareBtn = new ShareButton ();
 			cellShareBtn.SetTitle ("Share", UIControlState.Normal);
-			cellShareBtn.SetImage(UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
+			cellShareBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-share"), 16, 16), UIControlState.Normal);
 			cellShareBtn.ImageEdgeInsets = new UIEdgeInsets (0, 0, 0, 5);
 			cellShareBtn.TintColor = UIColor.LightGray;
-
 
 			cellLikeBtn.SetTitle ("Approve", UIControlState.Normal);
 			cellLikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 16, 16), UIControlState.Normal);
 			cellLikeBtn.TitleEdgeInsets = new UIEdgeInsets (0, 5, 0, 0);
 			cellLikeBtn.TintColor = UIColor.LightGray;
-
-//			cellLikeBtn.TouchUpInside += (s, e) => {
-//				UIAlertView alert = new UIAlertView (Model.title,Model.vote_cnt.ToString(),null,"ok");
-//				alert.Show();
-//		
-//			};
-//			cellShareBtn.TouchUpInside += (s, e) => {
-//				UIAlertView alert = new UIAlertView (Model.title, Model.vote_cnt.ToString (), null, "ok");
-////				UIAlertView alert = new UIAlertView ();
-////				alert.AddButton (ShareBtn);
-////				ShareBtn = new ShareButton();
-//			alert.AddButton("Share");
-//				alert.Show ();
-//
-//			};
-		
-
-
-//			UIAlertView alert = new UIAlertView (Model.title,Model.vote_cnt.ToString(),null,"ok");
-//			alert.Show();
-					
-		 
 		}
-
-		
-	
-}
+	}
 }
