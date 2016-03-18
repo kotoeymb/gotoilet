@@ -72,9 +72,6 @@
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net" />
-    <Reference Include="MonoTouch.Slideout">
-      <HintPath>..\..\..\Downloads\MonoTouch.SlideoutNavigation\bin\Debug\MonoTouch.Slideout.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
@@ -203,8 +200,6 @@
     <BundleResource Include="Resources\images\background\bg-3.png" />
     <BundleResource Include="Resources\images\icons\icon-near.png" />
     <BundleResource Include="Resources\images\icons\icon-near%402x.png" />
-    <BundleResource Include="Resources\images\icons\icon-direction.png" />
-    <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\background\bg-4.png" />
     <BundleResource Include="Resources\images\background\bg-5.png" />
     <BundleResource Include="Resources\images\background\bg-6.png" />
@@ -233,8 +228,17 @@
     <BundleResource Include="Resources\images\icons\icon-logout.png" />
     <BundleResource Include="Resources\images\background\bg-toilet-big.png" />
     <BundleResource Include="Resources\images\icons\icon-save.png" />
+    <BundleResource Include="Resources\images\icons\icon-direction.png" />
+    <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
+    <BundleResource Include="Resources\images\icons\icon-direction%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\MonoTouch.SlideoutNavigation\MonoTouch.SlideoutNavigation.csproj">
+      <Project>{6D7B9B53-CFEF-46BE-A608-14A4A1381CF6}</Project>
+      <Name>MonoTouch.SlideoutNavigation</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

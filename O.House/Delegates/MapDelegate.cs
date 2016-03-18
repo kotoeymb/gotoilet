@@ -57,7 +57,7 @@ namespace OHouse
 
 		async void initDataReset() {
 			if (!connectivity) {
-				toiletsList = drm.GetToiletList ("Update.plist", 0, 10, false);
+				toiletsList = drm.GetToiletList ("Update.plist", 0, 10, true);
 
 			} else {
 				parent.Loader.StartAnimating ();
@@ -100,7 +100,7 @@ namespace OHouse
 
 			Console.WriteLine ("DidUpdateUserLocation");
 
-			if (mapView.UserLocation != null) {
+			if (mapView.UserLocation != null && toiletsList != null) {
 				CLLocationCoordinate2D coords = mapView.UserLocation.Coordinate;
 				CLLocation userLC = new CLLocation (coords.Latitude, coords.Longitude);
 
@@ -112,9 +112,9 @@ namespace OHouse
 					double dist = loc.DistanceFrom (userLC);
 
 					// Calculate minimal distance
-//					if (dist > maxDistance) {
-//						continue;
-//					}
+					if (dist > maxDistance) {
+						continue;
+					}
 						
 					// For near toilet list page
 					nearToiletList.Add (new ToiletsBase (a.spot_id, a.vote_cnt, a.title, a.sub_title, a.picture, a.longitude, a.latitude, dist, true));

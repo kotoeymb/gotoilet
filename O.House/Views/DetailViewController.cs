@@ -60,6 +60,14 @@ namespace OHouse
 			btnClose.TouchUpInside += CloseButtonClicked;
 			bgToilet.Image = UIImage.FromBundle ("images/background/bg-toilet-big");
 
+			btnDirection.SetImage (UIImage.FromBundle ("images/icons/icon-direction"), UIControlState.Normal);
+			btnDirection.Layer.BorderWidth = 1f;
+			btnDirection.Layer.BorderColor = UIColor.FromRGB (0, 122, 255).CGColor;
+			btnDirection.Layer.CornerRadius = 5f;
+			btnDirection.ImageEdgeInsets = new UIEdgeInsets (0, 0, 0, 10);
+
+
+
 			if (!connectivity) {
 				////// Load from local
 				d = drm.GetSpotInfoFromLocal ("Update.plist", spot_id);
@@ -70,6 +78,16 @@ namespace OHouse
 				d = await loadDetailInformation ("http://gstore.pcp.jp/api/get_spots_info.php?spot_id=" + spot_id);
 				loader.StopAnimating ();
 				initView ();
+			}
+		}
+
+		void GetDirection(object s, EventArgs e, string coords) {
+			
+			var url = new NSUrl ("comgooglemaps://?q=" + coords + "&zoom=14");
+			if (UIApplication.SharedApplication.CanOpenUrl (url)) {
+				UIApplication.SharedApplication.OpenUrl (url);
+			} else {
+				Console.WriteLine (url.ToString());
 			}
 		}
 
@@ -90,6 +108,8 @@ namespace OHouse
 				Title = d [0].title,
 				Coordinate = new CLLocationCoordinate2D (lat, lon)
 			};
+
+			btnDirection.TouchUpInside += (object sender, EventArgs e) => GetDirection(sender, e, d[0].latitude + "," + d[0].longitude);
 
 			mapLocation.AddAnnotation (annotation);
 			mapLocation.CenterCoordinate = new CLLocationCoordinate2D (lat, lon);
