@@ -12,6 +12,7 @@ using CustomElements;
 using Utils;
 using OHouse.DRM;
 using CoreGraphics;
+using CoreAnimation;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -309,6 +310,17 @@ namespace OHouse
 			return 1;
 		}
 
+		void animateThis(UIButton sender) {
+			UIView.Animate (0.1, () => {
+				sender.Transform = CGAffineTransform.MakeScale(1.3f, 1.3f);
+				sender.TintColor = UIColor.Blue;
+			}, ()=> {
+				UIView.Animate(0.1, () => {
+					sender.Transform = CGAffineTransform.MakeScale(1f,1f);
+				});
+			});
+		}
+
 		/// <summary>
 		/// Gets the cell.
 		/// </summary>
@@ -346,6 +358,9 @@ namespace OHouse
 					((TimelineCellDesign)cell).Model = datas [indexPath.Row];
 
 					((TimelineCellDesign)cell).likeButton.TouchUpInside += (object sender, EventArgs e) => {
+
+						UIButton btn = sender as UIButton;
+						animateThis(btn);
 
 						int vote_cnt = datas [indexPath.Row].vote_cnt;
 						vote_cnt++;

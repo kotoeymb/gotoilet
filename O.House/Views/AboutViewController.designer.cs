@@ -16,10 +16,10 @@ namespace O.House
 		UIKit.UIButton CloseBtn { get; set; }
 
 		[Outlet]
-		MapKit.MKMapView mview { get; set; }
+		MapKit.MKMapView jpMapView { get; set; }
 
 		[Outlet]
-		MapKit.MKMapView mView { get; set; }
+		MapKit.MKMapView mmMapView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -28,14 +28,14 @@ namespace O.House
 				CloseBtn = null;
 			}
 
-			if (mView != null) {
-				mView.Dispose ();
-				mView = null;
+			if (jpMapView != null) {
+				jpMapView.Dispose ();
+				jpMapView = null;
 			}
 
-			if (mview != null) {
-				mview.Dispose ();
-				mview = null;
+			if (mmMapView != null) {
+				mmMapView.Dispose ();
+				mmMapView = null;
 			}
 		}
 	}

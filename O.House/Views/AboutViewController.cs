@@ -5,15 +5,18 @@ using Foundation;
 using UIKit;
 using CoreLocation;
 using Commons;
+
 namespace O.House
 {
 	public partial class AboutViewController : UIViewController
 	{
 		//UIScrollView scroll;
-		CLLocationManager locationManager = new CLLocationManager();
+		CLLocationManager locationManager = new CLLocationManager ();
+
 		public AboutViewController () : base ("AboutViewController", null)
 		{
 		}
+
 		public void CloseBtnEvent (object sender, EventArgs e)
 		{
 			this.DismissModalViewController (true);
@@ -30,63 +33,40 @@ namespace O.House
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			//scroll = new UIScrollView (new CoreGraphics.CGRect (0, 0, 450, 900));
 
 			CloseBtn.TouchUpInside += (object sender, EventArgs e) => {
 
 				this.DismissModalViewController (true);
 			};
-			var Annotation =new BasicMapAnnotation(new CLLocationCoordinate2D (16.737380,96.152120), "", "");
-			var Annotation1= new BasicMapAnnotation(new CLLocationCoordinate2D (16.777426, 96.162050), "", "");
-			mview.AddAnnotation (Annotation);
-			mView.AddAnnotation (Annotation1);
 
-			//CloseBtn.TintColor = UIColor.Black;
+			double distance = 100;
 
+			////// JP Office
+			/// Pin information
+			var JPOfficeLocation = new CLLocationCoordinate2D (35.663908, 139.702534);
+			var JPOfficePin = new MKPointAnnotation () {
+				Title = "ピーシーフェーズ株式会社",
+				Subtitle = "Software Development Company",
+				Coordinate = JPOfficeLocation
+			};
+
+			jpMapView.AddAnnotation (JPOfficePin);
+			jpMapView.CenterCoordinate = JPOfficeLocation;
+			jpMapView.SetRegion (MKCoordinateRegion.FromDistance (JPOfficePin.Coordinate, distance, distance), false);
+
+			////// MM Office
+			/// Pin information
+			var MMOfficeLocation = new CLLocationCoordinate2D (16.777489, 96.162055);
+			var MMOfficePin = new MKPointAnnotation () {
+				Title = "ピーチーフェーズミャンマー",
+				Subtitle = "Software Development Company",
+				Coordinate = MMOfficeLocation
+			};
+
+			mmMapView.AddAnnotation (MMOfficePin);
+			mmMapView.CenterCoordinate = MMOfficeLocation;
+			mmMapView.SetRegion (MKCoordinateRegion.FromDistance (MMOfficePin.Coordinate, distance, distance), false);
 		}
-
-			//BroundColor = UIColor.FromPatternImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/background/bg-map"), (float)View.Frame.Width, 0));
-			//View.BackgroundColor = UIColor.;
-			//View.Add (Scroller);
-			//UIColor.FromRGBA (50, 100, 200, 250);
-			//UIImage cross=UtilImage.GetColoredImage("images/icons/icon-across",UIColor.FromRGB(20,20,20));
-		   // CloseBtn.SetImage(cross, UIControlState.Normal);
-
-		    
-			//btnClose.BackgroundColor = UtilImage.GetColoredImage(cross, UIColor.FromRGB (20, 20, 20));
-
-
-			// Perform any additional setup after loading the view, typically from a nib.
-		
-		class BasicMapAnnotation:MKAnnotation
-		{
-			public CLLocationCoordinate2D coord;
-			string title,subtitle;
-			public override CLLocationCoordinate2D Coordinate{get{return coord ;}}
-
-			public override string Title 
-			{
-				get {
-					return title;}
-
-			}
-
-			public override string Subtitle
-			{
-				get{
-					return subtitle;}
-			}
-
-			public BasicMapAnnotation(CLLocationCoordinate2D coordinate,string title,string subtitle):base ()
-			{
-				this.coord=coordinate;
-				this.title=title;
-				this.subtitle=subtitle;
-
-			}
-
-		}
-		//View.Backg
 	}
 }
 
