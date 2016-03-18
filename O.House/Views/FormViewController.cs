@@ -133,27 +133,19 @@ namespace OHouse
 				};
 			}
 
-			CancleButton.TouchUpInside += (s, e) => {
-				this.DismissModalViewController (true);
-			};
-
+		
 			bgToilet.Image = UIImage.FromBundle ("images/background/bg-toilet-big");
 
-			SaveButton.SetImage (UIImage.FromBundle ("images/icons/icon-save"), UIControlState.Normal);
-			SaveButton.TitleEdgeInsets = new UIEdgeInsets (0, 12, 3, 0);
-			SaveButton.TintColor = UIColor.FromRGB (7, 204, 0);
-			SaveButton.Layer.BorderWidth = 1f;
-			SaveButton.Layer.BorderColor = UIColor.FromRGB (7, 204, 0).CGColor;
-			SaveButton.SetTitleColor (UIColor.FromRGB (7, 204, 0), UIControlState.Normal);
-			SaveButton.Layer.CornerRadius = 5f;
-
-			SaveButton.TouchUpInside += saveData;
+		
 
 			iconLocation.Image = UtilImage.GetColoredImage ("images/icons/icon-pin", UIColor.Black);
 
 			lblLocation.Text = coords.Latitude + ", " + coords.Longitude;
 
+
+			UpdateStatus (null, null);
 			connectivity = true;
+
 			ConnectionManager.ReachabilityChanged += UpdateStatus;
 			initView ();
 
@@ -238,23 +230,39 @@ namespace OHouse
 
 		private void initView ()
 		{
+			CancleButton.TouchUpInside += (s, e) => {
+				this.DismissModalViewController (true);
+			};
+			SaveButton.TouchUpInside -= saveData;
+
 			if (!connectivity) {
-				
+
+				SaveButton.Layer.BorderWidth = 1f;
+				SaveButton.Layer.BorderColor = UIColor.Red.CGColor;
+	
+				SaveButton.Layer.CornerRadius = 5f;
+			//	SaveButton. = UIColor.Red.CGColor;
+				SaveButton.SetTitle ("Connection Timeout", UIControlState.Normal);
+				SaveButton.SetTitleColor (UIColor.Red, UIControlState.Normal);
+				SaveButton.TouchUpInside -= saveData;
 					
-				UIAlertView av = new UIAlertView (
-					                 "Need Internet Connection first",
-					                 "Check Your Internet Connection",
-					                 null,
-					                 "Ok",
-					                 null
-				                 );
-				av.Show ();
-				Console.WriteLine ("internet Connection timeout");
+				//SaveButton.SetImage(UtilImage.GetColoredImage("images/icons/icon-save"),)
+				SaveButton.TintColor = UIColor.Red;
+			
 			} else {
 
-				Console.WriteLine ("internet Connection successful");
+				SaveButton.SetImage (UIImage.FromBundle ("images/icons/icon-save"), UIControlState.Normal);
+				SaveButton.TitleEdgeInsets = new UIEdgeInsets (0, 12, 3, 0);
+				SaveButton.TintColor = UIColor.FromRGB (7, 204, 0);
+				SaveButton.Layer.BorderWidth = 1f;
+				SaveButton.Layer.BorderColor = UIColor.FromRGB (7, 204, 0).CGColor;
+				SaveButton.SetTitle ("Save", UIControlState.Normal);
+				SaveButton.SetTitleColor (UIColor.FromRGB (7, 204, 0), UIControlState.Normal);
+				SaveButton.Layer.CornerRadius = 5f;
 
-			}
+				SaveButton.TouchUpInside += saveData;
+			}	
+		
 	
 		}
 
