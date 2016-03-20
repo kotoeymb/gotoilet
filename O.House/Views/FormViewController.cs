@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 
@@ -43,7 +42,7 @@ namespace OHouse
 
 		static bool IsValid (string value)
 		{
-			return Regex.IsMatch (value, @"^[a-zA-Z0-9]*$");
+			return Regex.IsMatch (value, @"^[a-zA-Z0-9\s]*$");
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -115,6 +114,11 @@ namespace OHouse
 
 			moveViewUp (true);
 
+			UpdateStatus (null, null);
+			connectivity = true;
+
+			ConnectionManager.ReachabilityChanged += UpdateStatus;
+
 			tapGesture = new UITapGestureRecognizer ();
 			tapGesture.AddTarget (dismissKeyboard);
 			View.AddGestureRecognizer (tapGesture);
@@ -122,6 +126,8 @@ namespace OHouse
 			NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillShowNotification, KeyboardWillShow);
 			NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillHideNotification, KeyboardWillHide);	
 
+			////// Check for user location
+			/// Dismiss on error
 			if (coords.Latitude == 0 && coords.Longitude == 0) {
 				var noConnectionAlert = new UIAlertView ("Your location", "Please wait until your location appear on the map, OK to dismiss this form", null, "Dismiss", null);
 				noConnectionAlert.Show ();
@@ -135,18 +141,10 @@ namespace OHouse
 
 		
 			bgToilet.Image = UIImage.FromBundle ("images/background/bg-toilet-big");
-
-		
-
 			iconLocation.Image = UtilImage.GetColoredImage ("images/icons/icon-pin", UIColor.Black);
-
 			lblLocation.Text = coords.Latitude + ", " + coords.Longitude;
 
 
-			UpdateStatus (null, null);
-			connectivity = true;
-
-			ConnectionManager.ReachabilityChanged += UpdateStatus;
 			initView ();
 
 		}
@@ -160,61 +158,76 @@ namespace OHouse
 
 		void saveData (object s, EventArgs e)
 		{
-			
+			UpdateStatus ();
+			string error = "";
+
 			string title = NameTextField.Text;
 			string description = DesTextField.Text;
 			int tlength = title.Length;
 			int dlength = description.Length;
 
-			Console.WriteLine (title);
-			Console.WriteLine (description);
+			bool isNameBlank = false;
+			bool isDescpBlank = false;
 
-			UpdateStatus ();
-			Console.WriteLine (coords.Latitude);
+			bool isSaveSuccess = false;
 
-			if ((tlength >= 3 && tlength <= 15) && (dlength >= 3 && dlength <= 15)) {
-				if ((title != "" && IsValid (title)) && (description != "" && IsValid (description))) {
-					if (internetStatus == NetworkStatus.NotReachable) {
-						connectivity = false;
-						UIAlertView av = new UIAlertView (
-							                 "Need Internet Connection",
-							                 "Check Your Internet Connection",
-							                 null,
-							                 "Check",
-							                 null
-						                 );
+			////// Connectivity
+			/// Check for connection first
+			if (!connectivity) {
+				error += "Please connect to internet\n";
+			}
 
-						av.Show ();
-					} else {
-						connectivity = true;
+			////// Blank check
+			if (tlength <= 0) {
+				error += "Name is blank\n";
+				isNameBlank = true;
+			}
+			if (dlength <= 0) {
+				error += "Description is blank\n";
+				isDescpBlank = true;
+			}
+			////// Length check
+			if (!isNameBlank && tlength < 3) {
+				error += "Name is less than 3\n";
+			}
+			if (!isNameBlank && tlength > 15) {
+				error += "Name is greater than 15\n";
+			}
+			if (!isDescpBlank && dlength > 50) {
+				error += "Description is over 50\n";
+			}
+			////// Check illegal characters
+			if (!isNameBlank && !IsValid (title)) {
+				error += "Name contain some illegal chars\n";
+			}
+			if (!isDescpBlank && !IsValid (description)) {
+				error += "Description contain some illegal chars\n";
+			}
 
-						drm.RegisterSpot (new ToiletsBase (0, 0, title, description, "", coords.Longitude, coords.Latitude, 0, true), this);	
+			////// Check for error
+			/// If there're no errors
+			if (error.Length <= 0 || error == null || error == "") {
+				Console.WriteLine ("Saved!");
+				isSaveSuccess = drm.RegisterSpot (new ToiletsBase (0, 0, title, description, "", coords.Longitude, coords.Latitude, 0, true));
 
-					}
-
-				} else {
-
-					UIAlertView av = new UIAlertView (
-						                 "Data Require",
-						                 "Please insert Only Character and number title & description for the location.",
-						                 null,
-						                 "Try Again!",
-						                 null
-					                 );
-
-					av.Show ();
-				}
 			} else {
+				new UIAlertView (
+					"Invalid!",
+					error,
+					null,
+					"OK",
+					null
+				).Show();
+			}
 
-				UIAlertView av = new UIAlertView (
-					                 "Data Limitation",
-					                 "Please insert at least three char & max fifteen char for title and description.",
-					                 null,
-					                 "Try Again!",
-					                 null
-				                 );
-
-				av.Show ();
+			if (isSaveSuccess) {
+				new UIAlertView (
+					"Thank you!",
+					"We have completed your submission! Please continue to support us. We humbly request you to rate our app 5 stars!!",
+					null,
+					"OK",
+					null
+				).Show();
 			}
 		}
 
@@ -226,44 +239,31 @@ namespace OHouse
 			UpdateConnectivity ();
 		}
 
-
-
 		private void initView ()
 		{
 			CancleButton.TouchUpInside += (s, e) => {
 				this.DismissModalViewController (true);
 			};
+
+			SaveButton.Layer.BorderWidth = 1f;
 			SaveButton.TouchUpInside -= saveData;
+			SaveButton.Layer.CornerRadius = 5f;
+			SaveButton.TitleEdgeInsets = new UIEdgeInsets (0, 12, 3, 0);
+			SaveButton.SetImage (UIImage.FromBundle ("images/icons/icon-save"), UIControlState.Normal);
 
 			if (!connectivity) {
-
-				SaveButton.Layer.BorderWidth = 1f;
 				SaveButton.Layer.BorderColor = UIColor.Red.CGColor;
-	
-				SaveButton.Layer.CornerRadius = 5f;
-			//	SaveButton. = UIColor.Red.CGColor;
-				SaveButton.SetTitle ("Connection Timeout", UIControlState.Normal);
+				SaveButton.SetTitle ("No connection", UIControlState.Normal);
 				SaveButton.SetTitleColor (UIColor.Red, UIControlState.Normal);
 				SaveButton.TouchUpInside -= saveData;
-					
-				//SaveButton.SetImage(UtilImage.GetColoredImage("images/icons/icon-save"),)
 				SaveButton.TintColor = UIColor.Red;
-			
 			} else {
-
-				SaveButton.SetImage (UIImage.FromBundle ("images/icons/icon-save"), UIControlState.Normal);
-				SaveButton.TitleEdgeInsets = new UIEdgeInsets (0, 12, 3, 0);
-				SaveButton.TintColor = UIColor.FromRGB (7, 204, 0);
-				SaveButton.Layer.BorderWidth = 1f;
 				SaveButton.Layer.BorderColor = UIColor.FromRGB (7, 204, 0).CGColor;
 				SaveButton.SetTitle ("Save", UIControlState.Normal);
 				SaveButton.SetTitleColor (UIColor.FromRGB (7, 204, 0), UIControlState.Normal);
-				SaveButton.Layer.CornerRadius = 5f;
-
 				SaveButton.TouchUpInside += saveData;
-			}	
-		
-	
+				SaveButton.TintColor = UIColor.FromRGB (7, 204, 0);
+			}
 		}
 
 		void UpdateConnectivity ()
