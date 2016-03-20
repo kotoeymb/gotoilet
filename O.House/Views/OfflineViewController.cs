@@ -61,6 +61,8 @@ namespace O.House
 			//////
 			/// Clear actions on startup to avoid multiple action assigned
 			downloadBtn.TouchUpInside -= startDownload;
+			downloadBtn.BackgroundColor = UIColor.White;
+			downloadBtn.Layer.BorderWidth = 1;
 
 			if (!connectivity) {
 				downloadBtn.Layer.BorderColor = UIColor.Red.CGColor;
@@ -68,8 +70,6 @@ namespace O.House
 				downloadBtn.SetTitle ("Need connection", UIControlState.Normal);
 				downloadBtn.TouchUpInside -= startDownload;
 			} else {
-				downloadBtn.BackgroundColor = UIColor.White;
-				downloadBtn.Layer.BorderWidth = 1;
 				downloadBtn.Layer.BorderColor = Common.ColorStyle_1.CGColor;
 				downloadBtn.SetTitleColor (Common.ColorStyle_1, UIControlState.Normal);
 				downloadBtn.SetTitle ("Check", UIControlState.Normal);
@@ -112,6 +112,7 @@ namespace O.House
 			dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
 
 			if (sync.Count > 0) {
+				Console.WriteLine (sync [0].spot_id + ":" + dataFromServer [0].spot_id);
 				if (sync [0].spot_id == dataFromServer [0].spot_id) {
 					willSyncData = false;
 				}
@@ -120,7 +121,6 @@ namespace O.House
 			if (willSyncData) {
 				//////
 				/// retrieve data from server
-				//dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
 				foreach (var obj in dataFromServer) {
 
 					Console.WriteLine ("Retriving data from server ...");
