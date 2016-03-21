@@ -231,6 +231,9 @@
     <BundleResource Include="Resources\images\icons\icon-direction.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%403x.png" />
+    <BundleResource Include="Resources\Default.png" />
+    <BundleResource Include="Resources\Default%402x.png" />
+    <BundleResource Include="Resources\Default-568h%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
