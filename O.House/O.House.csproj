@@ -231,6 +231,15 @@
     <BundleResource Include="Resources\images\icons\icon-direction.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%403x.png" />
+    <BundleResource Include="Resources\images\icons\OfflineLogo1.png" />
+    <BundleResource Include="Resources\images\icons\OfflineLogo1%402x.png" />
+    <BundleResource Include="Resources\images\icons\OfflineLogo1%403x.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7%402x.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7%403x.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5%402x.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
