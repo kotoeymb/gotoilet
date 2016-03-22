@@ -373,9 +373,10 @@ namespace OHouse.DRM
 		/// </summary>
 		/// <param name="info">Info.</param>
 		/// <param name="modalViewController">Modal view controller.</param>
-		public void RegisterSpot (ToiletsBase info, UIViewController modalViewController)
+		public bool RegisterSpot (ToiletsBase info)
 		{
 			Uri setUrl = new Uri ("http://gstore.pcp.jp/api/reg_spot.php");
+			bool responseStatus = false;
 		
 			WebClient request = new WebClient ();
 			NameValueCollection postParameters = new NameValueCollection ();
@@ -386,41 +387,14 @@ namespace OHouse.DRM
 			postParameters.Add ("latitude", info.latitude.ToString ());
 			postParameters.Add ("longitude", info.longitude.ToString ());
 
+			request.UploadValuesAsync (setUrl, postParameters);
 			request.UploadValuesCompleted += (object sender, UploadValuesCompletedEventArgs e) => {
 				string result = Encoding.UTF8.GetString (e.Result);
 				var json = JObject.Parse (result);
-				bool responseStatus = (bool)json ["status"];
-		
-//				Console.WriteLine (info.picture + ":" + responseStatus.ToString ());
-				Console.WriteLine(info.title);
-//				Console.WriteLine(info.sub_title);
-				if (responseStatus) {
-					UIAlertView av = new UIAlertView (
-						                 "Thank you!",
-						                 "Your support has been registered!",
-						                 null,
-						                 "Got it!",
-						                 null
-					                 );
-
-					av.Show ();
-
-				} else {
-					UIAlertView av = new UIAlertView (
-						                 "Error",
-						                 "Sorry for any incovenience, the data post has occured an error. Please try again!",
-						                 null,
-						                 "OK",
-						                 null
-					                 );
-		
-					av.Show ();
-				}
+				responseStatus = (bool)json ["status"];
 			};
-		
-			request.UploadValuesAsync (setUrl, postParameters);
-		
-			modalViewController.DismissModalViewController (true);
+
+			return responseStatus;
 		}
 
 		public void RegisterVote (int spotid)

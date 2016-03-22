@@ -89,9 +89,12 @@
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone4%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone5-4.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone4.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <InterfaceDefinition Include="Views\MenuViewController.xib">
       <DependentUpon>MenuViewController.cs</DependentUpon>
     </InterfaceDefinition>
@@ -115,6 +118,7 @@
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\AboutViewController.xib" />
+    <InterfaceDefinition Include="Resources\Images.xcassets\LaunchScreen.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -240,6 +244,10 @@
     <BundleResource Include="Resources\images\icons\TimeLineLogo5.png" />
     <BundleResource Include="Resources\images\icons\TimeLineLogo5%402x.png" />
     <BundleResource Include="Resources\images\icons\TimeLineLogo5%403x.png" />
+    <BundleResource Include="Resources\Images.xcassets\Contents.json" />
+    <BundleResource Include="Resources\images\icons\AboutUsIcon.png" />
+    <BundleResource Include="Resources\images\icons\AboutUsIcon%402x.png" />
+    <BundleResource Include="Resources\images\icons\AboutUsIcon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
