@@ -96,8 +96,11 @@
 		<string>fb-messenger-api20140430</string>
 		<string>comgooglemaps</string>
 	</array>
+<<<<<<< HEAD
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+=======
+>>>>>>> a370854686511f4b40e6327e9dba4ddf983f15eb
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>XSLaunchImageAssets</key>
