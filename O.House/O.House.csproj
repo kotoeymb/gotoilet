@@ -85,6 +85,16 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-40.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76%402x.png" />
+<<<<<<< HEAD
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone4%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone5-4.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone4.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Contents.json" />
+=======
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone6plus-5.5-Portrait.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone6-4.7.png" />
@@ -94,11 +104,21 @@
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape.png" />
+<<<<<<< HEAD
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone4.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+=======
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait.png" />
+>>>>>>> a370854686511f4b40e6327e9dba4ddf983f15eb
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Views\MenuViewController.xib">
+      <DependentUpon>MenuViewController.cs</DependentUpon>
+    </InterfaceDefinition>
+>>>>>>> abe40edab9effa6d6755c0b0e9923ef49ca35c8f
     <InterfaceDefinition Include="Views\FormViewController.xib">
       <DependentUpon>FormViewController.cs</DependentUpon>
     </InterfaceDefinition>
@@ -116,6 +136,7 @@
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\AboutViewController.xib" />
+    <InterfaceDefinition Include="Resources\Images.xcassets\LaunchScreen.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -221,6 +242,7 @@
     <BundleResource Include="Resources\images\icons\icon-direction.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%402x.png" />
     <BundleResource Include="Resources\images\icons\icon-direction%403x.png" />
+<<<<<<< HEAD
     <BundleResource Include="Resources\images\icons\FindLogo7.png" />
     <BundleResource Include="Resources\images\icons\FindLogo7%402x.png" />
     <BundleResource Include="Resources\images\icons\FindLogo7%403x.png" />
@@ -230,6 +252,18 @@
     <BundleResource Include="Resources\images\icons\TimeLineLogo5.png" />
     <BundleResource Include="Resources\images\icons\TimeLineLogo5%402x.png" />
     <BundleResource Include="Resources\images\icons\TimeLineLogo5%403x.png" />
+=======
+    <BundleResource Include="Resources\images\icons\OfflineLogo1.png" />
+    <BundleResource Include="Resources\images\icons\OfflineLogo1%402x.png" />
+    <BundleResource Include="Resources\images\icons\OfflineLogo1%403x.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7%402x.png" />
+    <BundleResource Include="Resources\images\icons\FindLogo7%403x.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5%402x.png" />
+    <BundleResource Include="Resources\images\icons\TimeLineLogo5%403x.png" />
+    <BundleResource Include="Resources\Images.xcassets\Contents.json" />
+>>>>>>> abe40edab9effa6d6755c0b0e9923ef49ca35c8f
     <BundleResource Include="Resources\images\icons\AboutUsIcon.png" />
     <BundleResource Include="Resources\images\icons\AboutUsIcon%402x.png" />
     <BundleResource Include="Resources\images\icons\AboutUsIcon%403x.png" />
