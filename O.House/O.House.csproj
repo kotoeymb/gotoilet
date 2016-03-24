@@ -99,14 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <InterfaceDefinition Include="Views\MenuViewController.xib">
-      <DependentUpon>MenuViewController.cs</DependentUpon>
-    </InterfaceDefinition>
     <InterfaceDefinition Include="Views\FormViewController.xib">
       <DependentUpon>FormViewController.cs</DependentUpon>
-    </InterfaceDefinition>
-    <InterfaceDefinition Include="Views\SubmitViewController.xib">
-      <DependentUpon>SubmitViewController.cs</DependentUpon>
     </InterfaceDefinition>
     <InterfaceDefinition Include="Views\TimelineViewController.xib">
       <DependentUpon>TimelineViewController.cs</DependentUpon>
@@ -134,24 +128,15 @@
     <Compile Include="Delegates\MapDelegate.cs" />
     <Compile Include="Utilities\LocationUtil.cs" />
     <Compile Include="Utilities\Util.cs" />
-    <Compile Include="Views\FBContainerView.cs" />
     <Compile Include="Views\MapViewController.cs" />
     <Compile Include="Views\MapViewController.designer.cs">
       <DependentUpon>MapViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\NearestDialogViewController.cs" />
     <Compile Include="Utilities\Common.cs" />
-    <Compile Include="Views\MenuViewController.designer.cs">
-      <DependentUpon>MenuViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\CustomElements.cs" />
     <Compile Include="Views\FormViewController.cs" />
     <Compile Include="Views\FormViewController.designer.cs">
       <DependentUpon>FormViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SubmitViewController.cs" />
-    <Compile Include="Views\SubmitViewController.designer.cs">
-      <DependentUpon>SubmitViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\DetailViewController.cs" />
     <Compile Include="Views\DetailViewController.designer.cs">
@@ -172,7 +157,6 @@
     <Compile Include="Views\OfflineViewController.designer.cs">
       <DependentUpon>OfflineViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\MenuViewController.cs" />
     <Compile Include="Views\MenuSBViewController.cs" />
     <Compile Include="Views\MenuSBViewController.designer.cs">
       <DependentUpon>MenuSBViewController.cs</DependentUpon>
