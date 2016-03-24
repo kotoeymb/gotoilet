@@ -146,10 +146,10 @@ namespace O.House
 			int index = indexPath.Row;
 			MenuCellDesign c = ((MenuCellDesign)cell);
 
-			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/icon-find", UIColor.FromRGB (255, 255, 255));
-			UIImage iconTL = UtilImage.GetColoredImage ("images/icons/icon-timeline", UIColor.FromRGB (255, 255, 255));
-			UIImage iconOL = UtilImage.GetColoredImage ("images/icons/icon-offline", UIColor.FromRGB (255, 255, 255));
-			UIImage iconAbt = UtilImage.GetColoredImage ("images/icons/icon-about", UIColor.FromRGB (255, 255, 255));
+			UIImage iconFind = UtilImage.GetColoredImage ("images/icons/FindLogo7", UIColor.FromRGB (255, 255, 255));
+			UIImage iconTL = UtilImage.GetColoredImage ("images/icons/TimeLineLogo5", UIColor.FromRGB (255, 255, 255));
+			UIImage iconOL = UtilImage.GetColoredImage ("images/icons/OfflineLogo1", UIColor.FromRGB (255, 255, 255));
+			UIImage iconAbt = UtilImage.GetColoredImage ("images/icons/AboutUsIcon", UIColor.FromRGB (255, 255, 255));
 
 			switch (index) {
 			case 0:
