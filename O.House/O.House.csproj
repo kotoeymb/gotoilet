@@ -86,18 +86,16 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-76%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Default.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Default%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\Default-568h%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone6plus-5.5-Portrait.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone6-4.7.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone6plus-5.5-Landscape.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone4%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone5-4.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape.png" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Portrait%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPad-Landscape%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage-1.launchimage\iPhone4.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />

@@ -104,7 +104,7 @@
     {
       "orientation": "portrait",
       "extent": "full-screen",
-      "filename": "Default.png",
+      "filename": "iPhone4.png",
       "size": "320x480",
       "scale": "1x",
       "idiom": "iphone"
@@ -112,7 +112,7 @@
     {
       "orientation": "portrait",
       "extent": "full-screen",
-      "filename": "Default@2x.png",
+      "filename": "iPhone4@2x.png",
       "size": "320x480",
       "scale": "2x",
       "idiom": "iphone"
@@ -120,7 +120,7 @@
     {
       "orientation": "portrait",
       "extent": "full-screen",
-      "filename": "Default-568h@2x.png",
+      "filename": "iPhone5-4.png",
       "size": "320x568",
       "subtype": "retina4",
       "scale": "2x",

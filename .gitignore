@@ -27,7 +27,6 @@ autom4te.cache/
 tarballs/
 test-results/
 Thumbs.db
-Library/MonoTouch.SlideoutNavigation/
 
 #Mac bundle stuff
 *.dmg
