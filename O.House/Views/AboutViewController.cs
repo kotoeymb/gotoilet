@@ -10,9 +10,6 @@ namespace O.House
 {
 	public partial class AboutViewController : UIViewController
 	{
-		//UIScrollView scroll;
-		CLLocationManager locationManager = new CLLocationManager ();
-
 		public AboutViewController () : base ("AboutViewController", null)
 		{
 		}
@@ -66,6 +63,9 @@ namespace O.House
 			mmMapView.AddAnnotation (MMOfficePin);
 			mmMapView.CenterCoordinate = MMOfficeLocation;
 			mmMapView.SetRegion (MKCoordinateRegion.FromDistance (MMOfficePin.Coordinate, distance, distance), false);
+
+			jpMapView.UserInteractionEnabled = false;
+			mmMapView.UserInteractionEnabled = false;
 		}
 	}
 }
