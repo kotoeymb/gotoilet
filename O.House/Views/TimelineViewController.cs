@@ -17,7 +17,9 @@ using CoreAnimation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Facebook;
+using Facebook.CoreKit;
 using Facebook.ShareKit;
+using Facebook.LoginKit;
 using OHouse.Connectivity;
 using O.House;
 
@@ -56,6 +58,7 @@ namespace OHouse
 			//////
 			/// update network status
 			ConnectionManager.ReachabilityChanged += UpdateStatus;
+
 		}
 
 		async void initView ()
@@ -63,9 +66,9 @@ namespace OHouse
 			try {
 				drm = new DataRequestManager ();
 
-				btnLoadMore.Layer.CornerRadius = btnLoadMore.Frame.Width/2;
-				btnLoadMore.SetTitle("", UIControlState.Normal);
-				btnLoadMore.SetBackgroundImage (UtilImage.GetColoredImage("images/icons/icon-reload", UIColor.White), UIControlState.Normal);
+				btnLoadMore.Layer.CornerRadius = btnLoadMore.Frame.Width / 2;
+				btnLoadMore.SetTitle ("", UIControlState.Normal);
+				btnLoadMore.SetBackgroundImage (UtilImage.GetColoredImage ("images/icons/icon-reload", UIColor.White), UIControlState.Normal);
 				btnLoadMore.BackgroundColor = UIColor.Black;
 				btnLoadMore.TouchUpInside += (object sender, EventArgs e) => loadMore (sender, e, connectivity);
 				btnLoadMore.ClipsToBounds = true;
@@ -87,14 +90,14 @@ namespace OHouse
 					Console.WriteLine ("Network available");
 
 					loader.StartAnimating ();
-					posts = await downloadStringAsync("http://gstore.pcp.jp/api/get_spots.php");
+					posts = await downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
 					loader.StopAnimating ();
 				
 				}
 
 				// Perform any additional setup after loading the view, typically from a nib.
 				timelineTable.Bounces = false;
-				timelineTable.DataSource = new TableSource(posts);
+				timelineTable.DataSource = new TableSource (posts);
 				timelineTable.RowHeight = UITableView.AutomaticDimension;
 				timelineTable.EstimatedRowHeight = 160.0f;
 
@@ -283,6 +286,8 @@ namespace OHouse
 	{
 		List<ToiletsBase> datas;
 		DataRequestManager drm;
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
+		bool connectivity;
 
 		public TableSource (List<ToiletsBase> data)
 		{
@@ -310,13 +315,14 @@ namespace OHouse
 			return 1;
 		}
 
-		void animateThis(UIButton sender) {
+		void animateThis (UIButton sender)
+		{
 			UIView.Animate (0.1, () => {
-				sender.Transform = CGAffineTransform.MakeScale(1.3f, 1.3f);
+				sender.Transform = CGAffineTransform.MakeScale (1.3f, 1.3f);
 				sender.TintColor = UIColor.Blue;
-			}, ()=> {
-				UIView.Animate(0.1, () => {
-					sender.Transform = CGAffineTransform.MakeScale(1f,1f);
+			}, () => {
+				UIView.Animate (0.1, () => {
+					sender.Transform = CGAffineTransform.MakeScale (1f, 1f);
 				});
 			});
 		}
@@ -353,26 +359,36 @@ namespace OHouse
 
 
 				if (cell == null) {
-					//Console.WriteLine("true");
 					cell = TimelineCellDesign.Create ();
 					((TimelineCellDesign)cell).Model = datas [indexPath.Row];
 
 					((TimelineCellDesign)cell).likeButton.TouchUpInside += (object sender, EventArgs e) => {
 
 						UIButton btn = sender as UIButton;
-						animateThis(btn);
 
-						int vote_cnt = datas [indexPath.Row].vote_cnt;
-						vote_cnt++;
-						datas [indexPath.Row].vote_cnt = vote_cnt;
-						drm.RegisterVote (datas [indexPath.Row].spot_id);
+						//////
+						/// Update internet connection status
+						UpdateStatus (null, null);
+						if (connectivity) {
+							//////
+							/// Check for user login status (facebook)
+							if (AccessToken.CurrentAccessToken != null) {
+								animateThis (btn);
+								int vote_cnt = datas [indexPath.Row].vote_cnt;
+								vote_cnt++;
+								datas [indexPath.Row].vote_cnt = vote_cnt;
+								if(drm.RegisterVote (datas [indexPath.Row].spot_id)) {
+									Console.WriteLine("successfully voted");
+								}
 
-						((TimelineCellDesign)cell).Model = datas [indexPath.Row];
+								((TimelineCellDesign)cell).Model = datas [indexPath.Row];
+							} else {
+								new UIAlertView ("Login requied", "Please login to approve locations.", null, "OK", null).Show ();
+							}
+						}
 					};
 					((TimelineCellDesign)cell).shareButton.TouchUpInside += (object sender, EventArgs e) => ShareClick (sender, e, datas [indexPath.Row]);
-
 				}
-
 			}
 
 			return cell;
@@ -381,10 +397,72 @@ namespace OHouse
 
 		public void ShareClick (object sender, EventArgs e, ToiletsBase info)
 		{
-			ShareLinkContent slc = new ShareLinkContent ();
-			slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" + info.latitude + "," + info.longitude + ",15z"));
-			slc.ContentTitle = info.title;
-			ShareDialog.Show (new TimelineViewController (), slc, null);
+			UpdateStatus (null, null);
+
+			if (connectivity) {
+				ShareLinkContent slc = new ShareLinkContent ();
+				slc.SetContentUrl (new NSUrl ("https://www.google.com/maps/@" + info.latitude + "," + info.longitude + ",15z"));
+				slc.ContentTitle = info.title;
+				ShareDialog.Show (new TimelineViewController (), slc, null);
+			}
+		}
+
+		void UpdateConnectivity ()
+		{
+			switch (remoteHostStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (localWifiStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+		}
+
+		void UpdateStatus (object sender, EventArgs e)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+			//////
+			/// Update internet connectivity status
+			UpdateConnectivity ();
 		}
 	}
 }

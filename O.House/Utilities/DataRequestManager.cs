@@ -323,11 +323,6 @@ namespace OHouse.DRM
 
 		#region Setters
 
-		public bool RegisterVote ()
-		{
-			return true;
-		}
-
 		/// <summary>
 		/// Registers the user.
 		/// If user exists or user successfully register, return true
@@ -397,9 +392,10 @@ namespace OHouse.DRM
 			return responseStatus;
 		}
 
-		public void RegisterVote (int spotid)
+		public bool RegisterVote (int spotid)
 		{
 			Uri setUrl = new Uri ("http://gstore.pcp.jp/api/vote_spot.php");
+			bool responseStatus = false;
 
 			WebClient request = new WebClient ();
 			NameValueCollection postParameters = new NameValueCollection ();
@@ -413,14 +409,10 @@ namespace OHouse.DRM
 			request.UploadValuesCompleted += (object sender, UploadValuesCompletedEventArgs e) => {
 				string result = Encoding.UTF8.GetString (e.Result);
 				var json = JObject.Parse (result);
-				bool responseStatus = (bool)json ["status"];
-
-				if (responseStatus) {
-					Console.WriteLine ("true");
-				} else {
-					Console.WriteLine ("false");
-				}
+				responseStatus = (bool)json ["status"];
 			};
+
+			return responseStatus;
 		}
 
 		#endregion

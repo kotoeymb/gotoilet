@@ -22,8 +22,6 @@ namespace O.House
 		
 		public ToiletsBase Model { get; set; }
 
-		DataRequestManager drm;
-		//		Common common;
 		public UIButton likeButton {
 			get {
 				return cellLikeBtn;
