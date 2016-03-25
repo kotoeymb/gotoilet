@@ -79,6 +79,7 @@ namespace O.House
 
 
 		bool willSyncData;
+
 		/// <summary>
 		/// Updates the local file.
 		/// </summary>
@@ -106,17 +107,30 @@ namespace O.House
 
 			//////
 			/// Check latest datas are available
-			willSyncData = true;
+			//willSyncData = true;
+			willSyncData = false;
 
 			List<ToiletsBase> sync = drm.GetToiletList (fileName);
 			dataFromServer = drm.GetDataListJSON (jsonData, 0, 0);
 
-			if (sync.Count > 0) {
-				Console.WriteLine (sync [0].spot_id + ":" + dataFromServer [0].spot_id);
-				if (sync [0].spot_id == dataFromServer [0].spot_id) {
-					willSyncData = false;
+			//////
+			/// Check for update datas
+			List<ToiletsBase> newDatas = new List<ToiletsBase> ();
+
+			foreach (ToiletsBase d in dataFromServer) {
+				int checkSpotId = d.spot_id;
+				if (!sync.Exists (x => x.spot_id == d.spot_id)) {
+					newDatas.Add (d);
 				}
 			}
+
+			//////
+			/// Check is there any new not contain datas
+			if (newDatas.Count > 0) {
+				willSyncData = true;
+			}
+
+			Console.WriteLine ("We have " + newDatas.Count + " new datas");
 
 			if (willSyncData) {
 				//////
@@ -184,9 +198,9 @@ namespace O.House
 				////// Show loading view
 				/// start animating it
 				/// contents are loading
-				loader.StartAnimating();
+				loader.StartAnimating ();
 				string contents = await contentsTask;
-				loader.StopAnimating();
+				loader.StopAnimating ();
 
 				jsonData = contents;
 				dataSize = contents.Length;
@@ -196,9 +210,9 @@ namespace O.House
 				updateLocalFile ();
 				string msg = "";
 
-				if(willSyncData) {
+				if (willSyncData) {
 					msg = "Complete Updating/Downloading data\nDownloaded size : " + (dataSize / 1024).ToString () + "KB";
-				}else {
+				} else {
 					msg = "Data is up-to-date";
 				}
 

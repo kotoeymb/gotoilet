@@ -101,9 +101,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="Views\MenuViewController.xib">
-      <DependentUpon>MenuViewController.cs</DependentUpon>
-    </InterfaceDefinition>
     <InterfaceDefinition Include="Views\FormViewController.xib">
       <DependentUpon>FormViewController.cs</DependentUpon>
     </InterfaceDefinition>
