@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
 
@@ -30,6 +31,7 @@ namespace OHouse
 		DataRequestManager drm;
 		List<ToiletsBase> posts;
 		bool connectivity;
+		CancellationTokenSource cts;
 
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 
@@ -63,6 +65,8 @@ namespace OHouse
 
 		async void initView ()
 		{
+			cts = new CancellationTokenSource ();
+
 			try {
 				drm = new DataRequestManager ();
 
@@ -85,12 +89,20 @@ namespace OHouse
 						posts.Add (new ToiletsBase (0, 1, "Connection error", "Please connect to Internet or download the data for offline use.", "", 0, 0, 0, true));
 					}
 
+					loader.StopAnimating();
+
 				} else {
 					
 					Console.WriteLine ("Network available");
 
 					loader.StartAnimating ();
 					posts = await downloadStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
+
+					//////
+					/// Connection interrupted
+					if(posts == null) {
+						posts = drm.GetToiletList ("Update.plist", 0, 10, false);
+					}
 					loader.StopAnimating ();
 				
 				}
@@ -117,7 +129,7 @@ namespace OHouse
 				};
 
 			} catch (Exception e) {
-				Console.WriteLine (e.Message);
+				Console.WriteLine ("Exception initView : {0}", e.Message);
 			}
 		}
 
@@ -164,7 +176,14 @@ namespace OHouse
 		
 			try {
 				var httpClient = new HttpClient ();
+
+				cts.CancelAfter(500);
+
 				Task<string> contentsTask = httpClient.GetStringAsync ("http://gstore.pcp.jp/api/get_spots.php");
+
+				if(contentsTask.IsCanceled) {
+					return null;
+				}
 		
 				//////
 				/// Waiting for data to load fully
@@ -177,7 +196,7 @@ namespace OHouse
 				return d;
 		
 			} catch (Exception e) {
-				Console.WriteLine (e.Message);
+				Console.WriteLine ("Exception loadMoreData : {0}" + e.Message);
 				return null;
 			}
 		
@@ -205,7 +224,7 @@ namespace OHouse
 				return data;
 
 			} catch (Exception e) {
-				Console.WriteLine ("Error : " + e.Message);
+				Console.WriteLine ("Exception downloadStringAsync : {0}", e.Message);
 				return null;
 			}
 		}
