@@ -11,6 +11,7 @@ using Facebook.LoginKit;
 using System.Collections.Generic;
 using O.House;
 using OHouse.DRM;
+using OHouse.Connectivity;
 using Commons;
 
 namespace O.House
@@ -21,6 +22,8 @@ namespace O.House
 		ProfilePictureView profileView;
 		DataRequestManager drm;
 		LoginManager lm;
+		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
+		bool connectivity;
 
 		public MenuSBViewController () : base ("MenuSBViewController", null) {}
 
@@ -83,27 +86,94 @@ namespace O.House
 		{
 			lm = new LoginManager ();
 
-			if (AccessToken.CurrentAccessToken != null) {
+			//////
+			/// Update internet connection
+			UpdateStatus (null, null);
+
+			if (connectivity) {
+
+				if (AccessToken.CurrentAccessToken != null) {
 				
-				lm.LogOut ();
-				fbProfileName.Text = "Welcome";
-				fbLoginButton.SetTitle ("Login", UIControlState.Normal);
+					lm.LogOut ();
+					fbProfileName.Text = "Welcome";
+					fbLoginButton.SetTitle ("Login", UIControlState.Normal);
+				} else {
+
+					lm.LoginBehavior = LoginBehavior.Native;
+					lm.LogInWithReadPermissions (readPermissions.ToArray (), (LoginManagerLoginResult result, NSError error) => {
+						if (error != null) {
+							Console.WriteLine ("Error logging in " + error.ToString ());
+						} else if (result.IsCancelled) {
+							Console.WriteLine ("Use cancelled ");
+				
+						} else {
+							Console.WriteLine ("Good job!");
+						}
+					});
+
+					fbLoginButton.SetTitle ("Logout", UIControlState.Normal);
+				}
 			} else {
-
-				lm.LoginBehavior = LoginBehavior.Native;
-				lm.LogInWithReadPermissions (readPermissions.ToArray (), (LoginManagerLoginResult result, NSError error) => {
-					if (error != null) {
-						Console.WriteLine ("Error logging in " + error.ToString ());
-					} else if (result.IsCancelled) {
-						Console.WriteLine ("Use cancelled ");
-				
-					} else {
-						Console.WriteLine ("Good job!");
-					}
-				});
-
-				fbLoginButton.SetTitle ("Logout", UIControlState.Normal);
+				new UIAlertView ("Connection require", "Please connect to internet to login.", null, "OK", null).Show();
 			}
+		}
+
+		void UpdateConnectivity ()
+		{
+			switch (remoteHostStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (internetStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+
+			switch (localWifiStatus) {
+			case NetworkStatus.NotReachable:
+				connectivity = false;
+				break;
+			case NetworkStatus.ReachableViaCarrierDataNetwork:
+				connectivity = true;
+				break;
+			case NetworkStatus.ReachableViaWifiNetwork:
+				connectivity = true;
+				break;
+			default:
+				connectivity = true;
+				break;
+			}
+		}
+
+		void UpdateStatus (object sender, EventArgs e)
+		{
+			remoteHostStatus = ConnectionManager.RemoteHostStatus ();
+			internetStatus = ConnectionManager.InternetConnectionStatus ();
+			localWifiStatus = ConnectionManager.LocalWifiConnectionStatus ();
+			//////
+			/// Update internet connectivity status
+			UpdateConnectivity ();
 		}
 	}
 
