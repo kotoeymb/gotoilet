@@ -96,8 +96,6 @@
 		<string>fb-messenger-api20140430</string>
 		<string>comgooglemaps</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>XSLaunchImageAssets</key>
 	<string>Resources/Images.xcassets/LaunchImage-1.launchimage</string>
 </dict>
