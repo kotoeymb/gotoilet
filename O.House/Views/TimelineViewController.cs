@@ -32,7 +32,7 @@ namespace OHouse
 		List<ToiletsBase> posts;
 		bool connectivity;
 		CancellationTokenSource cts;
-
+	
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 
 		public TimelineViewController () : base ("TimelineViewController", null)
@@ -109,7 +109,7 @@ namespace OHouse
 
 				// Perform any additional setup after loading the view, typically from a nib.
 				timelineTable.Bounces = false;
-				timelineTable.DataSource = new TableSource (posts);
+				timelineTable.DataSource = new TableSource (posts,NavigationController);
 				timelineTable.RowHeight = UITableView.AutomaticDimension;
 				timelineTable.EstimatedRowHeight = 160.0f;
 
@@ -307,10 +307,12 @@ namespace OHouse
 		DataRequestManager drm;
 		NetworkStatus remoteHostStatus, internetStatus, localWifiStatus;
 		bool connectivity;
+		UINavigationController nav;
 
-		public TableSource (List<ToiletsBase> data)
+		public TableSource (List<ToiletsBase> data, UINavigationController nav)
 		{
 			this.datas = data;
+			this.nav = nav;
 		}
 
 		/// <summary>
@@ -407,6 +409,11 @@ namespace OHouse
 						}
 					};
 					((TimelineCellDesign)cell).shareButton.TouchUpInside += (object sender, EventArgs e) => ShareClick (sender, e, datas [indexPath.Row]);
+
+					((TimelineCellDesign)cell).Detailbtn.TouchUpInside += (object sender, EventArgs e) => {
+						nav.PresentViewController (new DetailViewController (datas [indexPath.Row].spot_id), true, null);
+					};
+
 				}
 			}
 

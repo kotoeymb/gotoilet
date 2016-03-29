@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,7 +20,7 @@
                         <state key="normal" title="Share"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJa-Js-wsY">
-                        <rect key="frame" x="10" y="159" width="100" height="16"/>
+                        <rect key="frame" x="10" y="158.5" width="100" height="16.5"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="16" id="br5-C0-grN"/>
@@ -37,29 +38,38 @@
                         <rect key="frame" x="10" y="10" width="300" height="20"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="249" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hK-bm-ldj">
-                        <rect key="frame" x="10" y="30" width="300" height="119.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="249" misplaced="YES" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hK-bm-ldj">
+                        <rect key="frame" x="10" y="31" width="300" height="119.5"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" red="0.092743843790000002" green="0.092743843790000002" blue="0.092743843790000002" alpha="0.75" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fmE-10-vgQ">
+                        <rect key="frame" x="110" y="148" width="50" height="39"/>
+                        <animations/>
+                        <state key="normal" title="Details"/>
+                    </button>
                 </subviews>
                 <animations/>
                 <constraints>
                     <constraint firstItem="A5G-sz-rDV" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="10" id="4q6-LN-eCA"/>
                     <constraint firstAttribute="trailing" secondItem="ri4-7o-Glx" secondAttribute="trailing" constant="10" id="Dob-QJ-PlA"/>
+                    <constraint firstItem="fmE-10-vgQ" firstAttribute="top" secondItem="3hK-bm-ldj" secondAttribute="bottom" constant="13" id="SqY-1m-Hvr"/>
                     <constraint firstItem="ri4-7o-Glx" firstAttribute="centerY" secondItem="mJa-Js-wsY" secondAttribute="centerY" id="WrJ-gg-nVS"/>
                     <constraint firstAttribute="trailing" secondItem="ri4-7o-Glx" secondAttribute="trailing" constant="10" id="XF0-HE-twO"/>
                     <constraint firstItem="3hK-bm-ldj" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="XTC-qF-ZPe"/>
                     <constraint firstItem="ri4-7o-Glx" firstAttribute="width" secondItem="mJa-Js-wsY" secondAttribute="width" id="ZVo-2A-LK7"/>
+                    <constraint firstItem="fmE-10-vgQ" firstAttribute="leading" secondItem="mJa-Js-wsY" secondAttribute="trailing" id="aQc-oR-AZg"/>
                     <constraint firstAttribute="trailing" secondItem="A5G-sz-rDV" secondAttribute="trailing" constant="10" id="cOD-Ef-74d"/>
                     <constraint firstItem="mJa-Js-wsY" firstAttribute="top" secondItem="3hK-bm-ldj" secondAttribute="bottom" constant="10" id="cwe-iq-bre"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="fmE-10-vgQ" secondAttribute="bottom" constant="5" id="fYI-Pl-sQi"/>
                     <constraint firstItem="mJa-Js-wsY" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="k2m-pG-vYG"/>
                     <constraint firstAttribute="bottom" secondItem="mJa-Js-wsY" secondAttribute="bottom" constant="10" id="meU-Oh-1qH"/>
+                    <constraint firstItem="ri4-7o-Glx" firstAttribute="leading" secondItem="fmE-10-vgQ" secondAttribute="trailing" id="qko-gm-Ubf"/>
                     <constraint firstItem="A5G-sz-rDV" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="ruP-iU-UwS"/>
                     <constraint firstItem="ri4-7o-Glx" firstAttribute="width" secondItem="mJa-Js-wsY" secondAttribute="width" id="uFy-Oa-km3"/>
                     <constraint firstAttribute="trailing" secondItem="3hK-bm-ldj" secondAttribute="trailing" constant="10" id="uqZ-Nq-rBe"/>
@@ -75,6 +85,7 @@
             </tableViewCellContentView>
             <animations/>
             <connections>
+                <outlet property="cellDetailbtn" destination="fmE-10-vgQ" id="rXf-hE-5fM"/>
                 <outlet property="cellLikeBtn" destination="mJa-Js-wsY" id="cfj-XD-fWX"/>
                 <outlet property="cellShareBtn" destination="ri4-7o-Glx" id="WVz-bE-jj4"/>
                 <outlet property="cellSubtitle" destination="3hK-bm-ldj" id="AJR-wB-8MS"/>

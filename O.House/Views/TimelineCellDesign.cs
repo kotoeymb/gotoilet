@@ -22,6 +22,8 @@ namespace O.House
 		
 		public ToiletsBase Model { get; set; }
 
+		DataRequestManager drm;
+		//Common common
 		public UIButton likeButton {
 			get {
 				return cellLikeBtn;
@@ -35,8 +37,15 @@ namespace O.House
 			}
 			set { ; }
 		}
+		public UIButton Detailbtn {
+			get {
+				return cellDetailbtn;
+			}
+			set { ; }
+		}
 
 		public ShareButton ShareBtn;
+
 		public ShareLinkContent slc;
 
 		public static readonly UINib Nib = UINib.FromName ("TimelineCellDesign", NSBundle.MainBundle);
@@ -49,7 +58,7 @@ namespace O.House
 
 		public static TimelineCellDesign Create ()
 		{
-			
+
 			return (TimelineCellDesign)Nib.Instantiate (null, null) [0];
 		}
 
@@ -70,6 +79,8 @@ namespace O.House
 			cellLikeBtn.SetImage (UtilImage.ResizeImageKeepAspect (UIImage.FromBundle ("images/icons/icon-heart"), 16, 16), UIControlState.Normal);
 			cellLikeBtn.TitleEdgeInsets = new UIEdgeInsets (0, 5, 0, 0);
 			cellLikeBtn.TintColor = UIColor.LightGray;
+
+			Detailbtn.TintColor = UIColor.LightGray;
 		}
 	}
 }
